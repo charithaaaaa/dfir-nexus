@@ -1,8 +1,8 @@
-"""Tests for the Investigation Chain blueprint view (chain_view.html).
+"""Tests for the phase-grouped Investigation Chain view (chain_view.html).
 
 The cytoscape DAG (graph_view.html) was deprecated when user feedback flagged
-it as adding no signal over the list view. The chain view replaces it with a
-display-only blueprint: rich HTML cards, dagre auto-layout, SVG wires.
+it as adding no signal over the list view. The chain view presents readable
+activity cards in recorded-phase columns with preserved SVG relationships.
 """
 import os
 import pytest
@@ -94,9 +94,21 @@ def test_chain_view_blueprint_features():
     # Block types should be richer than just node/edge
     assert "buildBlocks" in body, "block grouping function missing"
     assert "tool_batch" in body, "tool-batch grouping missing"
-    # Dagre is used for layout
+    # The graph structure keeps compound phase groups and distinct parallel edges.
     assert "dagre.graphlib.Graph" in body
+    assert "compound: true, multigraph: true" in body
     assert "rankdir: 'LR'" in body
+    assert "g.setParent(b.id, column.id)" in body
+    assert 'id="phase-groups"' in body
+    assert "function recordedPhase(b)" in body
+    assert "function phaseDescription(phase)" in body
+    assert "Phase not recorded" in body
+    assert "updateConnectionHighlight" in body
+    assert "data-from=" in body and "data-to=" in body
+    assert "Forensic tool request" in body
+    assert "Technical details · original event data" in body
+    for kind in ["call_initiated", "system_error", "hash_verify_evidence_hash"]:
+        assert f'class="kind-filter" value="{kind}"' in body
     # SVG wires + bezier paths
     assert "wirePath" in body
     assert "marker-end" in body  # arrow markers

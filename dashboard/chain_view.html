@@ -97,56 +97,15 @@
     display: flex; align-items: center; gap: 6px;
     padding: 3px 0; cursor: pointer; font-size: 12px;
   }
+  .filter-group input[type="checkbox"] { accent-color:var(--accent); }
   .legend-dot {
     width: 10px; height: 10px; border-radius: 2px; display: inline-block;
   }
 
-  /* Phase chronology strip — the DAIR state machine, visualised */
-  .phase-strip {
-    display: flex; align-items: stretch;
-    height: 32px; background: var(--bg-2);
-    border-bottom: 1px solid var(--border);
-    overflow: hidden;
-    font-size: 11px;
-  }
-  .phase-strip .ps-label {
-    padding: 0 12px; display: flex; align-items: center;
-    color: var(--fg-dim); font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.08em; font-size: 10px;
-    border-right: 1px solid var(--border); white-space: nowrap;
-  }
-  .phase-strip .ps-segments {
-    display: flex; flex: 1; min-width: 0;
-  }
-  .phase-strip .ps-seg {
-    display: flex; align-items: center; justify-content: center;
-    padding: 0 10px; cursor: pointer;
-    color: var(--fg); font-weight: 600;
-    border-right: 1px solid var(--border);
-    background: var(--bg-3);
-    min-width: 60px;
-    transition: filter .15s;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    position: relative;
-  }
-  .phase-strip .ps-seg:hover { filter: brightness(1.08); }
-  .phase-strip .ps-seg .ps-depth {
-    position: absolute; top: 1px; right: 4px;
-    font-size: 10px; color: var(--fg-dim); font-weight: 400;
-  }
-  .phase-strip .ps-seg.phase-Triage   { background: rgba(229,182,109,0.14); }
-  .phase-strip .ps-seg.phase-Collect  { background: rgba(91,198,165,0.14); }
-  .phase-strip .ps-seg.phase-Analyze  { background: rgba(129,151,232,0.14); }
-  .phase-strip .ps-seg.phase-Scan     { background: rgba(229,182,109,0.14); }
-  .phase-strip .ps-seg.phase-Report   { background: rgba(167,139,250,0.14); }
-  .phase-strip .ps-seg.phase-Verification { background: rgba(223,130,151,0.14); }
-
-  /* Canvas — pannable, zoomable */
+  /* Canvas — phase groups, pannable and zoomable */
   main.canvas {
     position: relative; overflow: hidden;
-    background:
-      radial-gradient(circle, rgba(44,60,82,0.32) 1px, transparent 1px) 0 0 / 28px 28px,
-      var(--bg);
+    background: var(--bg);
     cursor: grab;
     user-select: none;
   }
@@ -161,6 +120,23 @@
     pointer-events: none;
     overflow: visible;
   }
+  .phase-groups { position:absolute; inset:0; pointer-events:none; }
+  .phase-group {
+    position:absolute; padding:48px 18px 18px;
+    background:rgba(23,35,56,.34); border:1px solid var(--border); border-radius:12px;
+  }
+  .phase-group.unassigned .phase-group-heading { color:var(--fg-dim); }
+  .phase-group-heading {
+    position:absolute; top:12px; left:18px; right:18px;
+    color:var(--accent); font-size:14px; font-weight:650;
+  }
+  .phase-group-description {
+    display:block; margin-top:3px; color:var(--fg-dim); font-size:12px; font-weight:400;
+  }
+  .wire { opacity:.13; stroke:#8190a7; stroke-width:1.1; }
+  .wire.highlighted { opacity:.92; stroke:var(--accent); stroke-width:1.8; }
+  .phase-group-heading .phase-count { color:var(--fg-dim); font-weight:400; margin-left:6px; }
+  .filter-hint { color:var(--fg-dim); font-size:12px; line-height:1.5; margin:4px 0; }
   .stats-bar {
     position: absolute; bottom: 8px; left: 8px;
     background: rgba(16, 24, 39, 0.94); padding: 4px 10px;
@@ -173,41 +149,39 @@
     display: flex; gap: 4px; z-index: 10;
   }
 
-  /* Blueprint card */
+  /* Investigation blocks */
   .block {
     position: absolute;
     background: var(--bg-2);
     border: 1px solid var(--border);
-    border-left-width: 4px;
-    border-radius: 6px;
-    padding: 8px 10px;
+    border-left-width: 3px;
+    border-radius: 9px;
+    padding: 12px 14px;
     cursor: pointer;
-    font-size: 11px;
+    font-size: 12px;
     overflow: hidden;
-    transition: box-shadow .15s, transform .15s, border-color .15s;
+    transition: border-color .12s, opacity .12s;
   }
-  .block:hover {
-    box-shadow: 0 0 0 1px var(--accent);
-  }
-  .block.selected {
-    box-shadow: 0 0 0 2px var(--accent);
-  }
+  .block:hover { border-color:var(--accent); }
+  .block.selected { border-color:var(--accent); }
+  .block.related { border-color:rgba(167,139,250,.55); }
   .block .b-head {
     display: flex; justify-content: space-between; gap: 8px;
-    font-weight: 600; font-size: 11px; color: var(--fg);
-    margin-bottom: 4px;
+    align-items:flex-start; font-weight: 650; font-size: 14px; color: var(--fg);
+    line-height:1.35; margin-bottom: 7px;
   }
   .block .b-cid {
-    color: var(--fg-dim); font-family: monospace; font-weight: 400;
+    color: var(--fg-dim); font-family: monospace; font-size:11px; font-weight: 400;
+    white-space:nowrap;
   }
   .block .b-title {
-    color: var(--fg); margin-bottom: 4px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    color: var(--fg-dim); margin-bottom: 4px; line-height:1.45;
+    white-space: normal; overflow-wrap:anywhere;
   }
   .block .b-section {
     display: flex; gap: 6px;
-    margin-top: 4px; padding-top: 4px;
-    border-top: 1px dashed var(--border);
+    margin-top: 7px; padding-top: 6px;
+    border-top: 1px solid var(--border);
     color: var(--fg-dim);
     font-family: monospace; font-size: 10px;
   }
@@ -217,46 +191,36 @@
   }
   .block .b-section-body {
     flex: 1; min-width: 0;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    white-space: normal; overflow-wrap:anywhere;
     color: var(--fg);
   }
   .block .b-batch-row {
-    font-family: monospace; font-size: 10px;
+    font-family: monospace; font-size: 11px;
     padding: 1px 0; color: var(--fg);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .block .b-batch-row.fail { color: var(--err); }
 
-  /* Block colours by kind */
-  .block.kind-reason_plan             { border-left-color: var(--ok); }
-  .block.kind-reason_hypothesize      { border-left-color: var(--reason); }
-  .block.kind-reason_evaluate_finding { border-left-color: var(--err); }
   .block.terminal-challenge {
     border-left-color: var(--err);
-    border-left-width: 6px;
-    background: linear-gradient(90deg, rgba(223,130,151,0.12) 0%, var(--bg-2) 70%);
-    box-shadow: inset 0 0 0 1px rgba(223,130,151,0.22);
+    border-left-width: 3px;
+    background: var(--bg-2);
+    box-shadow: none;
   }
-  .block.terminal-challenge::after {
-    content: "✗ refused — no downstream entry";
-    display: block;
-    margin-top: 4px;
-    padding-top: 3px;
-    border-top: 1px dashed rgba(223,130,151,0.24);
-    color: var(--err); font-size: 9px;
-    font-family: "SF Mono","Menlo","Consolas",monospace;
-    letter-spacing: 0.04em;
-  }
-  .block.kind-reason_confidence_score { border-left-color: var(--finding-suspected); }
-  .block.kind-reason_cite_check       { border-left-color: var(--warn); }
+  .block.kind-reason_plan,
+  .block.kind-reason_hypothesize,
+  .block.kind-reason_evaluate_finding,
+  .block.kind-reason_confidence_score,
+  .block.kind-reason_cite_check,
   .block.kind-reason_synthesize,
   .block.kind-reason_pre_report_check,
-  .block.kind-reason_audit_findings   { border-left-color: var(--dair); }
+  .block.kind-reason_audit_findings { border-left-color: var(--reason); }
+  .block.kind-hash_verify_evidence_hash { border-left-color: var(--ok); }
   .block.kind-dair_call {
     border-left-color: var(--dair);
-    border-left-width: 6px;
-    background: linear-gradient(90deg, rgba(167,139,250,0.08) 0%, var(--bg-2) 60%);
-    box-shadow: inset 0 0 0 1px rgba(167,139,250,0.14);
+    border-left-width: 3px;
+    background: var(--bg-2);
+    box-shadow: none;
   }
   .block.kind-dair_call .b-head { color: var(--accent); }
   .block.kind-dair_call .state-pill {
@@ -327,16 +291,28 @@
   .filter-group { padding:10px 0; border-top:1px solid rgba(44,60,82,.6); }
   .filter-group label { padding:5px 0; color:var(--fg-dim); }
   .filter-drawer > summary { cursor:pointer; padding:9px 2px; color:var(--fg); font-weight:600; }
+  .filter-section { border-top:1px solid var(--border); padding:9px 0; }
+  .filter-section > summary { cursor:pointer; color:var(--fg); font-size:12px; font-weight:600; }
+  .filter-section[open] > summary { margin-bottom:8px; }
+  .filter-section .filter-group { border:0; padding:0; }
   .block { border-radius:10px; padding:10px 12px; background:var(--bg-2); font-size:12px; }
-  .block:hover, .block.selected { box-shadow:0 0 0 1px rgba(167,139,250,.4); }
-  .block.selected { box-shadow:0 0 0 2px var(--accent); }
-  .phase-strip .ps-label { background:var(--bg-2); }
-  .phase-strip .ps-seg { background-color:var(--bg-3); }
+  .block:hover { border-color:var(--accent); }
+  .block.selected { border-color:var(--accent); }
   .stats-bar { background:rgba(16,24,39,.94); border-radius:8px; padding:7px 10px; }
   .ctrl-btn, .back-btn { padding:7px 10px; border-radius:8px; }
   .canvas-ctrl { gap:6px; }
+  .canvas-ctrl .ctrl-btn { min-width:38px; }
   aside.detail .d-row { border-radius:8px; padding:7px 9px; }
   aside.detail .d-link { border-radius:7px; }
+  aside.detail h3 { margin:2px 0 10px; font-size:18px; line-height:1.35; color:var(--fg); }
+  aside.detail .detail-summary { color:var(--fg-dim); line-height:1.55; margin:0 0 12px; }
+  aside.detail .detail-meta { display:grid; grid-template-columns:74px minmax(0,1fr); gap:6px 10px; margin-bottom:14px; }
+  aside.detail .detail-meta .key { color:var(--fg-dim); }
+  aside.detail .detail-meta .value { min-width:0; overflow-wrap:anywhere; }
+  aside.detail details.connections { margin:12px 0; }
+  aside.detail details.connections summary { padding:8px 0; border-top:1px solid var(--border); }
+  aside.detail details.entry-content { margin:10px 0; }
+  aside.detail details.entry-content summary { padding:8px 0; border-top:1px solid var(--border); }
   @media (max-width:1050px) {
     .layout { grid-template-columns:190px minmax(0,1fr) minmax(280px,320px); }
     header { flex-wrap:wrap; }
@@ -346,8 +322,8 @@
     body { height:auto; min-height:100vh; overflow:auto; }
     header { position:sticky; top:0; z-index:12; background:var(--bg-2); }
     .layout { display:flex; flex-direction:column; height:auto; min-height:calc(100vh - 58px); }
-    aside.filters { max-height:35vh; overflow:auto; }
-    main.canvas { height:62vh; min-height:430px; flex:none; }
+    aside.filters { max-height:30vh; overflow:auto; }
+    main.canvas { height:68vh; min-height:500px; flex:none; }
     aside.detail { min-height:220px; border-left:0; border-top:1px solid var(--border); }
     .stats-bar { left:8px; bottom:8px; }
   }
@@ -360,7 +336,7 @@
 
 <header>
   <h1><a href="trace_viewer.html">← DFIR Nexus Trace</a> · Investigation Chain — <span class="case-id" id="case-id">…</span></h1>
-  <span class="stat"><span id="block-count">0</span> blocks / <span id="edge-count">0</span> wires</span>
+  <span class="stat"><span id="block-count">0</span> activities / <span id="edge-count">0</span> connections</span>
   <span class="stat" style="margin-left:auto" id="last-fetch"></span>
   <span class="live" id="live"><span class="live-dot"></span><span id="live-text">offline</span></span>
   <a class="back-btn" id="back-link" href="trace_viewer.html">List view ↗</a>
@@ -370,67 +346,65 @@
 
   <aside class="pane filters">
     <details class="filter-drawer" open>
-      <summary>Chain filters &amp; legend</summary>
+      <summary>Filters &amp; legend</summary>
+    <details class="filter-section" open>
+      <summary>Activity types</summary>
     <div class="filter-group">
-      <h3>Block Types</h3>
-      <label><input type="checkbox" class="kind-filter" value="reason_plan" checked> <span class="legend-dot" style="background:var(--ok)"></span> reason.plan</label>
-      <label><input type="checkbox" class="kind-filter" value="dair_call" checked> <span class="legend-dot" style="background:var(--dair)"></span> DAIR phases</label>
-      <label><input type="checkbox" class="kind-filter" value="tool_batch" checked> <span class="legend-dot" style="background:var(--tool)"></span> Tool batches</label>
-      <label><input type="checkbox" class="kind-filter" value="reason_hypothesize" checked> <span class="legend-dot" style="background:var(--reason)"></span> reason.hypothesize</label>
-      <label><input type="checkbox" class="kind-filter" value="reason_evaluate_finding" checked> <span class="legend-dot" style="background:var(--err)"></span> reason.evaluate</label>
-      <label><input type="checkbox" class="kind-filter" value="reason_confidence_score" checked> <span class="legend-dot" style="background:var(--finding-suspected)"></span> reason.confidence</label>
-      <label><input type="checkbox" class="kind-filter" value="reason_cite_check" checked> <span class="legend-dot" style="background:var(--warn)"></span> reason.cite_check</label>
-      <label><input type="checkbox" class="kind-filter" value="reason_synthesize" checked> <span class="legend-dot" style="background:var(--dair)"></span> reason.synthesize</label>
-      <label><input type="checkbox" class="kind-filter" value="reason_pre_report_check" checked> <span class="legend-dot" style="background:var(--dair)"></span> reason.pre_report</label>
-      <label><input type="checkbox" class="kind-filter" value="reason_audit_findings" checked> <span class="legend-dot" style="background:var(--dair)"></span> reason.audit</label>
+      <label><input type="checkbox" class="kind-filter" value="reason_plan" checked> <span class="legend-dot" style="background:var(--reason)"></span> Planning</label>
+      <label><input type="checkbox" class="kind-filter" value="dair_call" checked> <span class="legend-dot" style="background:var(--dair)"></span> Phase reviews</label>
+      <label><input type="checkbox" class="kind-filter" value="tool_batch" checked> <span class="legend-dot" style="background:var(--tool)"></span> Forensic tools</label>
+      <label><input type="checkbox" class="kind-filter" value="reason_hypothesize" checked> <span class="legend-dot" style="background:var(--reason)"></span> Hypotheses</label>
+      <label><input type="checkbox" class="kind-filter" value="reason_evaluate_finding" checked> <span class="legend-dot" style="background:var(--reason)"></span> Finding reviews</label>
+      <label><input type="checkbox" class="kind-filter" value="reason_confidence_score" checked> <span class="legend-dot" style="background:var(--reason)"></span> Confidence checks</label>
+      <label><input type="checkbox" class="kind-filter" value="reason_cite_check" checked> <span class="legend-dot" style="background:var(--reason)"></span> Evidence citation checks</label>
+      <label><input type="checkbox" class="kind-filter" value="reason_synthesize" checked> <span class="legend-dot" style="background:var(--reason)"></span> Evidence summaries</label>
+      <label><input type="checkbox" class="kind-filter" value="reason_pre_report_check" checked> <span class="legend-dot" style="background:var(--reason)"></span> Report readiness checks</label>
+      <label><input type="checkbox" class="kind-filter" value="reason_audit_findings" checked> <span class="legend-dot" style="background:var(--reason)"></span> Finding audits</label>
       <label><input type="checkbox" class="kind-filter" value="finding" checked> <span class="legend-dot" style="background:var(--finding-confirmed)"></span> Findings</label>
-      <label><input type="checkbox" class="kind-filter" value="self_correction" checked> <span class="legend-dot" style="background:var(--self-correct)"></span> Self-corrections</label>
-      <label><input type="checkbox" class="kind-filter" value="curiosity_probe" checked> <span class="legend-dot" style="background:var(--curiosity)"></span> Curiosity probes</label>
-      <label><input type="checkbox" class="kind-filter" value="finding_refused" checked> <span class="legend-dot" style="background:var(--err);opacity:.6"></span> Refused findings</label>
-      <label><input type="checkbox" class="kind-filter" value="disposition" checked> <span class="legend-dot" style="background:var(--dair);opacity:.6"></span> Dispositions</label>
-      <label><input type="checkbox" class="kind-filter" value="tool_blocked" checked> <span class="legend-dot" style="background:var(--warn)"></span> Blocked tools</label>
-      <label><input type="checkbox" class="kind-filter" value="reason_evidence_fetch"> <span class="legend-dot" style="background:var(--curiosity);opacity:.6"></span> Evidence fetches</label>
-      <label><input type="checkbox" class="kind-filter" value="narration"> <span class="legend-dot" style="background:var(--fg-dim)"></span> Agent notes</label>
-      <label><input type="checkbox" id="show-hook-ops"> <span class="legend-dot" style="background:var(--fg-dim);opacity:0.5"></span> Agent shell ops (Bash/Read/Edit)</label>
+      <label><input type="checkbox" class="kind-filter" value="self_correction" checked> <span class="legend-dot" style="background:var(--warn)"></span> Assessment revisions</label>
+      <label><input type="checkbox" class="kind-filter" value="curiosity_probe" checked> <span class="legend-dot" style="background:var(--reason)"></span> Evidence exploration</label>
+      <label><input type="checkbox" class="kind-filter" value="finding_refused" checked> <span class="legend-dot" style="background:var(--err)"></span> Findings not accepted</label>
+      <label><input type="checkbox" class="kind-filter" value="disposition" checked> <span class="legend-dot" style="background:var(--dair)"></span> Evidence dispositions</label>
+      <label><input type="checkbox" class="kind-filter" value="tool_blocked" checked> <span class="legend-dot" style="background:var(--warn)"></span> Blocked tool requests</label>
+      <label><input type="checkbox" class="kind-filter" value="reason_evidence_fetch"> <span class="legend-dot" style="background:var(--reason)"></span> Evidence reviews</label>
+      <label><input type="checkbox" class="kind-filter" value="narration"> <span class="legend-dot" style="background:var(--fg-dim)"></span> Investigation notes</label>
+      <label><input type="checkbox" class="kind-filter" value="call_initiated"> <span class="legend-dot" style="background:var(--tool)"></span> Forensic tool requests</label>
+      <label><input type="checkbox" class="kind-filter" value="system_error"> <span class="legend-dot" style="background:var(--warn)"></span> System events</label>
+      <label><input type="checkbox" class="kind-filter" value="hash_verify_evidence_hash"> <span class="legend-dot" style="background:var(--ok)"></span> Evidence hash checks</label>
+      <label><input type="checkbox" id="show-hook-ops"> <span class="legend-dot" style="background:var(--fg-dim)"></span> Agent workspace activity</label>
     </div>
+    </details>
 
+    <details class="filter-section">
+      <summary>Connection guide</summary>
     <div class="filter-group">
-      <h3>Wire Legend</h3>
-      <label><span style="display:inline-block;width:24px;height:0;border-top:3px solid var(--edge-instigates)"></span> instigates (agent-declared lineage)</label>
-      <label><span style="display:inline-block;width:24px;height:0;border-top:2px solid var(--edge-directs)"></span> directs (plan/DAIR → next)</label>
-      <label><span style="display:inline-block;width:24px;height:0;border-top:2px solid var(--edge-consumes)"></span> consumes (data flow)</label>
-      <label><span style="display:inline-block;width:24px;height:0;border-top:2px solid var(--edge-supports)"></span> supports (finding ← evidence)</label>
-      <label><span style="display:inline-block;width:24px;height:0;border-top:2px dashed var(--edge-tests)"></span> tests (hypothesis)</label>
-      <label><span style="display:inline-block;width:24px;height:0;border-top:2px dotted var(--edge-evaluates)"></span> evaluates (gate)</label>
+      <p class="filter-hint">Thin lines show relationships recorded in the trace. Select an activity to highlight its connections. Relationship types remain available in the details panel.</p>
     </div>
-
-    <div class="filter-group">
-      <h3>Layout</h3>
-      <button class="ctrl-btn" id="fit-btn" style="width:100%;margin-bottom:4px;">Fit to screen</button>
-      <button class="ctrl-btn" id="relayout-btn" style="width:100%;">Re-layout</button>
-    </div>
+    </details>
+    <details class="filter-section">
+      <summary>Layout</summary>
+      <div class="filter-group"><button class="ctrl-btn" id="relayout-btn" style="width:100%;">Re-layout</button></div>
+    </details>
     </details>
   </aside>
 
   <main class="canvas pane" id="canvas">
-    <div class="phase-strip" id="phase-strip" style="position:absolute;top:0;left:0;right:0;z-index:5;">
-      <div class="ps-label">DAIR state machine</div>
-      <div class="ps-segments" id="ps-segments"></div>
-    </div>
-    <div class="world" id="world" style="margin-top:32px;">
+    <div class="world" id="world">
+      <div class="phase-groups" id="phase-groups"></div>
       <svg class="wires" id="wires" xmlns="http://www.w3.org/2000/svg"></svg>
       <div id="blocks"></div>
     </div>
     <div class="canvas-ctrl">
-      <button class="ctrl-btn" id="zoom-out-btn">−</button>
-      <button class="ctrl-btn" id="zoom-in-btn">+</button>
-      <button class="ctrl-btn" id="reset-zoom-btn">100%</button>
+      <button class="ctrl-btn" id="fit-btn">Fit</button>
+      <button class="ctrl-btn" id="zoom-out-btn" aria-label="Zoom out">−</button>
+      <button class="ctrl-btn" id="zoom-in-btn" aria-label="Zoom in">+</button>
+      <button class="ctrl-btn" id="reset-zoom-btn">Reset</button>
     </div>
     <div class="stats-bar" id="stats-bar">Loading…</div>
   </main>
 
   <aside class="pane detail" id="detail">
-    <div class="empty">Click a block to see its inputs, outputs, and connections.</div>
+    <div class="empty">Select an activity to view its summary, evidence, and technical details.</div>
   </aside>
 
 </div>
@@ -788,13 +762,13 @@ function buildEdges(blocks, byCid, blockOfCid) {
 }
 
 // ── Block rendering ──────────────────────────────────────────────────────────
-const BLOCK_WIDTH = 240;
-const BLOCK_WIDTH_DAIR = 280;
-const BLOCK_HEIGHT_DEFAULT = 88;
-const BLOCK_HEIGHT_FINDING = 100;
-const BLOCK_HEIGHT_BATCH = 110;
-const BLOCK_HEIGHT_SYNTH = 100;
-const BLOCK_HEIGHT_DAIR = 110;
+const BLOCK_WIDTH = 300;
+const BLOCK_WIDTH_DAIR = 320;
+const BLOCK_HEIGHT_DEFAULT = 112;
+const BLOCK_HEIGHT_FINDING = 126;
+const BLOCK_HEIGHT_BATCH = 132;
+const BLOCK_HEIGHT_SYNTH = 120;
+const BLOCK_HEIGHT_DAIR = 124;
 
 function blockWidth(b) {
   return b.kind === 'dair_call' ? BLOCK_WIDTH_DAIR : BLOCK_WIDTH;
@@ -809,35 +783,84 @@ function blockHeight(b) {
 
 function blockTitle(b) {
   if (b.kind === 'tool_batch') {
-    return `Tool batch · ${b.phase || 'no phase'}`;
+    return 'Forensic tool execution';
   }
   const e = b.entry;
   switch (b.kind) {
-    case 'reason_plan':             return 'reason.plan';
-    case 'reason_hypothesize':      return `reason.hypothesize · ${e.hypothesis_id || ''}`;
-    case 'reason_evaluate_finding': return 'reason.evaluate_finding';
-    case 'reason_confidence_score': return 'reason.confidence_score';
-    case 'reason_cite_check':       return 'reason.cite_check';
-    case 'reason_synthesize':       return 'reason.synthesize';
-    case 'reason_pre_report_check': return 'reason.pre_report_check';
-    case 'reason_audit_findings':   return 'reason.audit_findings';
+    case 'reason_plan':             return 'Investigation planning';
+    case 'reason_hypothesize':      return 'Hypothesis generation';
+    case 'reason_evaluate_finding': return 'Finding evaluation';
+    case 'reason_confidence_score': return 'Confidence assessment';
+    case 'reason_cite_check':       return 'Evidence citation check';
+    case 'reason_synthesize':       return 'Evidence synthesis';
+    case 'reason_pre_report_check': return 'Report readiness review';
+    case 'reason_audit_findings':   return 'Finding audit';
     case 'dair_call': {
       const phase = e.current_phase || '?';
-      const next = e.next_phase && e.next_phase !== phase ? ` → ${e.next_phase}` : '';
-      const action = e.stack_action ? ` ${e.stack_action}` : '';
-      const stateNum = b._stateNum != null ? `STATE ${b._stateNum} · ` : '';
-      return `${stateNum}DAIR ${phase}${next}${action}`;
+      return `${phase} phase review`;
     }
-    case 'finding':                 return 'finding';
-    case 'self_correction':         return `self-correction · ${e.trigger || ''}`;
-    case 'curiosity_probe':         return `🔍 curiosity probe${e.seeded_by ? ' · ' + e.seeded_by : ''}`;
-    case 'narration':               return 'agent note';
-    case 'finding_refused':         return `⛔ refused · ${e.detail_gate || e.gate || ''}`;
-    case 'tool_blocked':            return `⛔ blocked · ${e.tool || ''}`;
-    case 'disposition':             return `📌 disposition · ${e.target_kind || ''} → ${e.reason || ''}`;
-    case 'reason_evidence_fetch':   return `🔎 evidence fetch · for #${e.reason_call_id || '?'}`;
-    default:                        return e.type || 'entry';
+    case 'finding':                 return `${(e.confidence || 'unconfirmed').toUpperCase()} finding`;
+    case 'self_correction':         return 'Assessment revised';
+    case 'curiosity_probe':         return 'Evidence exploration';
+    case 'narration':               return 'Investigation note';
+    case 'finding_refused':         return 'Proposed finding not accepted';
+    case 'tool_blocked':            return 'Tool request blocked';
+    case 'disposition':             return 'Evidence disposition';
+    case 'reason_evidence_fetch':   return 'Evidence review';
+    case 'call_initiated':          return 'Forensic tool request';
+    case 'system_error':            return 'System event';
+    case 'hash_verify_evidence_hash': return 'Evidence hash verification';
+    default:                        return e.type || 'Investigation activity';
   }
+}
+
+function blockDescription(b) {
+  if (b.kind === 'tool_batch') {
+    const successCount = b.entries.filter(e => e.success !== false).length;
+    return `${b.entries.length} recorded tool call${b.entries.length === 1 ? '' : 's'}; ${successCount} completed successfully.`;
+  }
+  const e = b.entry || {};
+  const descriptions = {
+    reason_plan: 'The agent planned the next steps for examining the case evidence.',
+    reason_hypothesize: 'The agent proposed a hypothesis based on the evidence reviewed so far.',
+    reason_evaluate_finding: 'The agent assessed whether a proposed finding is supported by evidence.',
+    reason_confidence_score: 'The agent assessed the recorded confidence for a finding.',
+    reason_cite_check: 'The agent checked the evidence citations for a finding.',
+    reason_synthesize: 'The agent summarized investigation evidence and findings.',
+    reason_pre_report_check: 'The agent checked whether the investigation was ready for reporting.',
+    reason_audit_findings: 'The agent reviewed findings and their supporting evidence.',
+    dair_call: e.phase_rationale || `The recorded workflow reviewed the ${e.current_phase || 'current'} phase.`,
+    finding: e.description || 'A finding was recorded from the investigation.',
+    self_correction: e.new_belief || 'The investigation assessment was revised.',
+    curiosity_probe: e.probe_rationale || 'The agent explored additional evidence.',
+    narration: e.content || 'An investigation note was recorded.',
+    finding_refused: e.description || 'A proposed finding did not pass its review gate.',
+    tool_blocked: e.reason || 'A requested tool call was blocked.',
+    disposition: e.note || 'An evidence disposition was recorded.',
+    reason_evidence_fetch: 'Evidence was retrieved for a recorded review.',
+    call_initiated: 'A request to invoke a forensic tool was recorded.',
+    system_error: e.message || e.reason || 'A system event was recorded in the trace.',
+    hash_verify_evidence_hash: e.conclusion || 'A recorded evidence hash was checked.',
+  };
+  return descriptions[b.kind] || e.description || e.reason || 'Recorded investigation activity.';
+}
+
+function recordedPhase(b) {
+  if (b.kind === 'tool_batch') return b.phase || '';
+  const e = b.entry || {};
+  return e.dair_phase || (b.kind === 'dair_call' ? e.current_phase : '') || '';
+}
+
+function phaseDescription(phase) {
+  const descriptions = {
+    Triage: 'Scope the case and identify initial leads.',
+    Collect: 'Acquire and inspect evidence relevant to the case.',
+    Analyze: 'Interpret evidence and assess possible findings.',
+    Scan: 'Search the available evidence for indicators and patterns.',
+    Report: 'Review findings and prepare investigation reporting.',
+    Verification: 'Check findings against their supporting evidence.',
+  };
+  return descriptions[phase] || 'Activities recorded in this investigation phase.';
 }
 
 function blockBody(b) {
@@ -958,6 +981,7 @@ function blockHTML(b, extraClasses = '') {
   const cid = b.kind === 'tool_batch'
     ? `#${b.entries[0].call_id}-#${b.entries[b.entries.length - 1].call_id}`
     : `#${b.entry.call_id}`;
+  const phase = recordedPhase(b);
   return `
     <div class="block kind-${b.kind}${tier}${extraClasses ? ' ' + extraClasses : ''}" data-block-id="${b.id}"
          style="width:${blockWidth(b)}px;height:${blockHeight(b)}px;">
@@ -965,7 +989,8 @@ function blockHTML(b, extraClasses = '') {
         <span>${escapeHtml(blockTitle(b))}</span>
         <span class="b-cid">${cid}</span>
       </div>
-      ${blockBody(b)}
+      <div class="b-summary">${escapeHtml(truncate(blockDescription(b).replace(/\s+/g, ' '), 138))}</div>
+      ${phase ? '' : '<span class="phase-missing">Phase not recorded</span>'}
     </div>`;
 }
 
@@ -980,32 +1005,97 @@ function isTerminalChallenge(b, edges) {
   return !edges.some(e => e.from === b.id);
 }
 
-// ── Layout via dagre ────────────────────────────────────────────────────────
+// ── Phase-column layout ─────────────────────────────────────────────────────
 function layout(blocks, edges) {
-  const g = new dagre.graphlib.Graph();
-  g.setGraph({
-    rankdir: 'LR',
-    nodesep: 40,
-    ranksep: 110,
-    edgesep: 24,
-    marginx: 30, marginy: 30,
-  });
+  const g = new dagre.graphlib.Graph({ compound: true, multigraph: true });
+  g.setGraph({ rankdir: 'LR', marginx: 30, marginy: 30 });
   g.setDefaultEdgeLabel(() => ({}));
 
+  const columns = new Map();
   for (const b of blocks) {
-    g.setNode(b.id, { width: blockWidth(b), height: blockHeight(b) });
+    const phase = recordedPhase(b);
+    const key = phase || null;
+    if (!columns.has(key)) {
+      const label = phase || 'Phase not recorded';
+      columns.set(key, {
+        id: `phase-${columns.size}-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+        label,
+        description: phase
+          ? phaseDescription(phase)
+          : 'No DAIR phase was recorded for these activities; none has been inferred.',
+        blocks: [],
+      });
+    }
+    columns.get(key).blocks.push(b);
   }
-  for (const e of edges) {
-    g.setEdge(e.from, e.to, { kind: e.kind });
+
+  const columnWidth = Math.max(BLOCK_WIDTH, BLOCK_WIDTH_DAIR) + 36;
+  const columnGap = 76;
+  const left = 32;
+  const top = 32;
+  const headingHeight = 84;
+  const blockGap = 18;
+  let worldHeight = 0;
+  const phaseGroups = new Map();
+  for (const [columnIndex, column] of Array.from(columns.values()).entries()) {
+    const contentHeight = column.blocks.reduce(
+      (height, b) => height + blockHeight(b) + blockGap, 0
+    ) - blockGap;
+    const groupHeight = headingHeight + contentHeight + 28;
+    const x = left + columnIndex * (columnWidth + columnGap) + columnWidth / 2;
+    const y = top + groupHeight / 2;
+    g.setNode(column.id, { x, y, width: columnWidth, height: groupHeight });
+    phaseGroups.set(column.id, column);
+    let nodeTop = top + headingHeight;
+    for (const b of column.blocks) {
+      const height = blockHeight(b);
+      g.setNode(b.id, {
+        x, y: nodeTop + height / 2,
+        width: blockWidth(b), height,
+      });
+      g.setParent(b.id, column.id);
+      nodeTop += height + blockGap;
+    }
+    worldHeight = Math.max(worldHeight, top + groupHeight);
   }
-  dagre.layout(g);
+
+  for (const [index, e] of edges.entries()) {
+    g.setEdge(e.from, e.to, { kind: e.kind }, `lineage-${index}`);
+  }
+
+  // Keep the source relationships intact while giving their paths a simpler,
+  // predictable route between activities in the phase columns.
+  for (const edge of g.edges()) {
+    const source = g.node(edge.v);
+    const target = g.node(edge.w);
+    let start, end;
+    if (Math.abs(source.x - target.x) < 1) {
+      start = source.y <= target.y
+        ? { x: source.x, y: source.y + source.height / 2 }
+        : { x: source.x, y: source.y - source.height / 2 };
+      end = source.y <= target.y
+        ? { x: target.x, y: target.y - target.height / 2 }
+        : { x: target.x, y: target.y + target.height / 2 };
+    } else if (source.x < target.x) {
+      start = { x: source.x + source.width / 2, y: source.y };
+      end = { x: target.x - target.width / 2, y: target.y };
+    } else {
+      start = { x: source.x - source.width / 2, y: source.y };
+      end = { x: target.x + target.width / 2, y: target.y };
+    }
+    g.edge(edge).points = [start, end];
+  }
+  g.graph().width = left * 2 + columns.size * columnWidth + (columns.size - 1) * columnGap;
+  g.graph().height = worldHeight + top;
+  g.phaseGroups = new Map(
+    Array.from(phaseGroups, ([id, column]) => [id, column])
+  );
   return g;
 }
 
 // ── Wire (SVG path) rendering ────────────────────────────────────────────────
 function wirePath(points) {
-  // points are dagre's polyline waypoints (each {x,y}).
-  // Convert to a smooth curve via successive cubic beziers (Catmull-Rom-ish).
+  // Convert activity endpoints into a simple smooth connector.
   if (!points || points.length === 0) return '';
   if (points.length === 1) return `M ${points[0].x} ${points[0].y}`;
   if (points.length === 2) {
@@ -1025,31 +1115,17 @@ function wirePath(points) {
 }
 
 function wireStyle(kind) {
-  const colour = {
-    supports:   'var(--edge-supports)',
-    tests:      'var(--edge-tests)',
-    consumes:   'var(--edge-consumes)',
-    instigates: 'var(--edge-instigates)',
-    evaluates:  'var(--edge-evaluates)',
-    directs:    'var(--edge-directs)',
-  }[kind] || 'var(--edge-consumes)';
-  const dash = {
-    tests:     '6 4',
-    evaluates: '2 3',
-  }[kind] || '';
-  // instigates is the agent-declared primary lineage — drawn 1px thicker so
-  // it visually outranks heuristic edges (consumes, evaluates) when both
-  // are present on the same chain view.
-  const width = (kind === 'instigates') ? 3 : 2.5;
-  return { colour, dash, width };
+  return { colour: 'var(--edge-consumes)', dash: '', width: 1.1 };
 }
 
 // ── Render full canvas ──────────────────────────────────────────────────────
 function render() {
   const blocksEl = document.getElementById('blocks');
   const wiresEl = document.getElementById('wires');
+  const groupsEl = document.getElementById('phase-groups');
   blocksEl.innerHTML = '';
   wiresEl.innerHTML = '';
+  groupsEl.innerHTML = '';
 
   if (State.blocks.length === 0) {
     document.getElementById('stats-bar').textContent = 'No entries yet';
@@ -1064,6 +1140,8 @@ function render() {
 
   if (visible.length === 0) {
     document.getElementById('stats-bar').textContent = 'Nothing matches the current filters';
+    document.getElementById('detail').innerHTML = '<div class="empty">No activities match the selected filters.</div>';
+    State.selectedBlockId = null;
     return;
   }
 
@@ -1075,6 +1153,7 @@ function render() {
   let maxX = 0, maxY = 0;
   for (const id of g.nodes()) {
     const n = g.node(id);
+    if (!n) continue;
     maxX = Math.max(maxX, n.x + n.width / 2);
     maxY = Math.max(maxY, n.y + n.height / 2);
   }
@@ -1086,15 +1165,11 @@ function render() {
   wiresEl.setAttribute('height', worldH);
   wiresEl.style.width = worldW + 'px';
   wiresEl.style.height = worldH + 'px';
-  // Arrow markers per kind — defined once
+  // Keep the full set of recorded relationships; arrows are shown only for
+  // connections emphasized by a selected block.
   const markers = `
     <defs>
-      <marker id="ar-supports"  viewBox="-6 -4 8 8" refX="0" refY="0" markerWidth="6" markerHeight="6" orient="auto"><path d="M-6,-4 L0,0 L-6,4 z" fill="var(--edge-supports)"/></marker>
-      <marker id="ar-tests"     viewBox="-6 -4 8 8" refX="0" refY="0" markerWidth="6" markerHeight="6" orient="auto"><path d="M-6,-4 L0,0 L-6,4 z" fill="var(--edge-tests)"/></marker>
-      <marker id="ar-consumes"  viewBox="-6 -4 8 8" refX="0" refY="0" markerWidth="6" markerHeight="6" orient="auto"><path d="M-6,-4 L0,0 L-6,4 z" fill="var(--edge-consumes)"/></marker>
-      <marker id="ar-evaluates" viewBox="-6 -4 8 8" refX="0" refY="0" markerWidth="6" markerHeight="6" orient="auto"><path d="M-6,-4 L0,0 L-6,4 z" fill="var(--edge-evaluates)"/></marker>
-      <marker id="ar-directs"   viewBox="-6 -4 8 8" refX="0" refY="0" markerWidth="6" markerHeight="6" orient="auto"><path d="M-6,-4 L0,0 L-6,4 z" fill="var(--edge-directs)"/></marker>
-      <marker id="ar-instigates" viewBox="-6 -4 8 8" refX="0" refY="0" markerWidth="7" markerHeight="7" orient="auto"><path d="M-6,-4 L0,0 L-6,4 z" fill="var(--edge-instigates)"/></marker>
+      <marker id="ar-lineage" viewBox="-6 -4 8 8" refX="0" refY="0" markerWidth="6" markerHeight="6" orient="auto"><path d="M-6,-4 L0,0 L-6,4 z" fill="var(--accent)"/></marker>
     </defs>`;
 
   // Build wire paths
@@ -1102,15 +1177,30 @@ function render() {
   for (const ed of g.edges()) {
     const data = g.edge(ed);
     const kind = data.kind || 'consumes';
-    const { colour, dash, width } = wireStyle(kind);
     const d = wirePath(data.points);
     wirePaths.push(
-      `<path d="${d}" fill="none" stroke="${colour}" stroke-width="${width}"`
-      + (dash ? ` stroke-dasharray="${dash}"` : '')
-      + ` marker-end="url(#ar-${kind})" data-edge="${ed.v}|${ed.w}|${kind}" />`
+      `<path class="wire" d="${d}" fill="none" data-from="${escapeHtml(ed.v)}"`
+      + ` data-to="${escapeHtml(ed.w)}" data-kind="${escapeHtml(kind)}"`
+      + ` marker-end="none" />`
     );
   }
   wiresEl.innerHTML = markers + wirePaths.join('');
+
+  for (const [groupId, column] of g.phaseGroups) {
+    const n = g.node(groupId);
+    if (!n) continue;
+    const childCount = g.children(groupId).length;
+    const group = document.createElement('div');
+    group.className = `phase-group${column.label === 'Phase not recorded' ? ' unassigned' : ''}`;
+    group.style.left = `${n.x - n.width / 2}px`;
+    group.style.top = `${n.y - n.height / 2}px`;
+    group.style.width = `${n.width}px`;
+    group.style.height = `${n.height}px`;
+    group.innerHTML = `<div class="phase-group-heading">${escapeHtml(column.label)}`
+      + `<span class="phase-count">${childCount} activities</span>`
+      + `<span class="phase-group-description">${escapeHtml(column.description)}</span></div>`;
+    groupsEl.appendChild(group);
+  }
 
   // Position blocks (annotate terminal CHALLENGED evals with a class so the
   // CSS surfaces them as "✗ refused — no downstream entry" instead of
@@ -1132,57 +1222,16 @@ function render() {
   document.getElementById('block-count').textContent = visible.length;
   document.getElementById('edge-count').textContent = visibleEdges.length;
   document.getElementById('stats-bar').textContent =
-    `${visible.length} blocks · ${visibleEdges.length} wires · drag to pan · wheel to zoom`;
+    `${visible.length} activities · ${visibleEdges.length} connections · drag to pan`;
 
-  renderPhaseStrip();
-}
-
-// ── Phase chronology strip — surfaces DAIR as the first-class state machine ──
-// Walks all DAIR cards, collapses adjacent same-phase calls into segments,
-// renders a clickable chip per segment. Click → fit-to-screen on that span.
-function renderPhaseStrip() {
-  const stripEl = document.getElementById('ps-segments');
-  if (!stripEl) return;
-  const dairBlocks = State.blocks.filter(b => b.kind === 'dair_call');
-  if (dairBlocks.length === 0) {
-    stripEl.innerHTML = '<div style="padding:0 12px;display:flex;align-items:center;color:var(--fg-dim);font-style:italic;">No DAIR phase transitions yet.</div>';
-    return;
+  if (State.selectedBlockId && visibleIds.has(State.selectedBlockId)) {
+    const selected = document.querySelector(`.block[data-block-id="${State.selectedBlockId}"]`);
+    if (selected) selected.classList.add('selected');
+  } else {
+    State.selectedBlockId = null;
+    document.getElementById('detail').innerHTML = '<div class="empty">Select an activity to view its summary, evidence, and technical details.</div>';
   }
-  // Group adjacent DAIR cards into "phase segments" — a segment runs until
-  // current_phase changes (or stack_action pushes/pops a different phase).
-  const segments = [];
-  for (const b of dairBlocks) {
-    const e = b.entry;
-    const phase = e.current_phase || '?';
-    const depth = e.dair_depth ?? 0;
-    const prev = segments[segments.length - 1];
-    if (prev && prev.phase === phase && prev.depth === depth) {
-      prev.blocks.push(b);
-    } else {
-      segments.push({ phase, depth, blocks: [b] });
-    }
-  }
-  // Render as proportional chips: each gets width proportional to # calls in segment
-  const total = segments.reduce((s, x) => s + x.blocks.length, 0);
-  const html = segments.map((seg, i) => {
-    const pct = (seg.blocks.length / total) * 100;
-    const tooltip = `${seg.phase} · ${seg.blocks.length} dair_assess call(s) · stack depth ${seg.depth}`;
-    return `<div class="ps-seg phase-${seg.phase}" data-first-block="${seg.blocks[0].id}"
-                title="${escapeHtml(tooltip)}"
-                style="flex-basis:${pct}%;flex-grow:1;">
-              STATE ${seg.blocks[0]._stateNum || i + 1} · ${escapeHtml(seg.phase)}
-              ${seg.blocks.length > 1 ? ` ×${seg.blocks.length}` : ''}
-              ${seg.depth > 0 ? `<span class="ps-depth">↳${seg.depth}</span>` : ''}
-            </div>`;
-  }).join('');
-  stripEl.innerHTML = html;
-  // Click handlers — zoom to the first DAIR card of the segment
-  stripEl.querySelectorAll('.ps-seg').forEach(el => {
-    el.addEventListener('click', () => {
-      const bid = el.dataset.firstBlock;
-      focusBlock(bid);
-    });
-  });
+  updateConnectionHighlight();
 }
 
 // ── Pan / zoom ───────────────────────────────────────────────────────────────
@@ -1260,6 +1309,25 @@ function setupBlockClicks() {
   });
 }
 
+function updateConnectionHighlight() {
+  const selectedId = State.selectedBlockId;
+  const relatedIds = new Set();
+  document.querySelectorAll('.wire').forEach(path => {
+    const related = selectedId
+      && (path.dataset.from === selectedId || path.dataset.to === selectedId);
+    path.classList.toggle('highlighted', Boolean(related));
+    path.setAttribute('marker-end', related ? 'url(#ar-lineage)' : 'none');
+    if (related) {
+      relatedIds.add(path.dataset.from);
+      relatedIds.add(path.dataset.to);
+    }
+  });
+  document.querySelectorAll('.block').forEach(block => {
+    const id = block.dataset.blockId;
+    block.classList.toggle('related', Boolean(selectedId && id !== selectedId && relatedIds.has(id)));
+  });
+}
+
 function selectBlock(id) {
   document.querySelectorAll('.block.selected').forEach(el => el.classList.remove('selected'));
   const el = document.querySelector(`.block[data-block-id="${id}"]`);
@@ -1267,6 +1335,7 @@ function selectBlock(id) {
   State.selectedBlockId = id;
   const b = State.blocks.find(b => b.id === id);
   if (b) renderDetail(b);
+  updateConnectionHighlight();
 }
 
 function focusBlock(id) {
@@ -1287,11 +1356,24 @@ function focusBlock(id) {
 function renderDetail(b) {
   const detail = document.getElementById('detail');
   const lines = [];
+  const entry = b.kind === 'tool_batch' ? b.entries[0] : b.entry;
+  const phase = recordedPhase(b);
   lines.push(`<h3>${escapeHtml(blockTitle(b))}</h3>`);
+  lines.push(`<p class="detail-summary">${escapeHtml(blockDescription(b))}</p>`);
+  lines.push('<div class="detail-meta">');
+  lines.push(`<span class="key">Event ID</span><span class="value mono">${b.kind === 'tool_batch'
+    ? `#${b.entries[0].call_id}–#${b.entries[b.entries.length - 1].call_id}`
+    : `#${entry.call_id}`}</span>`);
+  lines.push(`<span class="key">Phase</span><span class="value">${phase
+    ? escapeHtml(phase) : 'Not recorded'}</span>`);
+  lines.push(`<span class="key">Timestamp</span><span class="value">${b.kind === 'tool_batch'
+    ? `${escapeHtml(b.entries[0].ts || 'Not recorded')}${b.entries.length > 1
+      ? ` – ${escapeHtml(b.entries[b.entries.length - 1].ts || 'Not recorded')}` : ''}`
+    : escapeHtml(entry.ts || 'Not recorded')}</span>`);
+  lines.push('</div>');
 
   if (b.kind === 'tool_batch') {
-    lines.push(`<div style="color:var(--fg-dim);font-size:11px;">${b.entries.length} tool calls in phase <b>${escapeHtml(b.phase || '—')}</b></div>`);
-    lines.push('<div class="d-section">Calls</div>');
+    lines.push(`<details class="entry-content"><summary>Recorded tool calls (${b.entries.length})</summary>`);
     for (const e of b.entries) {
       const tool = parseToolLabel(e.cmd);
       const ok = e.success !== false;
@@ -1300,17 +1382,19 @@ function renderDetail(b) {
         lines.push(`<details><summary>#${e.call_id} stdout excerpt</summary><pre>${escapeHtml(truncate(e.stdout_excerpt, 2000))}</pre></details>`);
       }
     }
+    lines.push('</details>');
   } else {
     const e = b.entry;
-    lines.push(`<div style="color:var(--fg-dim);font-size:11px;">call_id #${e.call_id} · ${escapeHtml(e.ts || '')}</div>`);
+    lines.push('<details class="entry-content"><summary>Inputs, outputs &amp; related evidence</summary>');
     renderEntryDetail(e, b.kind, lines);
+    lines.push('</details>');
   }
 
   // Connections section
   const connsOut = State.edges.filter(ed => ed.from === b.id);
   const connsIn = State.edges.filter(ed => ed.to === b.id);
   if (connsIn.length || connsOut.length) {
-    lines.push('<div class="d-section">Connections</div>');
+    lines.push(`<details class="connections"><summary>Connections and related evidence (${connsIn.length + connsOut.length})</summary>`);
     for (const ed of connsIn) {
       const src = State.blocks.find(x => x.id === ed.from);
       if (!src) continue;
@@ -1321,14 +1405,22 @@ function renderDetail(b) {
       if (!tgt) continue;
       lines.push(`<a class="d-link" onclick="focusBlock('${ed.to}')">→ ${escapeHtml(ed.kind)} to ${escapeHtml(blockTitle(tgt))} (#${tgt.firstCid})</a>`);
     }
+    lines.push('</details>');
   }
 
-  // Raw JSON
+  // Keep exact source data available without crowding the default detail view.
+  lines.push('<details><summary>Technical details · original event data</summary>');
+  lines.push(`<div class="d-row"><b>Block type</b>: <span class="mono">${escapeHtml(b.kind)}</span></div>`);
   if (b.kind === 'tool_batch') {
+    lines.push('<div class="d-row">Original events and identifiers are included in the raw batch data.</div>');
     lines.push('<details><summary>Raw batch entries</summary><pre>' + escapeHtml(JSON.stringify(b.entries, null, 2)) + '</pre></details>');
   } else {
+    lines.push(`<div class="d-row"><b>Original event type</b>: <span class="mono">${escapeHtml(entry.type || '')}</span></div>`);
+    if (entry.tool) lines.push(`<div class="d-row"><b>Original operation</b>: <span class="mono">${escapeHtml(entry.tool)}</span></div>`);
+    lines.push(`<div class="d-row"><b>Event ID</b>: <span class="mono">#${escapeHtml(entry.call_id)}</span></div>`);
     lines.push('<details><summary>Raw entry</summary><pre>' + escapeHtml(JSON.stringify(b.entry, null, 2)) + '</pre></details>');
   }
+  lines.push('</details>');
 
   detail.innerHTML = lines.join('');
 }
@@ -1504,7 +1596,8 @@ async function load() {
       render();
       // Fit to screen on first render only
       if (!State._initialFit) {
-        fitToScreen();
+        State.view = { tx: 32, ty: 32, scale: 1 };
+        applyTransform();
         State._initialFit = true;
       }
     }
@@ -1545,7 +1638,7 @@ function setupFilters() {
   document.getElementById('zoom-in-btn').addEventListener('click', () => zoomBy(1.2));
   document.getElementById('zoom-out-btn').addEventListener('click', () => zoomBy(1 / 1.2));
   document.getElementById('reset-zoom-btn').addEventListener('click', () => {
-    State.view = { tx: 30, ty: 30, scale: 1 }; applyTransform();
+    State.view = { tx: 32, ty: 32, scale: 1 }; applyTransform();
   });
 }
 
