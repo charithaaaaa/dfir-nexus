@@ -32,9 +32,9 @@ const CSS = `
 .tr-kv .k { color: var(--fg-dim); }
 .tr-kv .v { word-break: break-word; min-width: 0; }
 .tr-note { color: var(--fg-dim); font-size: 11px; margin: 2px 0; }
-.tr-warn { color: var(--finding-likely, #ffa86b); font-size: 11px; margin: 2px 0; }
+.tr-warn { color: var(--finding-likely, #e5b66d); font-size: 11px; margin: 2px 0; }
 .tr-pre { background: var(--bg); border: 1px solid var(--border); padding: 8px 10px;
-  border-radius: 4px; max-height: 360px; overflow: auto; white-space: pre-wrap;
+  border-radius: 8px; max-height: 360px; overflow: auto; white-space: pre-wrap;
   word-wrap: break-word; margin: 4px 0;
   font-family: "SF Mono","Menlo","Consolas",monospace; font-size: 11px; }
 .tr-scroll { overflow: auto; max-height: 440px; border: 1px solid var(--border);
@@ -49,31 +49,31 @@ table.tr-table td { white-space: pre-wrap; max-width: 520px; word-break: break-w
 table.tr-table td.rn { color: var(--fg-dim); text-align: right; white-space: nowrap; }
 table.tr-table tr:hover td { background: var(--bg-2); }
 table.tr-params { border-collapse: collapse; margin: 4px 0; width: 100%; }
-table.tr-params td { padding: 2px 8px 2px 0; font-size: 12px; vertical-align: top;
+table.tr-params td { padding: 5px 8px 5px 0; font-size: 12px; vertical-align: top;
   border-bottom: 1px solid var(--border); word-break: break-word; }
 table.tr-params td.k { color: var(--fg-dim); width: 90px; white-space: nowrap; }
-.tr-more { margin: 2px 0 6px 0; padding: 2px 10px; font-size: 11px; cursor: pointer;
-  background: var(--bg-3); color: var(--accent); border: 1px solid var(--border); border-radius: 4px; }
+.tr-more { margin: 2px 0 6px 0; padding: 6px 10px; font-size: 11px; cursor: pointer;
+  background: var(--bg-3); color: var(--accent); border: 1px solid var(--border); border-radius: 8px; }
 .tr-more:hover { background: var(--bg-hl); }
 .tr-tag { display: inline-block; padding: 0 5px; margin: 1px 3px 1px 0; border: 1px solid var(--border);
   border-radius: 3px; font-size: 11px; font-family: "SF Mono","Menlo","Consolas",monospace;
   background: var(--bg-3); }
 .tr-tier { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: 700; }
-.tr-tier.CONFIRMED { background: rgba(255,107,107,.15); color: var(--finding-confirmed); }
-.tr-tier.LIKELY { background: rgba(255,168,107,.15); color: var(--finding-likely); }
-.tr-tier.SUSPECTED { background: rgba(255,216,107,.15); color: var(--finding-suspected); }
-.tr-tier.UNCONFIRMED { background: rgba(138,147,166,.15); color: var(--finding-unconfirmed); }
+.tr-tier.CONFIRMED { background: rgba(91,198,165,.13); color: var(--finding-confirmed); }
+.tr-tier.LIKELY { background: rgba(229,182,109,.13); color: var(--finding-likely); }
+.tr-tier.SUSPECTED { background: rgba(223,130,151,.13); color: var(--finding-suspected); }
+.tr-tier.UNCONFIRMED { background: rgba(164,177,197,.12); color: var(--finding-unconfirmed); }
 .tr-status { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: 600; }
-.tr-status.malicious { background: rgba(255,107,107,.18); color: var(--finding-confirmed); }
-.tr-status.suspicious { background: rgba(255,168,107,.18); color: var(--finding-likely); }
-.tr-status.observed { background: rgba(110,168,255,.15); color: var(--accent); }
-.tr-status.benign { background: rgba(74,210,149,.15); color: var(--ok); }
-.tr-status.unknown { background: rgba(138,147,166,.15); color: var(--fg-dim); }
+.tr-status.malicious { background: rgba(223,130,151,.16); color: var(--finding-suspected); }
+.tr-status.suspicious { background: rgba(229,182,109,.16); color: var(--finding-likely); }
+.tr-status.observed { background: rgba(129,151,232,.14); color: var(--reason); }
+.tr-status.benign { background: rgba(91,198,165,.14); color: var(--ok); }
+.tr-status.unknown { background: rgba(164,177,197,.12); color: var(--fg-dim); }
 .tr-verdict { font-weight: 700; }
 .tr-verdict.SUPPORTED { color: var(--ok); }
-.tr-verdict.CHALLENGED, .tr-verdict.CONTRADICTED { color: var(--finding-confirmed); }
+.tr-verdict.CHALLENGED, .tr-verdict.CONTRADICTED { color: var(--finding-suspected); }
 .tr-verdict.UNCERTAIN, .tr-verdict.UNVERIFIABLE { color: var(--finding-suspected); }
-.tr-card { border: 1px solid var(--border); border-radius: 4px; padding: 8px 10px; margin: 8px 0;
+.tr-card { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin: 10px 0;
   background: var(--bg-3); }
 .tr-card .tr-card-h { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
 .tr-link { color: var(--accent); cursor: pointer; text-decoration: underline dotted; }
@@ -429,7 +429,7 @@ TR.findingDetailHtml = function (e, ctx) {
     ['confidence', `<span class="tr-tier ${esc(tier)}">${esc(tier)}</span>`],
     ['tier achievable', achievable ? `<span class="tr-tier ${esc(achievable)}">${esc(achievable)}</span>${e.tier_rule ? ` <span class="tr-note">rule <code>${esc(e.tier_rule)}</code></span>` : ''}` : ''],
     ['next tier', nextTier ? esc(nextTier) : ''],
-    ['answers case question', claim.answers_case_question ? '<span class="tr-tier CONFIRMED" style="background:rgba(74,210,149,.15);color:var(--ok)">✓ yes</span>' : ''],
+    ['answers case question', claim.answers_case_question ? '<span class="tr-tier CONFIRMED" style="background:rgba(91,198,165,.13);color:var(--ok)">✓ yes</span>' : ''],
     ['supersedes', e.supersedes ? link(Number(e.supersedes), cidLabel(Number(e.supersedes)), cidTitle(Number(e.supersedes))) : ''],
     ['superseded by', e.superseded_by ? `${link(Number(e.superseded_by), cidLabel(Number(e.superseded_by)), cidTitle(Number(e.superseded_by)))}${superseded ? ` <span class="tr-note">(${esc(String(superseded.confidence || '').toUpperCase())}) — this revision is not active</span>` : ''}` : ''],
     ['retracted', retraction ? `<span class="tr-warn">yes</span> ${link(retraction.call_id, `#${retraction.call_id}`, retraction.reason || '')} <span class="tr-note">${esc(retraction.reason || '')}</span>` : ''],

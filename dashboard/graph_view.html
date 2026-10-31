@@ -6,24 +6,25 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
   :root {
-    --bg: #0f1115;
-    --bg-2: #161a21;
-    --bg-3: #1c2230;
-    --bg-hl: #2a3550;
-    --fg: #e6e9ef;
-    --fg-dim: #8a93a6;
-    --border: #28303f;
-    --accent: #6ea8ff;
-    --tool: #8a93a6;
-    --reason: #6ea8ff;
-    --dair: #b48cff;
-    --finding-confirmed: #ff6b6b;
-    --finding-likely: #ffa86b;
-    --finding-suspected: #ffd86b;
-    --finding-unconfirmed: #8a93a6;
-    --self-correct: #ffcb6b;
-    --curiosity: #5ed1d1;
-    --ok: #4ad295;
+    --bg: #101827;
+    --bg-2: #172338;
+    --bg-3: #1b2a40;
+    --bg-hl: #293a56;
+    --fg: #e3e9f3;
+    --fg-dim: #a4b1c5;
+    --border: #2c3c52;
+    --accent: #a78bfa;
+    --blue: #8197e8;
+    --tool: #a4b1c5;
+    --reason: #8197e8;
+    --dair: #a78bfa;
+    --finding-confirmed: #5bc6a5;
+    --finding-likely: #e5b66d;
+    --finding-suspected: #df8297;
+    --finding-unconfirmed: #a4b1c5;
+    --self-correct: #e5b66d;
+    --curiosity: #8197e8;
+    --ok: #5bc6a5;
   }
   * { box-sizing: border-box; }
   body {
@@ -99,6 +100,33 @@
     font-size: 11px; color: var(--fg-dim);
     font-family: "SF Mono","Menlo","Consolas",monospace;
   }
+  header { gap:12px; height:auto; min-height:58px; padding:10px 18px; }
+  header h1 { font-size:14px; letter-spacing:.01em; }
+  .layout { grid-template-columns:220px minmax(0,1fr) minmax(300px,380px); height:calc(100vh - 58px); }
+  aside.filters, aside.detail { background:var(--bg-2); }
+  .filter-group { padding:10px 0; border-top:1px solid rgba(44,60,82,.6); }
+  .filter-group label { padding:5px 0; color:var(--fg-dim); }
+  .filter-drawer > summary { cursor:pointer; padding:9px 2px; color:var(--fg); font-weight:600; }
+  #cy { background:var(--bg); }
+  .stats-bar { background:rgba(16,24,39,.94); border-radius:8px; padding:7px 10px; }
+  .back-btn { padding:7px 10px; border-radius:8px; }
+  @media (max-width:1050px) {
+    .layout { grid-template-columns:190px minmax(0,1fr) minmax(260px,300px); }
+    header { flex-wrap:wrap; }
+    header h1 { flex:1 1 100%; }
+  }
+  @media (max-width:760px) {
+    body { height:auto; min-height:100vh; overflow:auto; }
+    header { position:sticky; top:0; z-index:12; background:var(--bg-2); }
+    .layout { display:flex; flex-direction:column; height:auto; }
+    aside.filters { max-height:35vh; overflow:auto; }
+    #cy { height:62vh; min-height:430px; }
+    aside.detail { min-height:220px; border-left:0; border-top:1px solid var(--border); }
+    .stats-bar { left:8px; bottom:8px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration:.01ms !important; scroll-behavior:auto !important; transition-duration:.01ms !important; }
+  }
 </style>
 </head>
 <body>
@@ -114,24 +142,26 @@
 <div class="layout">
 
   <aside class="pane filters">
+    <details class="filter-drawer" open>
+      <summary>Graph filters</summary>
     <div class="filter-group">
       <h3>Node Types</h3>
       <label><input type="checkbox" class="node-filter" value="finding" checked> <span class="legend-dot" style="background:var(--finding-confirmed)"></span> Findings</label>
-      <label><input type="checkbox" class="node-filter" value="reason_plan" checked> <span class="legend-dot" style="background:#4ad295"></span> reason.plan</label>
-      <label><input type="checkbox" class="node-filter" value="reason_hypothesize" checked> <span class="legend-dot" style="background:#6ea8ff"></span> reason.hypothesize</label>
-      <label><input type="checkbox" class="node-filter" value="reason_evaluate_finding" checked> <span class="legend-dot" style="background:#ff6b6b"></span> reason.evaluate</label>
-      <label><input type="checkbox" class="node-filter" value="reason_confidence_score" checked> <span class="legend-dot" style="background:#ffd86b"></span> reason.confidence</label>
-      <label><input type="checkbox" class="node-filter" value="reason_cite_check" checked> <span class="legend-dot" style="background:#ffa86b"></span> reason.cite_check</label>
-      <label><input type="checkbox" class="node-filter" value="reason_synthesize" checked> <span class="legend-dot" style="background:#b48cff"></span> reason.synthesize</label>
-      <label><input type="checkbox" class="node-filter" value="reason_pre_report_check" checked> <span class="legend-dot" style="background:#b48cff"></span> reason.pre_report</label>
-      <label><input type="checkbox" class="node-filter" value="reason_audit_findings" checked> <span class="legend-dot" style="background:#b48cff"></span> reason.audit</label>
+      <label><input type="checkbox" class="node-filter" value="reason_plan" checked> <span class="legend-dot" style="background:var(--accent)"></span> reason.plan</label>
+      <label><input type="checkbox" class="node-filter" value="reason_hypothesize" checked> <span class="legend-dot" style="background:var(--reason)"></span> reason.hypothesize</label>
+      <label><input type="checkbox" class="node-filter" value="reason_evaluate_finding" checked> <span class="legend-dot" style="background:var(--finding-suspected)"></span> reason.evaluate</label>
+      <label><input type="checkbox" class="node-filter" value="reason_confidence_score" checked> <span class="legend-dot" style="background:var(--finding-likely)"></span> reason.confidence</label>
+      <label><input type="checkbox" class="node-filter" value="reason_cite_check" checked> <span class="legend-dot" style="background:var(--finding-likely)"></span> reason.cite_check</label>
+      <label><input type="checkbox" class="node-filter" value="reason_synthesize" checked> <span class="legend-dot" style="background:var(--dair)"></span> reason.synthesize</label>
+      <label><input type="checkbox" class="node-filter" value="reason_pre_report_check" checked> <span class="legend-dot" style="background:var(--dair)"></span> reason.pre_report</label>
+      <label><input type="checkbox" class="node-filter" value="reason_audit_findings" checked> <span class="legend-dot" style="background:var(--dair)"></span> reason.audit</label>
       <label><input type="checkbox" class="node-filter" value="dair_call" checked> <span class="legend-dot" style="background:var(--dair)"></span> DAIR phases</label>
       <label><input type="checkbox" class="node-filter" value="self_correction" checked> <span class="legend-dot" style="background:var(--self-correct)"></span> Self-corrections</label>
       <label><input type="checkbox" class="node-filter" value="curiosity_probe" checked> <span class="legend-dot" style="background:var(--curiosity)"></span> Curiosity probes</label>
-      <label><input type="checkbox" class="node-filter" value="finding_refused" checked> <span class="legend-dot" style="background:#ff6b6b;opacity:.6"></span> Refused findings</label>
-      <label><input type="checkbox" class="node-filter" value="disposition" checked> <span class="legend-dot" style="background:#b48cff;opacity:.6"></span> Dispositions</label>
-      <label><input type="checkbox" class="node-filter" value="tool_blocked"> <span class="legend-dot" style="background:#ffa86b"></span> Blocked tools</label>
-      <label><input type="checkbox" class="node-filter" value="reason_evidence_fetch"> <span class="legend-dot" style="background:#5ed1d1;opacity:.6"></span> Evidence fetches</label>
+      <label><input type="checkbox" class="node-filter" value="finding_refused" checked> <span class="legend-dot" style="background:var(--finding-suspected);opacity:.7"></span> Refused findings</label>
+      <label><input type="checkbox" class="node-filter" value="disposition" checked> <span class="legend-dot" style="background:var(--dair);opacity:.7"></span> Dispositions</label>
+      <label><input type="checkbox" class="node-filter" value="tool_blocked"> <span class="legend-dot" style="background:var(--finding-likely)"></span> Blocked tools</label>
+      <label><input type="checkbox" class="node-filter" value="reason_evidence_fetch"> <span class="legend-dot" style="background:var(--reason);opacity:.7"></span> Evidence fetches</label>
       <label><input type="checkbox" class="node-filter" value="tool_call"> <span class="legend-dot" style="background:var(--tool)"></span> Tool calls (noisy)</label>
       <label><input type="checkbox" class="node-filter" value="narration"> <span class="legend-dot" style="background:var(--tool)"></span> Agent notes</label>
     </div>
@@ -168,6 +198,7 @@
       <h3>Layout</h3>
       <button id="relayout-btn" style="padding:4px 10px;background:var(--bg-3);color:var(--fg);border:1px solid var(--border);border-radius:4px;cursor:pointer;width:100%;">Re-layout</button>
     </div>
+    </details>
   </aside>
 
   <main class="pane" style="position:relative;">
@@ -205,11 +236,11 @@ const State = {
 
 function findingColor(tier) {
   const t = String(tier || '').toUpperCase();
-  if (t === 'CONFIRMED')   return '#ff6b6b';
-  if (t === 'LIKELY')      return '#ffa86b';
-  if (t === 'SUSPECTED')   return '#ffd86b';
-  if (t === 'UNCONFIRMED') return '#8a93a6';
-  return '#8a93a6';
+  if (t === 'CONFIRMED')   return '#5bc6a5';
+  if (t === 'LIKELY')      return '#e5b66d';
+  if (t === 'SUSPECTED')   return '#df8297';
+  if (t === 'UNCONFIRMED') return '#a4b1c5';
+  return '#a4b1c5';
 }
 
 // ── Tool-call label parser ──────────────────────────────────────────────────
@@ -274,14 +305,14 @@ function parseToolLabel(cmd) {
 // Reason-call colour palette — each reason tool gets a distinct shade so
 // the eye can quickly spot adversarial review density vs. tactical planning.
 const REASON_COLORS = {
-  reason_plan:             '#4ad295',  // green — direction setter
-  reason_hypothesize:      '#6ea8ff',  // blue — observation
-  reason_evaluate_finding: '#ff6b6b',  // red — adversarial gate
-  reason_confidence_score: '#ffd86b',  // yellow — grading
-  reason_cite_check:       '#ffa86b',  // orange — citation
-  reason_synthesize:       '#b48cff',  // violet — terminal
-  reason_pre_report_check: '#b48cff',  // violet — terminal
-  reason_audit_findings:   '#b48cff',  // violet — terminal
+  reason_plan:             '#a78bfa',
+  reason_hypothesize:      '#8197e8',
+  reason_evaluate_finding: '#df8297',
+  reason_confidence_score: '#e5b66d',
+  reason_cite_check:       '#e5b66d',
+  reason_synthesize:       '#a78bfa',
+  reason_pre_report_check: '#a78bfa',
+  reason_audit_findings:   '#a78bfa',
 };
 
 function reasonShortName(tool) {
@@ -296,7 +327,7 @@ function nodeFor(entry) {
     case 'tool_call': {
       const op = parseToolLabel(entry.cmd || '');
       label = `#${cid} ${op}`;
-      color = entry.success === false ? '#ff6b6b' : '#8a93a6';
+      color = entry.success === false ? '#df8297' : '#a4b1c5';
       break;
     }
     case 'reason_call': {
@@ -312,7 +343,7 @@ function nodeFor(entry) {
         if (conc) hint = ` ${conc}…`;
       }
       label = `#${cid} reason ${short}${hint}`;
-      color = REASON_COLORS[tool] || '#6ea8ff';
+      color = REASON_COLORS[tool] || '#8197e8';
       break;
     }
     case 'finding':
@@ -324,37 +355,37 @@ function nodeFor(entry) {
       const next = entry.next_phase;
       const arrow = next && next !== phase ? ` → ${next}` : '';
       label = `#${cid} DAIR ${phase}${arrow}`;
-      color = '#b48cff';
+      color = '#a78bfa';
       break;
     }
     case 'self_correction':
       label = `#${cid} ⟲ ${entry.trigger || 'self-correction'}`;
-      color = '#ffcb6b';
+      color = '#e5b66d';
       break;
     case 'curiosity_probe':
       label = `#${cid} 🔍 probe${entry.seeded_by ? ' ' + entry.seeded_by : ''}`;
-      color = '#5ed1d1';
+      color = '#8197e8';
       break;
     case 'investigation_narration':
       label = `#${cid} ✎ note`;
-      color = '#8a93a6';
+      color = '#a4b1c5';
       kind = 'narration';
       break;
     case 'finding_refused':
       label = `#${cid} ⛔ ${(entry.detail_gate || entry.gate || 'refused')} ${(entry.description || '').slice(0, 32)}`;
-      color = '#ff6b6b';
+      color = '#df8297';
       break;
     case 'tool_blocked':
       label = `#${cid} ⛔ blocked ${entry.tool || ''}`;
-      color = '#ffa86b';
+      color = '#e5b66d';
       break;
     case 'disposition':
       label = `#${cid} 📌 ${entry.target_kind || ''}:${entry.target_id || ''} → ${entry.reason || ''}`;
-      color = '#b48cff';
+      color = '#a78bfa';
       break;
     case 'reason_evidence_fetch':
       label = `#${cid} 🔎 fetch ×${Array.isArray(entry.requests) ? entry.requests.length : 0}`;
-      color = '#5ed1d1';
+      color = '#8197e8';
       break;
     default:
       return null;
@@ -388,7 +419,7 @@ function edgesFor(entry, byCid, hypById) {
     if (linked && byCid.has(linked)) {
       edges.push({
         data: { id: `esup${cid}_${linked}`, source: `n${cid}`, target: `n${linked}`, kind: 'supports' },
-        style: { 'line-color': '#ff6b6b', 'target-arrow-color': '#ff6b6b' },
+        style: { 'line-color': '#5bc6a5', 'target-arrow-color': '#5bc6a5' },
       });
     }
     const hid = entry.tested_hypothesis_id;
@@ -396,7 +427,7 @@ function edgesFor(entry, byCid, hypById) {
       const k = hypById.get(hid);
       edges.push({
         data: { id: `etest${cid}_${k}`, source: `n${cid}`, target: `n${k}`, kind: 'tests' },
-        style: { 'line-color': '#6ea8ff', 'target-arrow-color': '#6ea8ff', 'line-style': 'dashed' },
+        style: { 'line-color': '#8197e8', 'target-arrow-color': '#8197e8', 'line-style': 'dashed' },
       });
     }
   }
@@ -406,7 +437,7 @@ function edgesFor(entry, byCid, hypById) {
       if (byCid.has(inp)) {
         edges.push({
           data: { id: `ecns${cid}_${inp}`, source: `n${cid}`, target: `n${inp}`, kind: 'consumes' },
-          style: { 'line-color': '#8a93a6', 'target-arrow-color': '#8a93a6', 'opacity': 0.5 },
+          style: { 'line-color': '#a4b1c5', 'target-arrow-color': '#a4b1c5', 'opacity': 0.5 },
         });
       }
     }
@@ -419,7 +450,7 @@ function edgesFor(entry, byCid, hypById) {
       if (byCid.has(inp)) {
         edges.push({
           data: { id: `eref${cid}_${inp}`, source: `n${cid}`, target: `n${inp}`, kind: 'refused-citing' },
-          style: { 'line-color': '#ff6b6b', 'target-arrow-color': '#ff6b6b', 'line-style': 'dotted', 'opacity': 0.6 },
+          style: { 'line-color': '#df8297', 'target-arrow-color': '#df8297', 'line-style': 'dotted', 'opacity': 0.6 },
         });
       }
     }
@@ -429,7 +460,7 @@ function edgesFor(entry, byCid, hypById) {
       if (byCid.has(inp)) {
         edges.push({
           data: { id: `edsp${cid}_${inp}`, source: `n${cid}`, target: `n${inp}`, kind: 'disposition-evidence' },
-          style: { 'line-color': '#b48cff', 'target-arrow-color': '#b48cff', 'line-style': 'dashed', 'opacity': 0.7 },
+          style: { 'line-color': '#a78bfa', 'target-arrow-color': '#a78bfa', 'line-style': 'dashed', 'opacity': 0.7 },
         });
       }
     }
@@ -437,7 +468,7 @@ function edgesFor(entry, byCid, hypById) {
   if (entry.type === 'reason_evidence_fetch' && entry.reason_call_id && byCid.has(entry.reason_call_id)) {
     edges.push({
       data: { id: `efch${cid}_${entry.reason_call_id}`, source: `n${cid}`, target: `n${entry.reason_call_id}`, kind: 'fetched-for' },
-      style: { 'line-color': '#5ed1d1', 'target-arrow-color': '#5ed1d1', 'line-style': 'dotted', 'opacity': 0.6 },
+      style: { 'line-color': '#8197e8', 'target-arrow-color': '#8197e8', 'line-style': 'dotted', 'opacity': 0.6 },
     });
   }
 
@@ -448,7 +479,7 @@ function edgesFor(entry, byCid, hypById) {
       if (byCid.has(inp)) {
         edges.push({
           data: { id: `eprb${cid}_${inp}`, source: `n${cid}`, target: `n${inp}`, kind: 'probes' },
-          style: { 'line-color': '#5ed1d1', 'target-arrow-color': '#5ed1d1', 'line-style': 'dashed', 'opacity': 0.6 },
+          style: { 'line-color': '#8197e8', 'target-arrow-color': '#8197e8', 'line-style': 'dashed', 'opacity': 0.6 },
         });
       }
     }
@@ -461,7 +492,7 @@ function edgesFor(entry, byCid, hypById) {
         if (byCid.has(inp)) {
           edges.push({
             data: { id: `ercon${cid}_${inp}`, source: `n${cid}`, target: `n${inp}`, kind: 'reviews' },
-            style: { 'line-color': '#6ea8ff', 'target-arrow-color': '#6ea8ff', 'opacity': 0.5 },
+            style: { 'line-color': '#8197e8', 'target-arrow-color': '#8197e8', 'opacity': 0.5 },
           });
         }
       }
@@ -489,7 +520,7 @@ function edgesFor(entry, byCid, hypById) {
           edges.push({
             data: { id: `eevn${cid}_${best.call_id}`, source: `n${cid}`, target: `n${best.call_id}`,
                     kind: 'evaluates' },
-            style: { 'line-color': '#ff6b6b', 'target-arrow-color': '#ff6b6b', 'line-style': 'dotted' },
+            style: { 'line-color': '#df8297', 'target-arrow-color': '#df8297', 'line-style': 'dotted' },
           });
         }
       }
@@ -515,8 +546,8 @@ function selfCorrectionEdges(entries, byCid) {
           kind: 'self-correction',
         },
         style: {
-          'line-color': '#ffcb6b',
-          'target-arrow-color': '#ffcb6b',
+          'line-color': '#e5b66d',
+          'target-arrow-color': '#e5b66d',
           'line-style': 'dashed',
           'width': 3,
         },
@@ -592,7 +623,7 @@ function initGraph(elements) {
         selector: 'node',
         style: {
           'label': 'data(label)',
-          'color': '#e6e9ef',
+          'color': '#e3e9f3',
           'font-size': '10px',
           'text-valign': 'bottom',
           'text-margin-y': 4,
@@ -601,7 +632,7 @@ function initGraph(elements) {
           'width': 16,
           'height': 16,
           'border-width': 1,
-          'border-color': '#28303f',
+          'border-color': '#2c3c52',
         },
       },
       {
@@ -621,8 +652,8 @@ function initGraph(elements) {
           'arrow-scale': 1.4,
           'label': 'data(kind)',
           'font-size': '9px',
-          'color': '#e6e9ef',
-          'text-background-color': '#0f1115',
+          'color': '#e3e9f3',
+          'text-background-color': '#101827',
           'text-background-opacity': 0.85,
           'text-background-padding': 2,
           'text-rotation': 'autorotate',
@@ -631,7 +662,7 @@ function initGraph(elements) {
       },
       {
         selector: 'edge[kind="supports"]',
-        style: { 'width': 3, 'line-color': '#ff6b6b', 'target-arrow-color': '#ff6b6b' },
+        style: { 'width': 3, 'line-color': '#5bc6a5', 'target-arrow-color': '#5bc6a5' },
       },
       {
         selector: 'edge[kind="tests"]',
@@ -643,7 +674,7 @@ function initGraph(elements) {
       },
       {
         selector: ':selected',
-        style: { 'border-color': '#6ea8ff', 'border-width': 4 },
+        style: { 'border-color': '#a78bfa', 'border-width': 4 },
       },
       // Dimming used when the user clicks-to-isolate a node.
       {
@@ -656,7 +687,7 @@ function initGraph(elements) {
       },
       {
         selector: '.highlight',
-        style: { 'border-color': '#6ea8ff', 'border-width': 3 },
+        style: { 'border-color': '#a78bfa', 'border-width': 3 },
       },
       {
         selector: '.highlight-edge',

@@ -47,7 +47,7 @@ def test_trace_viewer_links_to_chain():
     p = os.path.join(DASHBOARD_DIR, "trace_viewer.html")
     body = open(p).read()
     assert "chain_view.html" in body
-    assert "Chain ↗" in body
+    assert "Attack chain" in body
     assert "updateGraphLink" in body  # kept the function name; just retargeted
     # Wall-clock pill stays; the TTF/TT-A/TT-S velocity pills and the
     # CrowdStrike/Horizon3 benchmark were removed per operator request.

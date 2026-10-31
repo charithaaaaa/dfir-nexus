@@ -87,6 +87,10 @@ class TestStandaloneServer:
         # The case + trace dropdowns are the centrepiece of the redesign
         assert 'id="case-select"' in body
         assert 'id="trace-select"' in body
+        assert 'id="overview-events"' in body
+        assert 'id="filter-from"' in body and 'id="filter-to"' in body
+        assert 'id="detail-toggle"' in body
+        assert 'class="side-nav"' in body
 
     def test_serves_chain_view(self, standalone_server):
         port = standalone_server["port"]
@@ -453,6 +457,17 @@ def test_views_share_the_finding_renderer(standalone_server):
 
 class TestReportViewer:
     """Report list/render endpoints behind the dashboard's report viewer."""
+
+    def test_viewer_keeps_wide_tables_readable_and_scrollable(self):
+        root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        body = (open(os.path.join(root, "dashboard", "report_view.html"),
+                     encoding="utf-8").read())
+        assert "article .table-wrap" in body and "overflow-x:auto" in body
+        assert "columns * 160" in body
+        assert "min-width:max(100%, var(--table-min-width, 0px))" in body
+        assert "position:static; top:auto" in body
+        assert "overflow-wrap:anywhere" in body
+        assert "min(1120px,calc(100% - 48px))" in body
 
     def _case(self, tmp_path):
         case = tmp_path / "cases" / "c1"

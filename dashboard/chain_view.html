@@ -6,34 +6,34 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
   :root {
-    --bg: #0f1115;
-    --bg-2: #161a21;
-    --bg-3: #1c2230;
-    --bg-hl: #2a3550;
-    --fg: #e6e9ef;
-    --fg-dim: #8a93a6;
-    --border: #28303f;
-    --accent: #6ea8ff;
-    --tool: #8a93a6;
-    --reason: #6ea8ff;
-    --dair: #b48cff;
-    --finding-confirmed: #ff6b6b;
-    --finding-likely: #ffa86b;
-    --finding-suspected: #ffd86b;
-    --finding-unconfirmed: #8a93a6;
-    --self-correct: #ffcb6b;
-    --curiosity: #5ed1d1;
-    --ok: #4ad295;
-    --warn: #ffa86b;
-    --err: #ff6b6b;
+    --bg: #101827;
+    --bg-2: #172338;
+    --bg-3: #1b2a40;
+    --bg-hl: #293a56;
+    --fg: #e3e9f3;
+    --fg-dim: #a4b1c5;
+    --border: #2c3c52;
+    --accent: #a78bfa;
+    --tool: #a4b1c5;
+    --reason: #8197e8;
+    --dair: #a78bfa;
+    --finding-confirmed: #5bc6a5;
+    --finding-likely: #e5b66d;
+    --finding-suspected: #df8297;
+    --finding-unconfirmed: #a4b1c5;
+    --self-correct: #e5b66d;
+    --curiosity: #8197e8;
+    --ok: #5bc6a5;
+    --warn: #e5b66d;
+    --err: #df8297;
 
     /* Edge colours */
-    --edge-supports: #ff6b6b;
-    --edge-tests: #6ea8ff;
-    --edge-consumes: #8a93a6;
-    --edge-instigates: #4ad295;
-    --edge-evaluates: #ffa86b;
-    --edge-directs: #b48cff;
+    --edge-supports: #5bc6a5;
+    --edge-tests: #8197e8;
+    --edge-consumes: #a4b1c5;
+    --edge-instigates: #5bc6a5;
+    --edge-evaluates: #e5b66d;
+    --edge-directs: #a78bfa;
   }
   * { box-sizing: border-box; }
   body {
@@ -129,23 +129,23 @@
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     position: relative;
   }
-  .phase-strip .ps-seg:hover { filter: brightness(1.3); }
+  .phase-strip .ps-seg:hover { filter: brightness(1.08); }
   .phase-strip .ps-seg .ps-depth {
     position: absolute; top: 1px; right: 4px;
-    font-size: 8px; color: rgba(255,255,255,0.55); font-weight: 400;
+    font-size: 10px; color: var(--fg-dim); font-weight: 400;
   }
-  .phase-strip .ps-seg.phase-Triage   { background: rgba(255,134,103,0.30); }
-  .phase-strip .ps-seg.phase-Collect  { background: rgba(74,210,149,0.30); }
-  .phase-strip .ps-seg.phase-Analyze  { background: rgba(110,168,255,0.30); }
-  .phase-strip .ps-seg.phase-Scan     { background: rgba(255,216,107,0.30); }
-  .phase-strip .ps-seg.phase-Report   { background: rgba(180,140,255,0.30); }
-  .phase-strip .ps-seg.phase-Verification { background: rgba(255,107,107,0.30); }
+  .phase-strip .ps-seg.phase-Triage   { background: rgba(229,182,109,0.14); }
+  .phase-strip .ps-seg.phase-Collect  { background: rgba(91,198,165,0.14); }
+  .phase-strip .ps-seg.phase-Analyze  { background: rgba(129,151,232,0.14); }
+  .phase-strip .ps-seg.phase-Scan     { background: rgba(229,182,109,0.14); }
+  .phase-strip .ps-seg.phase-Report   { background: rgba(167,139,250,0.14); }
+  .phase-strip .ps-seg.phase-Verification { background: rgba(223,130,151,0.14); }
 
   /* Canvas — pannable, zoomable */
   main.canvas {
     position: relative; overflow: hidden;
     background:
-      radial-gradient(circle, rgba(40,48,63,0.55) 1px, transparent 1px) 0 0 / 24px 24px,
+      radial-gradient(circle, rgba(44,60,82,0.32) 1px, transparent 1px) 0 0 / 28px 28px,
       var(--bg);
     cursor: grab;
     user-select: none;
@@ -163,7 +163,7 @@
   }
   .stats-bar {
     position: absolute; bottom: 8px; left: 8px;
-    background: rgba(15, 17, 21, 0.85); padding: 4px 10px;
+    background: rgba(16, 24, 39, 0.94); padding: 4px 10px;
     border: 1px solid var(--border); border-radius: 6px;
     font-size: 11px; color: var(--fg-dim); font-family: monospace;
     z-index: 10;
@@ -187,10 +187,10 @@
     transition: box-shadow .15s, transform .15s, border-color .15s;
   }
   .block:hover {
-    box-shadow: 0 0 0 1px var(--accent), 0 4px 16px rgba(0,0,0,0.4);
+    box-shadow: 0 0 0 1px var(--accent);
   }
   .block.selected {
-    box-shadow: 0 0 0 2px var(--accent), 0 6px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 0 0 2px var(--accent);
   }
   .block .b-head {
     display: flex; justify-content: space-between; gap: 8px;
@@ -234,15 +234,15 @@
   .block.terminal-challenge {
     border-left-color: var(--err);
     border-left-width: 6px;
-    background: linear-gradient(90deg, rgba(255,107,107,0.15) 0%, var(--bg-2) 70%);
-    box-shadow: inset 0 0 0 1px rgba(255,107,107,0.30);
+    background: linear-gradient(90deg, rgba(223,130,151,0.12) 0%, var(--bg-2) 70%);
+    box-shadow: inset 0 0 0 1px rgba(223,130,151,0.22);
   }
   .block.terminal-challenge::after {
     content: "✗ refused — no downstream entry";
     display: block;
     margin-top: 4px;
     padding-top: 3px;
-    border-top: 1px dashed rgba(255,107,107,0.30);
+    border-top: 1px dashed rgba(223,130,151,0.24);
     color: var(--err); font-size: 9px;
     font-family: "SF Mono","Menlo","Consolas",monospace;
     letter-spacing: 0.04em;
@@ -251,18 +251,18 @@
   .block.kind-reason_cite_check       { border-left-color: var(--warn); }
   .block.kind-reason_synthesize,
   .block.kind-reason_pre_report_check,
-  .block.kind-reason_audit_findings   { border-left-color: #b48cff; }
+  .block.kind-reason_audit_findings   { border-left-color: var(--dair); }
   .block.kind-dair_call {
     border-left-color: var(--dair);
     border-left-width: 6px;
-    background: linear-gradient(90deg, rgba(180,140,255,0.10) 0%, var(--bg-2) 60%);
-    box-shadow: inset 0 0 0 1px rgba(180,140,255,0.18);
+    background: linear-gradient(90deg, rgba(167,139,250,0.08) 0%, var(--bg-2) 60%);
+    box-shadow: inset 0 0 0 1px rgba(167,139,250,0.14);
   }
-  .block.kind-dair_call .b-head { color: #d6c2ff; }
+  .block.kind-dair_call .b-head { color: var(--accent); }
   .block.kind-dair_call .state-pill {
     display: inline-block; padding: 0 6px; margin-right: 6px;
-    background: var(--dair); color: #1c1029;
-    border-radius: 3px; font-size: 9px; font-weight: 700;
+    background: rgba(167,139,250,.16); color: var(--accent);
+    border-radius: 999px; font-size: 9px; font-weight: 700;
     letter-spacing: 0.06em;
   }
   .block.kind-tool_batch              { border-left-color: var(--tool); }
@@ -285,10 +285,10 @@
     font-size: 9px; font-weight: 700; letter-spacing: 0.04em;
     margin-right: 4px;
   }
-  .tier-pill.CONFIRMED  { background: var(--finding-confirmed); color: #1c0606; }
-  .tier-pill.LIKELY     { background: var(--finding-likely);    color: #2a1408; }
-  .tier-pill.SUSPECTED  { background: var(--finding-suspected); color: #2a2008; }
-  .tier-pill.UNCONFIRMED{ background: var(--finding-unconfirmed); color: #131722; }
+  .tier-pill.CONFIRMED  { background: rgba(91,198,165,.14); color: var(--finding-confirmed); }
+  .tier-pill.LIKELY     { background: rgba(229,182,109,.14); color: var(--finding-likely); }
+  .tier-pill.SUSPECTED  { background: rgba(223,130,151,.14); color: var(--finding-suspected); }
+  .tier-pill.UNCONFIRMED{ background: rgba(164,177,197,.12); color: var(--finding-unconfirmed); }
 
   /* Detail pane */
   aside.detail h3 { margin: 0 0 8px 0; font-size: 13px; color: var(--accent); }
@@ -320,6 +320,40 @@
     cursor: pointer; color: var(--accent); font-size: 11px;
     padding: 2px 0;
   }
+  header { gap:12px; height:auto; min-height:58px; padding:10px 18px; }
+  header h1 { font-size:14px; letter-spacing:.01em; }
+  .layout { grid-template-columns:220px minmax(0,1fr) minmax(320px,390px); height:calc(100vh - 58px); }
+  aside.filters, aside.detail { background:var(--bg-2); }
+  .filter-group { padding:10px 0; border-top:1px solid rgba(44,60,82,.6); }
+  .filter-group label { padding:5px 0; color:var(--fg-dim); }
+  .filter-drawer > summary { cursor:pointer; padding:9px 2px; color:var(--fg); font-weight:600; }
+  .block { border-radius:10px; padding:10px 12px; background:var(--bg-2); font-size:12px; }
+  .block:hover, .block.selected { box-shadow:0 0 0 1px rgba(167,139,250,.4); }
+  .block.selected { box-shadow:0 0 0 2px var(--accent); }
+  .phase-strip .ps-label { background:var(--bg-2); }
+  .phase-strip .ps-seg { background-color:var(--bg-3); }
+  .stats-bar { background:rgba(16,24,39,.94); border-radius:8px; padding:7px 10px; }
+  .ctrl-btn, .back-btn { padding:7px 10px; border-radius:8px; }
+  .canvas-ctrl { gap:6px; }
+  aside.detail .d-row { border-radius:8px; padding:7px 9px; }
+  aside.detail .d-link { border-radius:7px; }
+  @media (max-width:1050px) {
+    .layout { grid-template-columns:190px minmax(0,1fr) minmax(280px,320px); }
+    header { flex-wrap:wrap; }
+    header h1 { flex:1 1 100%; }
+  }
+  @media (max-width:760px) {
+    body { height:auto; min-height:100vh; overflow:auto; }
+    header { position:sticky; top:0; z-index:12; background:var(--bg-2); }
+    .layout { display:flex; flex-direction:column; height:auto; min-height:calc(100vh - 58px); }
+    aside.filters { max-height:35vh; overflow:auto; }
+    main.canvas { height:62vh; min-height:430px; flex:none; }
+    aside.detail { min-height:220px; border-left:0; border-top:1px solid var(--border); }
+    .stats-bar { left:8px; bottom:8px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration:.01ms !important; scroll-behavior:auto !important; transition-duration:.01ms !important; }
+  }
 </style>
 </head>
 <body>
@@ -335,6 +369,8 @@
 <div class="layout">
 
   <aside class="pane filters">
+    <details class="filter-drawer" open>
+      <summary>Chain filters &amp; legend</summary>
     <div class="filter-group">
       <h3>Block Types</h3>
       <label><input type="checkbox" class="kind-filter" value="reason_plan" checked> <span class="legend-dot" style="background:var(--ok)"></span> reason.plan</label>
@@ -344,9 +380,9 @@
       <label><input type="checkbox" class="kind-filter" value="reason_evaluate_finding" checked> <span class="legend-dot" style="background:var(--err)"></span> reason.evaluate</label>
       <label><input type="checkbox" class="kind-filter" value="reason_confidence_score" checked> <span class="legend-dot" style="background:var(--finding-suspected)"></span> reason.confidence</label>
       <label><input type="checkbox" class="kind-filter" value="reason_cite_check" checked> <span class="legend-dot" style="background:var(--warn)"></span> reason.cite_check</label>
-      <label><input type="checkbox" class="kind-filter" value="reason_synthesize" checked> <span class="legend-dot" style="background:#b48cff"></span> reason.synthesize</label>
-      <label><input type="checkbox" class="kind-filter" value="reason_pre_report_check" checked> <span class="legend-dot" style="background:#b48cff"></span> reason.pre_report</label>
-      <label><input type="checkbox" class="kind-filter" value="reason_audit_findings" checked> <span class="legend-dot" style="background:#b48cff"></span> reason.audit</label>
+      <label><input type="checkbox" class="kind-filter" value="reason_synthesize" checked> <span class="legend-dot" style="background:var(--dair)"></span> reason.synthesize</label>
+      <label><input type="checkbox" class="kind-filter" value="reason_pre_report_check" checked> <span class="legend-dot" style="background:var(--dair)"></span> reason.pre_report</label>
+      <label><input type="checkbox" class="kind-filter" value="reason_audit_findings" checked> <span class="legend-dot" style="background:var(--dair)"></span> reason.audit</label>
       <label><input type="checkbox" class="kind-filter" value="finding" checked> <span class="legend-dot" style="background:var(--finding-confirmed)"></span> Findings</label>
       <label><input type="checkbox" class="kind-filter" value="self_correction" checked> <span class="legend-dot" style="background:var(--self-correct)"></span> Self-corrections</label>
       <label><input type="checkbox" class="kind-filter" value="curiosity_probe" checked> <span class="legend-dot" style="background:var(--curiosity)"></span> Curiosity probes</label>
@@ -373,6 +409,7 @@
       <button class="ctrl-btn" id="fit-btn" style="width:100%;margin-bottom:4px;">Fit to screen</button>
       <button class="ctrl-btn" id="relayout-btn" style="width:100%;">Re-layout</button>
     </div>
+    </details>
   </aside>
 
   <main class="canvas pane" id="canvas">

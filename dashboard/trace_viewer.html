@@ -2,29 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title> DFIR Nexus</title>
+<title>DFIR Nexus · Investigation</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
   :root {
-    --bg: #0f1115;
-    --bg-2: #161a21;
-    --bg-3: #1c2230;
-    --bg-hl: #2a3550;
-    --fg: #e6e9ef;
-    --fg-dim: #8a93a6;
-    --border: #28303f;
-    --accent: #6ea8ff;
-    --tool: #8a93a6;
-    --reason: #6ea8ff;
-    --dair: #b48cff;
-    --finding-confirmed: #ff6b6b;
-    --finding-likely: #ffa86b;
-    --finding-suspected: #ffd86b;
-    --finding-unconfirmed: #8a93a6;
-    --self-correct: #ffcb6b;
-    --curiosity: #5ed1d1;
-    --error: #ff6b6b;
-    --ok: #4ad295;
+    --bg: #101827;
+    --bg-2: #172338;
+    --bg-3: #1b2a40;
+    --bg-hl: #293a56;
+    --fg: #e3e9f3;
+    --fg-dim: #a4b1c5;
+    --border: #2c3c52;
+    --accent: #a78bfa;
+    --blue: #8197e8;
+    --tool: #a4b1c5;
+    --reason: #8197e8;
+    --dair: #a78bfa;
+    --finding-confirmed: #5bc6a5;
+    --finding-likely: #e5b66d;
+    --finding-suspected: #df8297;
+    --finding-unconfirmed: #a4b1c5;
+    --self-correct: #e5b66d;
+    --curiosity: #8197e8;
+    --error: #df8297;
+    --ok: #5bc6a5;
   }
   * { box-sizing: border-box; }
   body {
@@ -58,7 +59,7 @@
     font-family: "SF Mono","Menlo","Consolas",monospace;
     font-size: 11px; color: var(--fg); white-space: nowrap;
   }
-  header .metric.fired { background: rgba(74, 210, 149, 0.18); border-color: var(--ok); color: var(--ok); }
+  header .metric.fired { background: rgba(91, 198, 165, 0.16); border-color: var(--ok); color: var(--ok); }
   header .graph-btn {
     display: inline-flex; align-items: center;
     padding: 3px 10px; border-radius: 6px;
@@ -121,25 +122,25 @@
     display: inline-block; padding: 1px 6px; border-radius: 3px;
     font-size: 11px; font-weight: 600;
   }
-  .pill.tool { background: rgba(138,147,166,.15); color: var(--tool); }
-  .pill.reason { background: rgba(110,168,255,.15); color: var(--reason); }
-  .pill.dair { background: rgba(180,140,255,.15); color: var(--dair); }
-  .pill.finding-confirmed { background: rgba(255,107,107,.15); color: var(--finding-confirmed); }
-  .pill.finding-likely { background: rgba(255,168,107,.15); color: var(--finding-likely); }
-  .pill.finding-suspected { background: rgba(255,216,107,.15); color: var(--finding-suspected); }
-  .pill.finding-unconfirmed { background: rgba(138,147,166,.15); color: var(--finding-unconfirmed); }
-  .pill.self-correction { background: rgba(255,203,107,.15); color: var(--self-correct); }
-  .pill.curiosity { background: rgba(94,209,209,.15); color: var(--curiosity); }
-  .pill.narration { background: rgba(138,147,166,.10); color: var(--fg-dim); }
-  .pill.error { background: rgba(255,107,107,.15); color: var(--error); }
-  .pill.ok { background: rgba(74,210,149,.15); color: var(--ok); }
-  .pill.refused { background: rgba(255,107,107,.22); color: var(--error); }
-  .pill.blocked { background: rgba(255,168,107,.18); color: var(--finding-likely); }
-  .pill.fetch { background: rgba(94,209,209,.12); color: var(--curiosity); }
-  .pill.disposition { background: rgba(180,140,255,.12); color: var(--dair); }
-  .pill.ioc { background: rgba(255,107,107,.12); color: var(--finding-confirmed); }
-  .pill.phase { background: rgba(180,140,255,.20); color: var(--dair); }
-  .pill.submission { background: rgba(255,168,107,.10); color: var(--finding-likely); }
+  .pill.tool { background: rgba(164,177,197,.12); color: var(--tool); }
+  .pill.reason { background: rgba(129,151,232,.12); color: var(--reason); }
+  .pill.dair { background: rgba(167,139,250,.12); color: var(--dair); }
+  .pill.finding-confirmed { background: rgba(91,198,165,.12); color: var(--finding-confirmed); }
+  .pill.finding-likely { background: rgba(229,182,109,.12); color: var(--finding-likely); }
+  .pill.finding-suspected { background: rgba(223,130,151,.12); color: var(--finding-suspected); }
+  .pill.finding-unconfirmed { background: rgba(164,177,197,.12); color: var(--finding-unconfirmed); }
+  .pill.self-correction { background: rgba(229,182,109,.12); color: var(--self-correct); }
+  .pill.curiosity { background: rgba(129,151,232,.12); color: var(--curiosity); }
+  .pill.narration { background: rgba(164,177,197,.08); color: var(--fg-dim); }
+  .pill.error { background: rgba(223,130,151,.12); color: var(--error); }
+  .pill.ok { background: rgba(91,198,165,.12); color: var(--ok); }
+  .pill.refused { background: rgba(223,130,151,.16); color: var(--error); }
+  .pill.blocked { background: rgba(229,182,109,.12); color: var(--finding-likely); }
+  .pill.fetch { background: rgba(129,151,232,.10); color: var(--curiosity); }
+  .pill.disposition { background: rgba(167,139,250,.10); color: var(--dair); }
+  .pill.ioc { background: rgba(91,198,165,.10); color: var(--finding-confirmed); }
+  .pill.phase { background: rgba(167,139,250,.14); color: var(--dair); }
+  .pill.submission { background: rgba(229,182,109,.10); color: var(--finding-likely); }
   .filter-group label.zero { opacity: .45; }
   .filter-group select + select, .filter-group select + input { margin-top: 6px; }
   .ioc-focus {
@@ -169,7 +170,7 @@
   .entry.selected { background: var(--bg-hl); }
   .entry.new { animation: flashin 1.2s ease-out; }
   @keyframes flashin {
-    from { background: rgba(110,168,255,.25); }
+    from { background: rgba(129,151,232,.18); }
     to   { background: transparent; }
   }
   .entry .cid { color: var(--fg-dim); font-family: "SF Mono","Menlo",monospace; font-size: 11px; }
@@ -187,19 +188,19 @@
   .entry.linked-highlight { outline: 1px solid var(--accent); outline-offset: -1px; animation: linkpulse 1.6s ease-out; }
   @keyframes linkpulse {
     0%, 100% { background: transparent; }
-    20%      { background: rgba(110,168,255,.30); }
+    20%      { background: rgba(129,151,232,.18); }
   }
   /* Clickable inline reference to another entry's call_id. */
   .chip-link {
     display: inline-block; padding: 1px 6px; margin: 0 2px;
     border: 1px solid var(--accent); border-radius: 10px;
-    color: var(--accent); background: rgba(110,168,255,.08);
+    color: var(--accent); background: rgba(129,151,232,.08);
     font-family: "SF Mono","Menlo",monospace; font-size: 11px;
     cursor: pointer; text-decoration: none;
     transition: background .12s, color .12s;
   }
   .chip-link:hover { background: var(--accent); color: var(--bg); }
-  .chip-link.reverse { border-color: var(--ok); color: var(--ok); background: rgba(74,210,149,.08); }
+  .chip-link.reverse { border-color: var(--ok); color: var(--ok); background: rgba(91,198,165,.08); }
   .chip-link.reverse:hover { background: var(--ok); color: var(--bg); }
 
   /* Phase headers */
@@ -246,9 +247,9 @@
     display: inline-block; padding: 1px 6px; border-radius: 3px;
     font-size: 11px; font-weight: 600;
   }
-  .badge.pending { background: rgba(255,216,107,.15); color: var(--finding-suspected); }
-  .badge.confirmed { background: rgba(74,210,149,.15); color: var(--ok); }
-  .badge.refuted { background: rgba(255,107,107,.15); color: var(--error); }
+  .badge.pending { background: rgba(229,182,109,.12); color: var(--finding-likely); }
+  .badge.confirmed { background: rgba(91,198,165,.12); color: var(--ok); }
+  .badge.refuted { background: rgba(223,130,151,.12); color: var(--error); }
 
   .empty {
     padding: 32px; text-align: center; color: var(--fg-dim);
@@ -259,12 +260,185 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--bg-hl); }
+
+  .topbar {
+    height: 64px; padding: 0 22px; gap: 14px;
+    background: var(--bg-2); border-bottom: 1px solid var(--border);
+  }
+  .brand { display:flex; align-items:center; gap:10px; min-width:190px; }
+  .brand-mark {
+    display:grid; place-items:center; width:34px; height:34px; border-radius:11px;
+    color:var(--accent); background:rgba(167,139,250,.13); font-size:17px;
+  }
+  .brand-name { font-size:15px; font-weight:650; letter-spacing:.01em; }
+  .brand-subtitle { color:var(--fg-dim); font-size:11px; }
+  .topbar .picker { padding:7px 10px; border-radius:8px; max-width:240px; }
+  .topbar .graph-btn { padding:7px 11px; border-radius:8px; }
+  .topbar .case-id { color:var(--fg-dim); font-size:12px; }
+  .topbar .metric { background:transparent; border:0; color:var(--fg-dim); padding:0; }
+  .topbar .metric.fired { color:var(--ok); }
+  .topbar .live { padding:5px 9px; border:1px solid var(--border); border-radius:999px; }
+  .topbar .stat { font-size:11px; white-space:nowrap; }
+  .topbar button, .detail-toggle, .sidebar-toggle {
+    color:var(--fg); background:var(--bg-3); border:1px solid var(--border);
+    border-radius:8px; padding:7px 10px; cursor:pointer; font:inherit;
+  }
+  .topbar button:hover, .detail-toggle:hover, .sidebar-toggle:hover { background:var(--bg-hl); }
+  .layout {
+    grid-template-columns: 224px minmax(0, 1fr) 6px var(--detail-w, minmax(330px, 410px));
+    height:calc(100vh - 64px);
+  }
+  .sidebar {
+    min-width:0; overflow:auto; background:var(--bg-2); border-right:1px solid var(--border);
+    padding:18px 12px;
+  }
+  .side-label {
+    margin:20px 10px 8px; color:var(--fg-dim); text-transform:uppercase;
+    letter-spacing:.1em; font-size:10px; font-weight:700;
+  }
+  .side-nav { display:grid; gap:3px; }
+  .side-nav a {
+    display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px;
+    color:var(--fg-dim); text-decoration:none; font-size:13px;
+  }
+  .side-nav a:hover { background:rgba(167,139,250,.08); color:var(--fg); }
+  .side-nav a.active { color:var(--accent); background:rgba(167,139,250,.13); font-weight:600; }
+  .side-nav .nav-icon { width:18px; text-align:center; font-size:14px; }
+  .filter-drawer { margin-top:20px; border-top:1px solid var(--border); padding-top:14px; }
+  .filter-drawer > summary {
+    list-style:none; cursor:pointer; color:var(--fg); padding:8px 10px;
+    border-radius:8px; font-weight:600; font-size:13px;
+  }
+  .filter-drawer > summary::-webkit-details-marker { display:none; }
+  .filter-drawer > summary::after { content:"＋"; float:right; color:var(--fg-dim); }
+  .filter-drawer[open] > summary::after { content:"−"; }
+  .filter-drawer .pane.filters { padding:8px 8px 0; overflow:visible; background:transparent; border:0; }
+  .filter-group { padding:10px 0; margin:0; border-top:1px solid rgba(44,60,82,.6); }
+  .filter-group h3 { font-size:10px; letter-spacing:.1em; }
+  .filter-group label { gap:8px; padding:5px 2px; color:var(--fg-dim); font-size:12px; }
+  .filter-group input[type=text], .filter-group input[type=number], .filter-group input[type=datetime-local],
+  .filter-group select {
+    padding:8px 9px; border-radius:8px; background:var(--bg); font-size:12px;
+  }
+  input, select, button, a { accent-color:var(--accent); }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .pill { border-radius:999px; padding:2px 8px; font-size:10px; letter-spacing:.03em; }
+  .pill.reason, .pill.phase, .pill.dair { background:rgba(167,139,250,.12); color:var(--accent); }
+  .pill.finding-confirmed, .pill.ok, .pill.reverse { background:rgba(91,198,165,.13); color:var(--ok); }
+  .pill.finding-likely, .pill.blocked, .pill.submission { background:rgba(229,182,109,.13); color:var(--finding-likely); }
+  .pill.finding-suspected, .pill.error, .pill.refused, .pill.ioc { background:rgba(223,130,151,.13); color:var(--error); }
+  .pill.tool, .pill.narration, .pill.finding-unconfirmed { background:rgba(164,177,197,.1); color:var(--fg-dim); }
+  .pill.curiosity, .pill.fetch { background:rgba(129,151,232,.13); color:var(--blue); }
+  .ioc-focus { border-color:var(--accent); border-radius:8px; }
+  .pane.entries { padding:24px clamp(18px, 3vw, 42px) 48px; scroll-behavior:smooth; }
+  .overview { max-width:1080px; margin:0 auto 28px; }
+  .overview-eyebrow { color:var(--accent); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .overview h2 { margin:5px 0 4px; font-size:25px; line-height:1.25; letter-spacing:-.02em; }
+  .overview-subtitle { margin:0; color:var(--fg-dim); font-size:13px; }
+  .overview-meta { display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:15px; color:var(--fg-dim); font-size:11px; }
+  .stats-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-top:20px; }
+  .stat-card { min-width:0; padding:14px 15px; background:var(--bg-2); border:1px solid var(--border); border-radius:12px; }
+  .stat-card .label { color:var(--fg-dim); font-size:11px; }
+  .stat-card .value { display:block; margin-top:5px; color:var(--fg); font-size:21px; font-weight:650; font-variant-numeric:tabular-nums; }
+  .stat-card.confirmed .value { color:var(--ok); }
+  .stat-card.likely .value { color:var(--finding-likely); }
+  .stat-card.iocs .value { color:var(--blue); }
+  .timeline-head { max-width:1080px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; padding-bottom:12px; }
+  .timeline-head h2 { margin:0; font-size:17px; }
+  .timeline-head .hint { color:var(--fg-dim); font-size:11px; }
+  #entries-list { max-width:1080px; margin:0 auto; }
+  .entry {
+    grid-template-columns:64px 108px 90px minmax(0,1fr); gap:8px 12px;
+    margin:0 0 10px; padding:14px 16px; background:var(--bg-2);
+    border:1px solid var(--border); border-radius:11px;
+  }
+  .entry:hover { background:var(--bg-3); border-color:#3a4d68; }
+  .entry.selected { background:#1c2a42; border-color:rgba(167,139,250,.65); box-shadow:0 0 0 1px rgba(167,139,250,.12); }
+  .entry .ts { color:var(--fg-dim); font-size:11px; padding-top:2px; }
+  .entry .cid { color:#8190a7; padding-top:2px; }
+  .entry .type-col { grid-column:3; grid-row:1; align-items:flex-start; }
+  .entry .text { grid-column:4; grid-row:1; }
+  .entry .text .line { white-space:normal; font-size:13px; line-height:1.5; font-weight:600; }
+  .entry .text .line code { color:var(--fg); font-family:inherit; font-size:inherit; }
+  .entry .text .meta { margin-top:4px; font-size:11px; }
+  .entry .text .description { color:var(--fg-dim); margin-top:4px; font-size:12px; line-height:1.5; }
+  .entry.protocol-violation { border-left:3px solid var(--error); }
+  .phase-header { position:relative; z-index:auto; margin:20px 0 10px; padding:8px 2px; background:transparent; border:0; border-bottom:1px solid var(--border); }
+  .phase-header .phase-name { color:var(--accent); }
+  .detail-toggle { margin-left:auto; }
+  .detail-topline { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 14px; }
+  .detail-topline h2 { margin:0; font-size:14px; }
+  .detail .empty { padding:44px 18px; }
+  .detail h2 { flex-wrap:wrap; line-height:1.5; }
+  .detail h3 { color:var(--accent); margin-top:20px; }
+  .detail pre, .detail .tr-pre { background:var(--bg); border-color:var(--border); border-radius:8px; font-size:11px; }
+  .detail .kv { grid-template-columns:minmax(88px,120px) minmax(0,1fr); gap:7px 12px; font-size:12px; }
+  .detail .kv .v { color:var(--fg); }
+  .detail details { padding:8px 0; border-top:1px solid var(--border); }
+  .detail details summary { color:var(--accent); cursor:pointer; }
+  .layout.detail-collapsed { grid-template-columns:224px minmax(0,1fr) 0 0; }
+  .layout.detail-collapsed .splitter, .layout.detail-collapsed #detail { display:none; }
+  .layout.sidebar-collapsed { grid-template-columns:0 minmax(0,1fr) 6px var(--detail-w,minmax(330px,410px)); }
+  .layout.sidebar-collapsed .sidebar { display:none; }
+  .layout.sidebar-collapsed.detail-collapsed { grid-template-columns:0 minmax(0,1fr) 0 0; }
+  .filter-tools { display:flex; gap:6px; margin:4px 0 8px; }
+  .filter-tools button { flex:1; background:var(--bg-3); color:var(--fg); border:1px solid var(--border); border-radius:7px; padding:6px; cursor:pointer; }
+  .filter-time { display:grid; gap:6px; }
+  @media (max-width:1600px) {
+    #clock-local, #clock-utc, #last-fetch { display:none; }
+  }
+  @media (max-width:1180px) {
+    .layout { grid-template-columns:205px minmax(0,1fr) 6px var(--detail-w,minmax(290px,350px)); }
+    .stats-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .topbar { gap:8px; padding:0 14px; }
+    .brand { min-width:auto; }
+    #case-id, #metric-wall { display:none; }
+  }
+  @media (max-width:980px) {
+    #events-stat { display:none; }
+    .topbar { gap:4px; padding:0 10px; }
+  }
+  @media (max-width:920px) {
+    body { height:auto; min-height:100vh; overflow:auto; }
+    .topbar { position:sticky; top:0; z-index:5; height:auto; min-height:60px; flex-wrap:wrap; padding:10px 12px; }
+    .brand { flex:1; }
+    .topbar .picker { max-width:calc(50vw - 20px); }
+    .layout, .layout.detail-collapsed, .layout.sidebar-collapsed { display:flex; flex-direction:column; height:auto; min-height:calc(100vh - 60px); }
+    .sidebar { order:0; padding:9px 12px; overflow:visible; border-right:0; border-bottom:1px solid var(--border); }
+    .layout.sidebar-collapsed .sidebar { display:none; }
+    .side-label { display:none; }
+    .side-nav { display:flex; overflow:auto; gap:5px; }
+    .side-nav a { white-space:nowrap; padding:8px 10px; }
+    .filter-drawer { margin-top:8px; padding-top:7px; }
+    .filter-drawer .pane.filters { max-height:55vh; overflow:auto; }
+    .pane.entries { order:1; overflow:visible; padding:20px 13px 35px; }
+    .splitter { display:none; }
+    .pane.detail { order:2; display:block; min-height:180px; border-left:0; border-top:1px solid var(--border); }
+    .layout.detail-collapsed #detail { display:none; }
+    .stats-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+    .stat-card { padding:11px 12px; }
+    .stat-card .value { font-size:19px; }
+    .entry { grid-template-columns:54px 1fr; gap:5px 9px; padding:12px; }
+    .entry .cid { grid-column:1; grid-row:1; }
+    .entry .ts { grid-column:2; grid-row:1; }
+    .entry .type-col { grid-column:1; grid-row:2; }
+    .entry .text { grid-column:2; grid-row:2; }
+    .timeline-head { align-items:flex-start; }
+    .timeline-head .hint { text-align:right; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration:.01ms !important; scroll-behavior:auto !important; transition-duration:.01ms !important; }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>DFIR Nexus</h1>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">⌕</span>
+    <span><span class="brand-name">DFIR Nexus</span><br><span class="brand-subtitle">Investigation workspace</span></span>
+  </div>
+  <button type="button" class="sidebar-toggle" id="sidebar-toggle" aria-expanded="true" title="Collapse navigation">Menu</button>
   <select id="case-select" class="picker" title="Select case">
     <option value="">— case —</option>
   </select>
@@ -272,24 +446,52 @@
     <option value="">— trace —</option>
   </select>
   <span class="case-id" id="case-id"></span>
-  <span class="stat"><span id="entry-count">0</span> entries</span>
-  <span class="metric" id="metric-wall" title="Wall-clock time since first entry">Total: —</span>
+  <span class="stat" id="events-stat"><span id="entry-count">0</span> events</span>
+  <span class="metric" id="metric-wall" title="Wall-clock time since first entry">—</span>
   <span class="stat" style="margin-left:auto" id="clock-local" title="local time"></span>
   <span class="stat" id="clock-utc" title="UTC (trace timestamps use UTC)"></span>
   <span class="stat" id="last-fetch" title="last successful trace fetch"></span>
   <span class="live" id="live"><span class="live-dot"></span><span id="live-text">offline</span></span>
-  <a id="graph-link" class="graph-btn" target="_blank" title="Open Investigation Chain blueprint view">Chain ↗</a>
-  <a id="report-link" class="graph-btn" target="trudi-report" title="Open the case's final report">Report ↗</a>
-  <label style="display:flex;align-items:center;gap:4px;font-size:12px;">
+  <a id="graph-link" class="graph-btn" target="_blank" title="Open the evidence-linked investigation chain">Attack chain</a>
+  <a id="report-link" class="graph-btn" target="trudi-report" title="Open the case report">Reports</a>
+  <button type="button" class="detail-toggle" id="detail-toggle" aria-expanded="true" title="Show or hide event details">Hide details</button>
+  <label class="follow-control" style="display:flex;align-items:center;gap:4px;font-size:12px;">
     <input type="checkbox" id="follow-tail" checked /> follow new
   </label>
 </header>
 
 <div class="layout">
-
-  <aside class="pane filters">
+  <aside class="sidebar">
+    <div class="side-label">Workspace</div>
+    <nav class="side-nav" aria-label="Investigation navigation">
+      <a href="#overview" class="active" data-nav="overview"><span class="nav-icon">⌂</span>Overview</a>
+      <a href="#case-select" data-nav="investigations"><span class="nav-icon">▣</span>Investigations</a>
+      <a href="#timeline" data-nav="timeline"><span class="nav-icon">◷</span>Timeline</a>
+      <a href="#timeline" data-nav="evidence" data-filter-type="tool_call"><span class="nav-icon">◇</span>Evidence</a>
+      <a href="#timeline" data-nav="findings" data-filter-type="finding"><span class="nav-icon">✓</span>Findings</a>
+      <a href="#timeline" data-nav="iocs" data-filter-type="ioc"><span class="nav-icon">⌕</span>IOC Analysis</a>
+      <a id="nav-chain" href="chain_view.html" data-nav="chain"><span class="nav-icon">⌁</span>Attack Chain</a>
+      <a id="nav-reports" href="report_view.html" data-nav="reports"><span class="nav-icon">▤</span>Reports</a>
+      <a href="#filter-drawer" data-nav="settings"><span class="nav-icon">⚙</span>Settings</a>
+    </nav>
+    <div class="side-label">Workspace tools</div>
+    <details class="filter-drawer" id="filter-drawer">
+      <summary>Filters <span id="active-filter-count" class="count"></span></summary>
+      <aside class="pane filters">
     <div class="filter-group">
-      <h3>Types</h3>
+      <h3>Search events</h3>
+      <input type="text" id="search" placeholder="Search events, tools, evidence…" />
+      <div class="filter-tools">
+        <button type="button" id="reset-filters">Reset filters</button>
+      </div>
+      <div class="filter-time">
+        <label>From <input type="datetime-local" id="filter-from" aria-label="Filter from date and time" /></label>
+        <label>To <input type="datetime-local" id="filter-to" aria-label="Filter to date and time" /></label>
+      </div>
+    </div>
+    <div class="filter-group">
+      <h3>Event types</h3>
+      <input type="text" id="type-search" placeholder="Filter event types…" aria-label="Search event types" />
       <label><input type="checkbox" class="type-filter" value="dair_call" checked><span class="pill dair">DAIR</span><span class="count" data-count="dair_call">0</span></label>
       <label><input type="checkbox" class="type-filter" value="reason_call" checked><span class="pill reason">REASON</span><span class="count" data-count="reason_call">0</span></label>
       <label><input type="checkbox" class="type-filter" value="tool_call" checked><span class="pill tool">TOOL</span><span class="count" data-count="tool_call">0</span></label>
@@ -332,11 +534,6 @@
     </div>
 
     <div class="filter-group">
-      <h3>Search</h3>
-      <input type="text" id="search" placeholder="text anywhere…" />
-    </div>
-
-    <div class="filter-group">
       <h3>Jump to call</h3>
       <input type="number" id="jump" placeholder="#" min="1" />
     </div>
@@ -357,9 +554,32 @@
       <input type="text" id="trace-url" />
       <label style="margin-top:6px;"><input type="checkbox" id="autorefresh" checked> auto-refresh (2s)</label>
     </div>
+      </aside>
+    </details>
   </aside>
 
   <main class="pane entries">
+    <section class="overview" id="overview">
+      <div class="overview-eyebrow">Investigation overview</div>
+      <h2 id="overview-title">Select an investigation</h2>
+      <p class="overview-subtitle" id="overview-subtitle">Case details will be loaded from the selected case metadata when available.</p>
+      <div class="overview-meta">
+        <span>Case <strong id="overview-case">—</strong></span>
+        <span>Trace <strong id="overview-trace">Awaiting trace</strong></span>
+        <span>Status <strong id="overview-status">Waiting for data</strong></span>
+      </div>
+      <div class="stats-grid" aria-label="Investigation statistics">
+        <div class="stat-card"><span class="label">Total events</span><strong class="value" id="overview-events">—</strong></div>
+        <div class="stat-card confirmed"><span class="label">Confirmed findings</span><strong class="value" id="overview-confirmed">—</strong></div>
+        <div class="stat-card likely"><span class="label">Likely findings</span><strong class="value" id="overview-likely">—</strong></div>
+        <div class="stat-card iocs"><span class="label">IOC records</span><strong class="value" id="overview-iocs">—</strong></div>
+        <div class="stat-card"><span class="label">Investigation duration</span><strong class="value" id="overview-duration">—</strong></div>
+      </div>
+    </section>
+    <div class="timeline-head" id="timeline">
+      <h2>Investigation timeline</h2>
+      <span class="hint">Chronological · select an event to inspect its evidence</span>
+    </div>
     <div id="entries-list"></div>
     <div class="empty" id="empty-state">Load a trace to begin.</div>
   </main>
@@ -367,7 +587,7 @@
   <div class="splitter" id="detail-splitter" role="separator" aria-orientation="vertical"
        title="Drag to resize · double-click to reset"></div>
 
-  <aside class="pane detail" id="detail">
+  <aside class="pane detail" id="detail" aria-label="Selected event details">
     <div class="empty">Click an entry on the left to see its details.</div>
   </aside>
 
@@ -400,9 +620,12 @@ const State = {
     iocTechnique: '',
     iocOnly: false,
     iocFocus: null,        // ioc call_id: show only it + its evidence calls
+    fromTime: '',
+    toTime: '',
   },
   prevEntryCount: 0,
   refreshTimer: null,
+  descriptionCaseDir: '',
 };
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -435,6 +658,72 @@ function _fmtEntryTs(ts) {
   } catch (_e) {
     return ts.slice(0, 19);
   }
+}
+
+function humanEventTitle(e) {
+  const reasonTitles = {
+    reason_plan: 'Investigation Plan',
+    reason_hypothesize: 'Evidence Hypothesis',
+    reason_evaluate_finding: 'Finding Review',
+    reason_confidence_score: 'Confidence Assessment',
+    reason_cite_check: 'Evidence Citation Check',
+    reason_synthesize: 'Investigation Summary',
+    reason_pre_report_check: 'Report Readiness Check',
+    reason_audit_findings: 'Audit Findings',
+  };
+  if (e.type === 'reason_call') return reasonTitles[e.tool] || 'AI Evidence Review';
+  const labels = {
+    tool_call: 'Forensic Tool Execution',
+    dair_call: 'Investigation Phase Review',
+    finding: `Finding · ${(e.confidence || 'unconfirmed').toUpperCase()}`,
+    self_correction: 'Investigation Self-Correction',
+    curiosity_probe: 'Evidence Exploration',
+    investigation_narration: 'Investigation Note',
+    call_initiated: 'Tool Call Started',
+    call_abandoned: 'Tool Call Abandoned',
+    system_error: 'System Notice',
+    finding_refused: 'Finding Not Accepted',
+    tool_blocked: 'Tool Call Blocked',
+    disposition: 'Evidence Disposition',
+    reason_evidence_fetch: 'Evidence Review Fetch',
+    ioc: 'Indicator of Compromise',
+    phase_transition: 'Investigation Phase Changed',
+    finding_submission: 'Finding Submission',
+    finding_retracted: 'Finding Retracted',
+    user_message: 'Investigator Message',
+    run_profile: 'Investigation Profile',
+  };
+  return labels[e.type] || String(e.type || 'Investigation Event').replace(/_/g, ' ');
+}
+function humanEventDescription(e) {
+  if (e.type === 'reason_call') {
+    const descriptions = {
+      reason_audit_findings: 'The AI agent reviewed the collected evidence and checked whether the findings were supported.',
+      reason_plan: 'The AI agent organized the next steps for reviewing the available evidence.',
+      reason_hypothesize: 'The AI agent formed a hypothesis from the evidence collected so far.',
+      reason_evaluate_finding: 'The AI agent evaluated a finding against its supporting evidence.',
+      reason_confidence_score: 'The AI agent assessed the confidence level of a finding.',
+      reason_cite_check: 'The AI agent checked whether evidence references support the finding.',
+      reason_synthesize: 'The AI agent summarized the investigation evidence and findings.',
+      reason_pre_report_check: 'The AI agent checked whether the investigation was ready for reporting.',
+    };
+    return descriptions[e.tool] || 'The AI agent analyzed or reviewed investigation evidence.';
+  }
+  if (e.type === 'finding') return e.description || 'A finding was recorded from the investigation.';
+  if (e.type === 'tool_call') return e.success === false ? 'A forensic tool execution did not complete successfully.' : 'A forensic tool was used to collect or inspect case data.';
+  if (e.type === 'dair_call') return e.phase_rationale || `Investigation workflow review for the ${e.current_phase || 'current'} phase.`;
+  if (e.type === 'investigation_narration' || e.type === 'user_message') return e.content || 'Investigation notes were recorded.';
+  if (e.type === 'self_correction') return e.new_belief || 'The investigation assessment was revised.';
+  if (e.type === 'curiosity_probe') return e.probe_rationale || 'Additional evidence was explored.';
+  if (e.type === 'ioc') return `${e.status || 'Unknown status'} ${e.ioc_type || 'indicator'} recorded from investigation evidence.`;
+  if (e.type === 'phase_transition') return e.reason || `The workflow moved from ${e.from_phase || 'an earlier phase'} to ${e.to_phase || 'a new phase'}.`;
+  if (e.type === 'system_error') return e.detail || 'A system event was recorded.';
+  if (e.type === 'call_abandoned') return e.reason || 'A tool call was abandoned.';
+  if (e.type === 'finding_refused') return e.description || 'A proposed finding did not pass its review gate.';
+  if (e.type === 'tool_blocked') return e.reason || 'The requested tool call was blocked.';
+  if (e.type === 'disposition') return e.note || `Evidence disposition recorded: ${e.reason || 'see technical details'}.`;
+  if (e.type === 'finding_retracted') return e.reason || 'A previously recorded finding was retracted.';
+  return e.reason || e.note || '';
 }
 // All entries (MCP server + PostToolUse hook) share a single monotonic call_id
 // sequence via a shared counter file under fcntl lock. Just render as #N.
@@ -596,7 +885,7 @@ function entrySummary(e) {
         ? _linkChip(e.linked_call_id,
                     `→ #${e.linked_call_id}${linked ? ' ' + _toolLabel(linked) : ''}`,
                     {title: linked ? (linked.cmd || linked.tool || '') : ''})
-        : '<span class="chip-link" style="border-color:var(--error);color:var(--error);background:rgba(255,107,107,.08);cursor:default;">no link</span>';
+        : '<span class="chip-link" style="border-color:var(--error);color:var(--error);background:rgba(223,130,151,.08);cursor:default;">no link</span>';
       return {
         pill: `<span class="pill ${cls}">${conf}</span>`,
         line: escapeHtml(e.description),
@@ -801,8 +1090,18 @@ function entryMatchesFilters(e) {
     const linked = State.entries.some(x => x.type === 'finding' && x.linked_call_id === e.call_id);
     if (!linked) return false;
   }
+  const timestamp = _parseTs(e.ts);
+  if (F.fromTime) {
+    const from = Date.parse(F.fromTime);
+    if (Number.isFinite(from) && (timestamp === null || timestamp < from)) return false;
+  }
+  if (F.toTime) {
+    const to = Date.parse(F.toTime);
+    if (Number.isFinite(to) && (timestamp === null || timestamp > to)) return false;
+  }
   if (F.search) {
-    const hay = JSON.stringify(e).toLowerCase();
+    const hay = [JSON.stringify(e), humanEventTitle(e), humanEventDescription(e)]
+      .join(' ').toLowerCase();
     if (!hay.includes(F.search.toLowerCase())) return false;
   }
   return true;
@@ -825,20 +1124,13 @@ function renderEntries() {
   }
   empty.style.display = 'none';
 
-  // Newest-on-top: iterate in reverse. Emit a phase header at the boundary
-  // between consecutive (reverse) entries whose phase block differs — the
-  // header sits at the TOP of each phase block as read down the page.
+  // Keep the investigation in timestamp/call order, oldest first.
   let html = '';
-  let visibleCount = 0;
   let prevBlockAnchor = null;
-  for (let i = State.entries.length - 1; i >= 0; i--) {
+  for (let i = 0; i < State.entries.length; i++) {
     const e = State.entries[i];
     if (!entryMatchesFilters(e)) continue;
     const block = _phaseBlockForCid(e.call_id);
-    // Hook entries (call_ids >= 1e9) fall outside every block range — treat
-    // them as inheriting the previous block so they don't fragment the header.
-    // A header is emitted only above a block's first visible entry, so a
-    // narrow filter does not leave a wall of empty phase headers.
     if (block) {
       if (block.anchor !== prevBlockAnchor) {
         html += `<div class="phase-header" id="${block.anchor}">PHASE: <span class="phase-name">${escapeHtml(block.phase)}</span><span class="range">#${block.startCid}–#${block.endCid}</span></div>`;
@@ -846,6 +1138,7 @@ function renderEntries() {
       }
     }
     const s = entrySummary(e);
+    const description = humanEventDescription(e);
     const cls = [
       'entry',
       State.selectedId === e.call_id ? 'selected' : '',
@@ -856,11 +1149,11 @@ function renderEntries() {
       <span class="ts">${escapeHtml(_fmtEntryTs(e.ts))}</span>
       <span class="type-col">${s.pill}</span>
       <span class="text">
-        <div class="line">${s.line}</div>
+        <div class="line">${escapeHtml(humanEventTitle(e))}</div>
+        ${description ? `<div class="description">${escapeHtml(shorten(description, 240))}</div>` : ''}
         ${s.meta ? `<div class="meta">${s.meta}</div>` : ''}
       </span>
     </div>`;
-    visibleCount += 1;
   }
   container.innerHTML = html || paneEmpty('No entries match the current filters.');
 
@@ -874,14 +1167,20 @@ function renderEntries() {
     if (lbl) lbl.classList.toggle('zero', n === 0);
   }
   $('#entry-count').textContent = State.entries.length;
+  const activeFilters = [
+    State.filters.search, State.filters.jump, State.filters.phase,
+    State.filters.errorsOnly, State.filters.hasFindingOnly, State.filters.iocType,
+    State.filters.iocStatus, State.filters.iocTechnique, State.filters.iocOnly,
+    State.filters.iocFocus, State.filters.fromTime, State.filters.toTime,
+  ].filter(Boolean).length + $$('.type-filter').filter(el => !el.checked).length;
+  $('#active-filter-count').textContent = activeFilters ? `· ${activeFilters}` : '';
 
   if (State.followTail) {
-    // Newest-on-top: "follow new" scrolls to the TOP (where newest entries
-    // appear). Scroll the parent (.pane.entries) since #entries-list itself
-    // isn't the scrollable element.
+    // New events are appended in chronological order, so follow the timeline
+    // to its newest entry at the bottom.
     requestAnimationFrame(() => {
       const scroller = container.parentElement;
-      if (scroller) scroller.scrollTop = 0;
+      if (scroller) scroller.scrollTop = scroller.scrollHeight;
     });
   }
 }
@@ -896,7 +1195,14 @@ function renderDetail(e) {
     ? ` <span class="pill dair" style="font-weight:400;font-size:10px;">phase: ${escapeHtml(e.dair_phase)}${e.dair_depth ? ' d='+e.dair_depth : ''}</span>`
     : '';
   const head = `
-    <h2>${entrySummary(e).pill} <code>${_fmtCid(e.call_id)}</code>${phaseTag} <span style="color:var(--fg-dim);font-weight:400;font-size:11px;">${escapeHtml(e.ts || '')}</span></h2>
+    <h2>${entrySummary(e).pill} ${escapeHtml(humanEventTitle(e))}</h2>
+    <div class="kv">
+      <span class="k">Event ID</span><span class="v"><code>${_fmtCid(e.call_id)}</code></span>
+      <span class="k">Event type</span><span class="v"><code>${escapeHtml(e.type || '')}</code></span>
+      <span class="k">Investigation phase</span><span class="v">${e.dair_phase ? escapeHtml(e.dair_phase) : 'Not recorded'}${e.dair_depth ? ` · depth ${escapeHtml(e.dair_depth)}` : ''}</span>
+      <span class="k">Timestamp</span><span class="v">${escapeHtml(e.ts || 'Not recorded')}</span>
+      ${phaseTag ? `<span class="k">Workflow</span><span class="v">${phaseTag}</span>` : ''}
+    </div>
   `;
   let body = '';
   switch (e.type) {
@@ -921,7 +1227,14 @@ function renderDetail(e) {
     case 'user_message': body = renderNarration(e); break;
     default: body = `<pre>${escapeHtml(JSON.stringify(e, null, 2))}</pre>`;
   }
-  $('#detail').innerHTML = head + body;
+  const technical = [
+    `<span class="k">Original event type</span><span class="v"><code>${escapeHtml(e.type || '')}</code></span>`,
+    e.tool ? `<span class="k">Tool / operation</span><span class="v"><code>${escapeHtml(e.tool)}</code></span>` : '',
+    e.cmd ? `<span class="k">Command</span><span class="v"><code>${escapeHtml(e.cmd)}</code></span>` : '',
+  ].filter(Boolean).join('');
+  $('#detail').innerHTML = head + body
+    + `<h3>Technical details</h3><div class="kv">${technical}</div>`
+    + `<details><summary>Original raw JSON</summary><pre>${escapeHtml(JSON.stringify(e, null, 2))}</pre></details>`;
   // Jump links (incl. ones inserted later by async output loads) are handled
   // by one delegated listener on #detail — see setupFilters().
   hydrateDetail(e);
@@ -1574,18 +1887,75 @@ function _fmtDuration(ms) {
   return `${h}h ${m % 60}m`;
 }
 function updateIrVelocityMetrics(entries) {
-  if (!entries || entries.length === 0) return;
-  const firstTs = _parseTs(entries[0].ts);
-  if (firstTs === null) return;
-  let lastTs = firstTs;
+  if (!entries || entries.length === 0) {
+    $('#metric-wall').textContent = '—';
+    $('#metric-wall').classList.remove('fired');
+    $('#overview-duration').textContent = '—';
+    return;
+  }
+  let firstTs = Infinity;
+  let lastTs = -Infinity;
   for (const e of entries) {
     const t = _parseTs(e.ts);
-    if (t !== null) lastTs = Math.max(lastTs, t);
+    if (t !== null) {
+      firstTs = Math.min(firstTs, t);
+      lastTs = Math.max(lastTs, t);
+    }
   }
-  const el = document.getElementById('metric-wall');
-  if (el) {
-    el.textContent = `Total: ${_fmtDuration(lastTs - firstTs)}`;
-    el.classList.add('fired');
+  if (!Number.isFinite(firstTs) || !Number.isFinite(lastTs)) {
+    $('#overview-duration').textContent = 'Not recorded';
+    return;
+  }
+  const duration = _fmtDuration(lastTs - firstTs);
+  $('#metric-wall').textContent = duration;
+  $('#metric-wall').classList.add('fired');
+  $('#overview-duration').textContent = duration;
+}
+function updateOverview(entries) {
+  const findings = entries.filter(e => e.type === 'finding');
+  const countTier = tier => findings.filter(e => String(e.confidence || '').toUpperCase() === tier).length;
+  const traceName = (State.traceUrl || '').split('/').filter(Boolean).pop() || 'Trace selected';
+  $('#overview-title').textContent = State.caseId || 'Investigation';
+  $('#overview-case').textContent = State.caseId || 'Not recorded';
+  $('#overview-trace').textContent = traceName;
+  $('#overview-status').textContent = entries.length ? 'Trace loaded' : 'No events recorded';
+  $('#overview-events').textContent = entries.length.toLocaleString();
+  $('#overview-confirmed').textContent = countTier('CONFIRMED').toLocaleString();
+  $('#overview-likely').textContent = countTier('LIKELY').toLocaleString();
+  $('#overview-iocs').textContent = entries.filter(e => e.type === 'ioc').length.toLocaleString();
+  updateIrVelocityMetrics(entries);
+}
+async function updateCaseDescription() {
+  const match = String(State.traceUrl || '').match(/^\/?([A-Za-z0-9._-]+)\/analysis\/[^/]+$/);
+  if (!match || State.descriptionCaseDir === match[1]) return;
+  const caseDir = match[1];
+  const traceUrl = State.traceUrl;
+  State.descriptionCaseDir = caseDir;
+  const subtitle = $('#overview-subtitle');
+  subtitle.textContent = 'Loading case description…';
+  try {
+    const response = await fetch(`/${encodeURIComponent(caseDir)}/CLAUDE.md`, {cache: 'no-store'});
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const text = await response.text();
+    const readField = label => {
+      const line = text.split(/\r?\n/).find(row =>
+        new RegExp(`^\\|\\s*\\*\\*${label}\\*\\*\\s*\\|`).test(row));
+      if (!line) return '';
+      return line.split('|')[2].trim().replace(/\*\*/g, '').replace(/`/g, '');
+    };
+    const subject = readField('Subject');
+    const crime = readField('Crime');
+    const description = [
+      crime ? `Case focus: ${crime}` : '',
+      subject ? `Subject: ${subject}` : '',
+    ].filter(Boolean).join(' · ');
+    if (State.traceUrl === traceUrl) {
+      subtitle.textContent = description || 'No case description is recorded in this case metadata.';
+    }
+  } catch (_err) {
+    if (State.traceUrl === traceUrl) {
+      subtitle.textContent = 'No case description is available from the case metadata.';
+    }
   }
 }
 function updateGraphLink() {
@@ -1596,8 +1966,13 @@ function updateGraphLink() {
   const trace = params.get('trace');
   if (trace) link.href = `chain_view.html?trace=${encodeURIComponent(trace)}`;
   else link.href = 'chain_view.html';
+  const navChain = document.getElementById('nav-chain');
+  if (navChain) navChain.href = link.href;
   const rlink = document.getElementById('report-link');
-  if (rlink) rlink.href = trace ? `report_view.html?trace=${encodeURIComponent(trace)}` : 'report_view.html';
+  const reportHref = trace ? `report_view.html?trace=${encodeURIComponent(trace)}` : 'report_view.html';
+  if (rlink) rlink.href = reportHref;
+  const navReports = document.getElementById('nav-reports');
+  if (navReports) navReports.href = reportHref;
 }
 
 // ── Data load ────────────────────────────────────────────────────────────────
@@ -1619,7 +1994,8 @@ async function load() {
     $('#last-fetch').textContent = `fetched ${_fmtLocalHMS(new Date())}`;
     $('#live').classList.add('on');
     $('#live-text').textContent = 'live';
-    updateIrVelocityMetrics(newEntries);
+    updateOverview(newEntries);
+    updateCaseDescription();
     updateGraphLink();
     // Phase select options
     const sel = $('#phase-select');
@@ -1729,6 +2105,48 @@ function setupFilters() {
     State.filters.search = ev.target.value.trim();
     renderEntries();
   });
+  $('#type-search').addEventListener('input', (ev) => {
+    const query = ev.target.value.trim().toLowerCase();
+    $$('.type-filter').forEach(el => {
+      const label = el.closest('label');
+      if (label) label.style.display = !query || label.textContent.toLowerCase().includes(query) ? '' : 'none';
+    });
+  });
+  $('#filter-from').addEventListener('input', ev => {
+    State.filters.fromTime = ev.target.value;
+    renderEntries();
+  });
+  $('#filter-to').addEventListener('input', ev => {
+    State.filters.toTime = ev.target.value;
+    renderEntries();
+  });
+  $('#reset-filters').addEventListener('click', () => {
+    $$('.type-filter').forEach(el => { el.checked = el.defaultChecked; });
+    $('#search').value = '';
+    $('#type-search').value = '';
+    $('#jump').value = '';
+    $('#phase-select').value = '';
+    $('#ioc-type').value = '';
+    $('#ioc-status').value = '';
+    $('#ioc-technique').value = '';
+    $('#ioc-only').checked = false;
+    $('#filter-errors').checked = false;
+    $('#filter-has-finding').checked = false;
+    $('#filter-from').value = '';
+    $('#filter-to').value = '';
+    State.filters = {
+      ...State.filters, search: '', jump: null, phase: '', errorsOnly: false,
+      hasFindingOnly: false, iocType: '', iocStatus: '', iocTechnique: '',
+      iocOnly: false, iocFocus: null, fromTime: '', toTime: '',
+      types: new Set($$('.type-filter:checked').map(el => el.value)),
+    };
+    $('#ioc-focus').style.display = 'none';
+    $$('.type-filter').forEach(el => {
+      const label = el.closest('label');
+      if (label) label.style.display = '';
+    });
+    renderEntries();
+  });
   $('#jump').addEventListener('input', (ev) => {
     const v = parseInt(ev.target.value, 10);
     State.filters.jump = Number.isFinite(v) && v > 0 ? v : null;
@@ -1769,6 +2187,37 @@ function setupFilters() {
     }
     const row = ev.target.closest('.entry');
     if (row && row.dataset.cid) selectEntry(parseInt(row.dataset.cid, 10));
+  });
+  $$('.side-nav a[data-nav]').forEach(link => link.addEventListener('click', ev => {
+    const section = link.dataset.nav;
+    $$('.side-nav a').forEach(item => item.classList.toggle('active', item === link));
+    if (section === 'settings') {
+      ev.preventDefault();
+      $('#filter-drawer').open = true;
+      $('#filter-drawer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+    if (section === 'investigations') {
+      ev.preventDefault();
+      $('#case-select').focus();
+      return;
+    }
+    if (link.dataset.filterType) {
+      ev.preventDefault();
+      const selectedType = link.dataset.filterType;
+      $$('.type-filter').forEach(input => { input.checked = input.value === selectedType; });
+      updateTypeFilters();
+    }
+  }));
+  $('#sidebar-toggle').addEventListener('click', () => {
+    const collapsed = $('.layout').classList.toggle('sidebar-collapsed');
+    $('#sidebar-toggle').setAttribute('aria-expanded', String(!collapsed));
+    $('#sidebar-toggle').title = collapsed ? 'Expand navigation' : 'Collapse navigation';
+  });
+  $('#detail-toggle').addEventListener('click', () => {
+    const collapsed = $('.layout').classList.toggle('detail-collapsed');
+    $('#detail-toggle').setAttribute('aria-expanded', String(!collapsed));
+    $('#detail-toggle').textContent = collapsed ? 'Show details' : 'Hide details';
   });
 }
 
