@@ -1,4 +1,4 @@
-"""Curated TRUDI tool capability manifest.
+"""Curated DFIR Nexus tool capability manifest.
 
 The manifest is intentionally small and semantic. It is not a full inventory of
 every MCP wrapper; it is the planning vocabulary DAIR/reasoning should use when

@@ -1,5 +1,5 @@
 """
-TRUDI MCP Server — SIFT Workstation forensic tool gateway.
+DFIR Nexus MCP Server — SIFT Workstation forensic tool gateway.
 Exposes all SIFT tools as typed MCP tools for Claude Code.
 """
 import os
@@ -38,7 +38,7 @@ from tools.respond import mcp as respond_mcp
 mcp = FastMCP(
     "trudi-sift",
     instructions=(
-        "TRUDI SIFT MCP Server — exposes SANS SIFT Workstation forensic tools as typed MCP tools. "
+        "DFIR Nexus SIFT MCP Server — exposes SANS SIFT Workstation forensic tools as typed MCP tools. "
         "All tools are read-only with respect to evidence. "
         "Output paths must be within analysis/, exports/, or reports/ directories. "
         "Timestamps are always UTC."

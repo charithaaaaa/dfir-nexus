@@ -3,7 +3,7 @@ allowance, and require each probe to declare a rationale.
 
 WHY THIS EXISTS
 ---------------
-TRUDI's loop is engineered to converge ("Never run tools outside
+DFIR Nexus's loop is engineered to converge ("Never run tools outside
 directives.priority_tools"). That removes the analyst's ability to act on a
 hunch — to go look at a less-obvious artifact nobody put on the work order.
 A curiosity_probe is the sanctioned address for that act: a read-only,

@@ -1,10 +1,10 @@
-# TRUDI
+# DFIR Nexus
 
 **Threat Response Unit for Digital Investigation**
 
-Autonomous DFIR agent built on the SANS SIFT Workstation. TRUDI runs a complete incident response investigation — disk triage, memory forensics, Windows artifact parsing, IOC enrichment, YARA hunting — and produces a structured analyst report with a full audit trail, without prompting for confirmation at each step.
+Autonomous DFIR agent built on the SANS SIFT Workstation. DFIR Nexus runs a complete incident response investigation — disk triage, memory forensics, Windows artifact parsing, IOC enrichment, YARA hunting — and produces a structured analyst report with a full audit trail, without prompting for confirmation at each step.
 
-A separate model directs the investigation phase-by-phase, and an adversarial reviewer challenges every conclusion before it reaches the report. TRUDI only reports what survives review.
+A separate model directs the investigation phase-by-phase, and an adversarial reviewer challenges every conclusion before it reaches the report. DFIR Nexus only reports what survives review.
 
 Built for the [Find Evil! hackathon](https://findevil.devpost.com/) — SANS Institute / Devpost, April–June 2026.
 
@@ -31,9 +31,9 @@ Built for the [Find Evil! hackathon](https://findevil.devpost.com/) — SANS Ins
 
 ## How it works
 
-TRUDI is a **three-model system** — one analyst and two independently-configured reasoning models that direct and challenge it:
+DFIR Nexus is a **three-model system** — one analyst and two independently-configured reasoning models that direct and challenge it:
 
-**Claude (primary analyst)** — orchestrates the investigation, selects tools, runs them via the TRUDI MCP server, interprets output, and writes the report.
+**Claude (primary analyst)** — orchestrates the investigation, selects tools, runs them via the DFIR Nexus MCP server, interprets output, and writes the report.
 
 **DAIR phase director** (`dair.*`) — runs the investigation as a recursive state machine (Triage → Collect → Analyze → Scan → Report). After every tool batch, `dair_assess` re-reads the evidence picture, decides the next phase, and emits a bound `priority_tools` work order. **DAIR prescribes; Claude executes.** Its backend is configured independently via `DAIR_BACKEND`.
 
@@ -89,7 +89,7 @@ Every tool call, DAIR call, reason call, and confirmed finding is written to a l
 3. **Python 3.10+** and **dotnet** — both included in SIFT Workstation
 
 4. **Reasoning backends** — **required**
-   TRUDI uses two independently-configured reasoning models — the adversarial reviewer (`REASON_BACKEND`) and the DAIR phase director (`DAIR_BACKEND`). These are core to how TRUDI works, not add-ons: without them the agent runs unsupervised, findings are never challenged or confidence-scored, and phase direction falls back to a static path. Configure both before running. Each takes the same options and may point at the same or different models:
+   DFIR Nexus uses two independently-configured reasoning models — the adversarial reviewer (`REASON_BACKEND`) and the DAIR phase director (`DAIR_BACKEND`). These are core to how DFIR Nexus works, not add-ons: without them the agent runs unsupervised, findings are never challenged or confidence-scored, and phase direction falls back to a static path. Configure both before running. Each takes the same options and may point at the same or different models:
 
    | Backend | Config |
    |---------|--------|
@@ -98,7 +98,7 @@ Every tool call, DAIR call, reason call, and confirmed finding is written to a l
    | Local model | `…_BACKEND=openai-compat` + `…_URL=http://localhost:8000` + `…_MODEL=<id>` |
    | Hosted (HF endpoint) | `…_BACKEND=openai-compat` + `…_URL=<hf-endpoint>` + `…_API_KEY=hf_...` |
 
-   The simplest setup is Claude for both (add an `ANTHROPIC_API_KEY` and you're done); running the reviewer + DAIR on a local model is equally supported (see [Reasoning backends](#api-keys)). Either way a backend is required — TRUDI will start without one, but that is **not a supported way to evaluate it**: reason and DAIR calls are skipped and you're seeing a hollowed-out agent, not TRUDI.
+   The simplest setup is Claude for both (add an `ANTHROPIC_API_KEY` and you're done); running the reviewer + DAIR on a local model is equally supported (see [Reasoning backends](#api-keys)). Either way a backend is required — DFIR Nexus will start without one, but that is **not a supported way to evaluate it**: reason and DAIR calls are skipped and you're seeing a hollowed-out agent, not DFIR Nexus.
 
 ### System forensic packages
 
@@ -110,7 +110,7 @@ sudo apt-get update
 sudo apt-get install -y pff-tools pst-utils binwalk tcpxtract sleuthkit ewf-tools
 ```
 
-| apt package | Binaries | TRUDI tools that need it |
+| apt package | Binaries | DFIR Nexus tools that need it |
 |-------------|----------|--------------------------|
 | `pff-tools` | `pffexport`, `pffinfo` | `misc.pff_export` (PST/OST email extraction) |
 | `pst-utils` | `readpst`, `lspst` | `misc.readpst_extract` (PST→mbox) — **not** `libpst-utils`; that package does not exist |
@@ -118,7 +118,7 @@ sudo apt-get install -y pff-tools pst-utils binwalk tcpxtract sleuthkit ewf-tool
 | `ewf-tools` | `ewfmount`, `ewfinfo`, `ewfverify` | `ewf.*`, `img.*` E01 mounting |
 | `tcpxtract` | `tcpxtract` | `net.tcpxtract_streams` |
 | `binwalk` | `binwalk` | firmware / embedded carving |
-| **chainsaw** (GitHub release `v2.10.2` → `/usr/local/bin`, not apt) | `chainsaw` | `misc.chainsaw_hunt` (Sigma over EVTX) — optional; TRUDI runs without it |
+| **chainsaw** (GitHub release `v2.10.2` → `/usr/local/bin`, not apt) | `chainsaw` | `misc.chainsaw_hunt` (Sigma over EVTX) — optional; DFIR Nexus runs without it |
 
 Verify after install: `for b in pffexport readpst fls ewfmount tcpxtract; do command -v "$b" || echo "MISSING: $b"; done`
 
@@ -137,25 +137,25 @@ cd ~/trudi
 - Checks for `python3`, `dotnet`, and `claude` CLI
 - Creates a Python venv at `~/.venv` and installs all dependencies
 - Copies `.env.example` → `.env` (edit this to add API keys)
-- **Backs up** any existing `~/.claude/CLAUDE.md` with a UTC timestamp, then installs the TRUDI orchestrator
+- **Backs up** any existing `~/.claude/CLAUDE.md` with a UTC timestamp, then installs the DFIR Nexus orchestrator
 - Registers Claude Code hooks and slash commands (run directly from the repo — no drift-prone deployed copies)
 - Configures **OpenCode side-by-side** when detected — MCP registration, forensic-binary deny rules, `/trudi-*` commands, hook-adapter plugin, `AGENTS.md`
-- Registers the TRUDI MCP server globally with `claude mcp add --scope global`
+- Registers the DFIR Nexus MCP server globally with `claude mcp add --scope global`
 - Runs the full test suite (1,100+ tests) as a smoke check
 
 If `~/.claude/CLAUDE.md` already exists, the backup is written to `~/.claude/CLAUDE.md.<YYYYMMDDTHHMMSS>.bak` — the original is never overwritten without a backup.
 
 ### API keys
 
-Edit `~/trudi/.env`. TRUDI runs without any keys, but **missing keys degrade the run rather than break it** — and the degradation is not cosmetic:
+Edit `~/trudi/.env`. DFIR Nexus runs without any keys, but **missing keys degrade the run rather than break it** — and the degradation is not cosmetic:
 
 | Key | Powers | If absent |
 |-----|--------|-----------|
-| `ANTHROPIC_API_KEY` | The `reason.*` reviewer and `dair.*` director (when `…_BACKEND=claude`) | **Reason and DAIR calls are skipped.** Findings are never challenged, confidence-scored, or citation-checked; phase direction falls back to a static path. The audit trail and analytical rigor that distinguish a TRUDI run are lost. |
+| `ANTHROPIC_API_KEY` | The `reason.*` reviewer and `dair.*` director (when `…_BACKEND=claude`) | **Reason and DAIR calls are skipped.** Findings are never challenged, confidence-scored, or citation-checked; phase direction falls back to a static path. The audit trail and analytical rigor that distinguish a DFIR Nexus run are lost. |
 | `VIRUSTOTAL_API_KEY` | `enrich.vt_lookup_*` | Hash/IP/domain reputation lookups return "unconfigured"; everything else proceeds. |
 | `ABUSEIPDB_API_KEY` | `enrich.abuseipdb_check` | IP abuse scoring skipped; everything else proceeds. |
 
-> **A reasoning backend is required** — either `ANTHROPIC_API_KEY` (Claude) or a local / OpenAI-compatible endpoint (below). The adversarial review and phase direction depend on it; a run with no backend is a hollowed-out agent, not TRUDI. The two enrichment keys are recommended (they add IOC corroboration) but optional and never block the investigation.
+> **A reasoning backend is required** — either `ANTHROPIC_API_KEY` (Claude) or a local / OpenAI-compatible endpoint (below). The adversarial review and phase direction depend on it; a run with no backend is a hollowed-out agent, not DFIR Nexus. The two enrichment keys are recommended (they add IOC corroboration) but optional and never block the investigation.
 
 ```bash
 # IOC enrichment
@@ -182,7 +182,7 @@ DAIR_MODEL=claude-opus-4-8
 
 ### Running a local model
 
-The reviewer and DAIR director run on any local model behind an OpenAI-compatible server (vLLM / SGLang / llama.cpp). This is a supported, first-class configuration — TRUDI has been driven end-to-end on local backends including [**Titus-CybersecurityLLM**](https://huggingface.co/AlicanKiraz0/Titus-CybersecurityLLM-v1.0-Q4_K_M-No-MTP-GGUF) (a security-tuned GGUF) and general thinking models such as **Qwen3**, producing complete, gated reports. Set `REASON_BACKEND=openai-compat` / `DAIR_BACKEND=openai-compat` and the `…_URL` / `…_MODEL` for each (they may differ). Two families:
+The reviewer and DAIR director run on any local model behind an OpenAI-compatible server (vLLM / SGLang / llama.cpp). This is a supported, first-class configuration — DFIR Nexus has been driven end-to-end on local backends including [**Titus-CybersecurityLLM**](https://huggingface.co/AlicanKiraz0/Titus-CybersecurityLLM-v1.0-Q4_K_M-No-MTP-GGUF) (a security-tuned GGUF) and general thinking models such as **Qwen3**, producing complete, gated reports. Set `REASON_BACKEND=openai-compat` / `DAIR_BACKEND=openai-compat` and the `…_URL` / `…_MODEL` for each (they may differ). Two families:
 
 **A security-tuned model over llama.cpp** — e.g. [Titus](https://huggingface.co/AlicanKiraz0/Titus-CybersecurityLLM-v1.0-Q4_K_M-No-MTP-GGUF), a quantized GGUF:
 ```bash
@@ -194,7 +194,7 @@ llama-server -m Titus-CybersecurityLLM-v1.0-Q4_K_M-No-MTP.gguf \
 **Thinking models** (Qwen3, DeepSeek-R1, gpt-oss … over vLLM / SGLang / llama.cpp):
 
 Thinking models spend a chain-of-thought *before* the answer, and every server bills those
-tokens against `max_tokens`. TRUDI keeps thinking enabled and budgets for it instead:
+tokens against `max_tokens`. DFIR Nexus keeps thinking enabled and budgets for it instead:
 
 ```bash
 REASON_BACKEND=openai-compat
@@ -233,7 +233,7 @@ reason + DAIR calls share the KV cache — a request that cannot fit returns HTT
 `CEILING=26624` / `THINKING_BUDGET=12288` is a working baseline for a 27–35B thinking model.
 
 How it behaves: the request budget is `max_tokens + THINKING_BUDGET`. If the server returns
-`finish_reason=length` with an empty answer (the whole budget went to thinking), TRUDI retries
+`finish_reason=length` with an empty answer (the whole budget went to thinking), DFIR Nexus retries
 once at double the budget (capped at the ceiling). Chain-of-thought in `reasoning_content` or
 `<think>…</think>` is captured as diagnostics (`backend_meta.reasoning_*` on the trace entry),
 never promoted to the answer. Failed calls record their cause on the `reason_call` / `dair_call`
@@ -306,15 +306,15 @@ claude
 Investigate this case. Start with the pre-enumeration triage, then follow the plan.
 ```
 
-TRUDI will run autonomously from there. It will not ask for confirmation between steps. Final output is a structured report in `reports/` and a full execution trace in both JSON and markdown.
+DFIR Nexus will run autonomously from there. It will not ask for confirmation between steps. Final output is a structured report in `reports/` and a full execution trace in both JSON and markdown.
 
 ---
 
 ## Live monitoring & autonomous response (experimental)
 
-> **Status: experimental.** This layer runs today but is scaffolding; the core of TRUDI is the read-only static investigator described above. It's documented here for completeness.
+> **Status: experimental.** This layer runs today but is scaffolding; the core of DFIR Nexus is the read-only static investigator described above. It's documented here for completeness.
 
-Beyond static-image investigation, TRUDI can watch a live endpoint via Velociraptor and respond autonomously. This is the only mode where TRUDI writes to a system, and only *outside* the evidence boundary, through a separately gated path.
+Beyond static-image investigation, DFIR Nexus can watch a live endpoint via Velociraptor and respond autonomously. This is the only mode where DFIR Nexus writes to a system, and only *outside* the evidence boundary, through a separately gated path.
 
 - `monitor.*` — baseline capture, watcher lifecycle, alert draining, per-investigation traces
 - `velo.*` — read-only Velociraptor API (clients, artifact collection, VQL)
@@ -323,7 +323,7 @@ Beyond static-image investigation, TRUDI can watch a live endpoint via Velocirap
 
 **Auto-protect** (default on) auto-executes the *reversible + low-risk* tier of containment and surfaces each action's rollback command; anything destructive (irreversible, or risk ≥ medium) pauses the loop until the operator types `approve ACT-N`. The auto-vs-approval boundary is server-classified from each recipe's `risk`/`reversible` metadata — the agent cannot reclassify it.
 
-**Try it end-to-end:** [demo/live-monitoring/README.md](demo/live-monitoring/README.md) — a self-contained Velociraptor + victim Docker stack with one-command bring-up, staged Atomic Red Team attacks, and a full walkthrough of the TRUDI loop (baseline → watcher → alert drain → auto-protect, including the `approve ACT-N` flow). It's driven by the bundled `/trudi-*` slash commands (`/trudi-start-watcher`, `/trudi-watch-alerts`, `/trudi-check-alerts`, `/trudi-stop-watcher`, `/trudi-clear-case`), which `install.sh` installs to `~/.claude/commands/`. For the read-only SSH triage path on its own, see [docs/live-endpoint-testing.md](docs/live-endpoint-testing.md).
+**Try it end-to-end:** [demo/live-monitoring/README.md](demo/live-monitoring/README.md) — a self-contained Velociraptor + victim Docker stack with one-command bring-up, staged Atomic Red Team attacks, and a full walkthrough of the DFIR Nexus loop (baseline → watcher → alert drain → auto-protect, including the `approve ACT-N` flow). It's driven by the bundled `/trudi-*` slash commands (`/trudi-start-watcher`, `/trudi-watch-alerts`, `/trudi-check-alerts`, `/trudi-stop-watcher`, `/trudi-clear-case`), which `install.sh` installs to `~/.claude/commands/`. For the read-only SSH triage path on its own, see [docs/live-endpoint-testing.md](docs/live-endpoint-testing.md).
 
 ---
 
@@ -347,7 +347,7 @@ Every investigation writes a live JSON trace; the bundled dashboard renders it i
 ./dashboard.sh --cases-root /data/cases
 ```
 
-`install.sh` also installs a `trudi-dashboard` launcher to `/usr/local/bin`. At case open TRUDI prints the live dashboard URL for the active trace, so you can watch the investigation unfold in real time.
+`install.sh` also installs a `trudi-dashboard` launcher to `/usr/local/bin`. At case open DFIR Nexus prints the live dashboard URL for the active trace, so you can watch the investigation unfold in real time.
 
 | View | Shows |
 |------|-------|
@@ -357,17 +357,17 @@ Every investigation writes a live JSON trace; the bundled dashboard renders it i
 
 **Trace Viewer** — every tool / DAIR / reason call and finding, with arguments and gate results:
 
-![TRUDI Trace Viewer](docs/media/dashboard-trace.png)
+![DFIR Nexus Trace Viewer](docs/media/dashboard-trace.png)
 
 **Investigation Chain** — each finding linked back through `input_call_ids` to the exact tool executions that produced it:
 
-![TRUDI Investigation Chain](docs/media/dashboard-chain.png)
+![DFIR Nexus Investigation Chain](docs/media/dashboard-chain.png)
 
 <!-- Graph view: drop docs/media/dashboard-graph.png and uncomment:
-![TRUDI Investigation Graph](docs/media/dashboard-graph.png)
+![DFIR Nexus Investigation Graph](docs/media/dashboard-graph.png)
 -->
 
-> 📹 **Demo video:** [TRUDI walkthrough](https://youtu.be/Dbx5DcH6V5E)
+> 📹 **Demo video:** [DFIR Nexus walkthrough](https://youtu.be/Dbx5DcH6V5E)
 > · 📦 **Demo run bundle** (trace, report, console): [cases/vanko/](cases/vanko/README.md)
 
 ---
@@ -392,7 +392,7 @@ Every finding in an execution log links to the exact tool call that produced it 
 
 ## Tool namespaces
 
-All forensic execution goes through the TRUDI MCP server — **25 namespaces** in total. Claude never calls binaries directly when an MCP tool exists.
+All forensic execution goes through the DFIR Nexus MCP server — **25 namespaces** in total. Claude never calls binaries directly when an MCP tool exists.
 
 | Namespace | Domain | Key tools |
 |-----------|--------|-----------|
@@ -442,7 +442,7 @@ Located in `rules/` — used automatically by `yara.*` tool calls:
 
 ## Evidence constraints
 
-TRUDI enforces read-only evidence handling at the executor level — not just by instruction. The `core/paths.py` module blocks any output write that resolves to `/cases/`, `/mnt/`, `/media/`, or any path containing an `evidence/` segment. This check runs before every subprocess call that takes an output path. It cannot be bypassed via prompt.
+DFIR Nexus enforces read-only evidence handling at the executor level — not just by instruction. The `core/paths.py` module blocks any output write that resolves to `/cases/`, `/mnt/`, `/media/`, or any path containing an `evidence/` segment. This check runs before every subprocess call that takes an output path. It cannot be bypassed via prompt.
 
 All tool output is capped at 50 KB / 150 lines before being returned to the agent to prevent context flooding. Truncation is flagged explicitly in the response.
 
@@ -460,13 +460,13 @@ pytest --cov --tb=short           # serial with coverage (CI shape; a few minute
 1,700+ tests. All tool calls are mocked — tests run without SIFT tools installed.
 The suite is I/O-bound (every test writes a trace): tests run with the trace
 `fsync` off and a per-test `hook.lock` (`tests/conftest.py`), so `-n auto`
-scales linearly — and never contends with a live TRUDI session.
+scales linearly — and never contends with a live DFIR Nexus session.
 
 ---
 
 ## OpenCode support (side-by-side)
 
-TRUDI also runs under [OpenCode](https://opencode.ai) — configured automatically by
+DFIR Nexus also runs under [OpenCode](https://opencode.ai) — configured automatically by
 `install.sh` when OpenCode is detected (or on re-run after installing it). Claude Code
 and OpenCode are supported **side-by-side**: the same repo, MCP server, gates, hooks,
 commands, and orchestrator serve both.

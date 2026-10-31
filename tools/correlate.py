@@ -1,4 +1,4 @@
-"""Cross-tool correlation — joins outputs from existing TRUDI tools into
+"""Cross-tool correlation — joins outputs from existing DFIR Nexus tools into
 structured findings that judges can verify in the audit trail.
 
 These are higher-order analytical tools: they don't run new forensic processes;

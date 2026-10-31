@@ -7,7 +7,7 @@ rule CobaltStrike_NamedPipe_Defaults
 {
     meta:
         description = "Cobalt Strike default named pipe names"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "high"
         reference = "https://blog.cobaltstrike.com/2021/01/06/cobalt-strike-hunting-named-pipe-tampering/"
 
@@ -32,7 +32,7 @@ rule CobaltStrike_PowerShell_Stager
 {
     meta:
         description = "Cobalt Strike GZIP/Base64 PowerShell stager"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "high"
 
     strings:
@@ -54,7 +54,7 @@ rule CobaltStrike_Shellcode_Injector_PowerSploit
 {
     meta:
         description = "PowerSploit-derived shellcode injector used by Cobalt Strike stagers"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "critical"
 
     strings:
@@ -74,7 +74,7 @@ rule CobaltStrike_ReflectiveDLL
 {
     meta:
         description = "Reflective DLL loading — hallmark of CS beacon injection"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "critical"
 
     strings:
@@ -90,7 +90,7 @@ rule CobaltStrike_BeaconConfig_Strings
 {
     meta:
         description = "Cobalt Strike beacon configuration string fragments"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "high"
 
     strings:

@@ -1,6 +1,6 @@
-# Live endpoint testing with TRUDI
+# Live endpoint testing with DFIR Nexus
 
-TRUDI's `live.*` namespace lets the agent investigate a running endpoint over
+DFIR Nexus's `live.*` namespace lets the agent investigate a running endpoint over
 SSH, using the same audit/gate/attribution pipeline as static evidence. Every
 `live.*` tool routes through `core.ssh.ssh_run` with a fixed-argv command —
 no remote shell parsing, no agent-controlled command string.
@@ -26,7 +26,7 @@ Inside the new distro:
 sudo apt update && sudo apt install -y openssh-server lsof net-tools yara
 sudo systemctl enable --now ssh
 
-# Allow your TRUDI key in. Replace with your actual pubkey from the TRUDI side.
+# Allow your DFIR Nexus key in. Replace with your actual pubkey from the DFIR Nexus side.
 mkdir -p ~/.ssh && chmod 700 ~/.ssh
 cat >> ~/.ssh/authorized_keys <<'EOF'
 ssh-ed25519 AAAA... trudi-live
@@ -34,13 +34,13 @@ EOF
 chmod 600 ~/.ssh/authorized_keys
 ```
 
-Find the endpoint's address (usable from TRUDI side):
+Find the endpoint's address (usable from the DFIR Nexus side):
 
 ```bash
 hostname -I    # note the first IPv4 — typically 172.x.x.x for WSL2
 ```
 
-Smoke test from the TRUDI distro:
+Smoke test from the DFIR Nexus host:
 
 ```bash
 ssh -i ~/.ssh/trudi_live trudi@172.x.x.x 'hostname && uname -a'
@@ -52,9 +52,9 @@ shows the WSL bridge is up (Windows side).
 
 ---
 
-## 2. Generate a TRUDI SSH key (one-time)
+## 2. Generate a DFIR Nexus SSH key (one-time)
 
-On the **TRUDI host** (not the endpoint):
+On the **DFIR Nexus host** (not the endpoint):
 
 ```bash
 ssh-keygen -t ed25519 -f ~/.ssh/trudi_live -N '' -C 'trudi-live'
@@ -64,9 +64,9 @@ cat ~/.ssh/trudi_live.pub
 
 ---
 
-## 3. Register the endpoint with TRUDI
+## 3. Register the endpoint with DFIR Nexus
 
-TRUDI looks up endpoint connection details in
+DFIR Nexus looks up endpoint connection details in
 `~/cases/.common/live_hosts.json`. The agent never sees the file — it only
 sees host names — so connection details stay server-side.
 
@@ -84,14 +84,14 @@ cat > ~/cases/.common/live_hosts.json <<'JSON'
 JSON
 ```
 
-Verify TRUDI sees it:
+Verify DFIR Nexus sees it:
 
 ```bash
 python -c "from core.ssh import list_configured_hosts; print(list_configured_hosts())"
 # → ['ubuntu-endpoint']
 ```
 
-End-to-end smoke from a TRUDI Python prompt (no MCP server needed):
+End-to-end smoke from a DFIR Nexus Python prompt (no MCP server needed):
 
 ```python
 from tools.live import live_processes
@@ -104,7 +104,7 @@ print(r["success"], r["stdout"][:200])
 ## 4. Install Atomic Red Team on the endpoint (5 min)
 
 Atomic Red Team gives you reproducible TTP detonations mapped 1:1 to MITRE
-T-IDs — perfect ground truth for testing TRUDI's attribution + coverage
+T-IDs — perfect ground truth for testing DFIR Nexus's attribution + coverage
 tools. https://atomicredteam.io/
 
 On the endpoint:
@@ -150,9 +150,9 @@ sleep 2; curl -s http://localhost:8888/ > /dev/null
 
 ---
 
-## 6. Run a TRUDI investigation against the live endpoint
+## 6. Run a DFIR Nexus investigation against the live endpoint
 
-From the TRUDI agent session:
+From the DFIR Nexus agent session:
 
 ```
 misc.start_execution_log("LIVE-TEST-001", "./analysis/LIVE-TEST-001_trace.json")
@@ -217,7 +217,7 @@ pkill -f 'python3 -m http.server'
 sudo rmmod pcspkr 2>/dev/null
 ```
 
-On the TRUDI side:
+On the DFIR Nexus side:
 
 ```bash
 # Just remove the host from live_hosts.json to deny further connections

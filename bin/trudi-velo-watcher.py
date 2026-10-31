@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""TRUDI Velociraptor event-stream watcher.
+"""DFIR Nexus Velociraptor event-stream watcher.
 
 Long-running sidecar that subscribes to Velociraptor's client monitoring
 stream for the named Custom.TRUDI.* artifacts and emits one alert JSON per
@@ -316,7 +316,7 @@ def _consume_detector(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="TRUDI Velociraptor event-stream watcher")
+    parser = argparse.ArgumentParser(description="DFIR Nexus Velociraptor event-stream watcher")
     parser.add_argument("--case-id", required=True)
     parser.add_argument("--client-id", required=True)
     parser.add_argument("--artifacts", required=True,

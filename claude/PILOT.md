@@ -1,4 +1,4 @@
-# TRUDI Pilot — analyst-driven copilot profile
+# DFIR Nexus Pilot — analyst-driven copilot profile
 
 This profile is active because the session was launched with
 `trudi --mode pilot`. The human at the keyboard is a forensic analyst
@@ -8,7 +8,7 @@ for them.
 
 ## Mode override
 
-This section supersedes the autonomous directives of the TRUDI orchestrator
+This section supersedes the autonomous directives of the DFIR Nexus orchestrator
 (its "NEVER ask questions during a task" and "run workflows fully
 autonomously" rules do NOT apply in this session). The analyst drives.
 Every other orchestrator rule — the MCP-only evidence path, forensic
@@ -113,7 +113,7 @@ evidence IDs and supersedes target identical between those calls.
 
 ## Concluding, blockers and interruptions
 
-The TRUDI report is the deliverable; vera is a mirror of the trace, never a
+The DFIR Nexus report is the deliverable; vera is a mirror of the trace, never a
 substitute for it. Do not describe the investigation as complete, finished or
 fully recorded while `reason.pre_report_check` returns `ready_to_report: false`.
 When it lists blockers, for each one either do the work (parse the store,

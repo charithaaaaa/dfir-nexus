@@ -404,7 +404,7 @@ class TestAtomicFlush:
         l._path = "/nonexistent/dir/trace.json"
         with pytest.raises(OSError):
             l._flush()
-        assert "[TRUDI WARN]" in capsys.readouterr().err
+        assert "[DFIR Nexus WARN]" in capsys.readouterr().err
 
 
 class TestThreadSafety:
@@ -488,7 +488,7 @@ class TestUnconfiguredRecordRaises:
         l2 = ExecutionLog()
         l2.configure("CASE-NEW", p)
         captured = capsys.readouterr()
-        assert "[TRUDI WARN]" in captured.err
+        assert "[DFIR Nexus WARN]" in captured.err
         assert "CASE-OLD" in captured.err
 
     def test_configure_warns_on_corrupted_json(self, tmp_path, capsys):
@@ -498,7 +498,7 @@ class TestUnconfiguredRecordRaises:
         l = ExecutionLog()
         l.configure("CASE-X", p)
         captured = capsys.readouterr()
-        assert "[TRUDI WARN]" in captured.err
+        assert "[DFIR Nexus WARN]" in captured.err
         assert "corrupted" in captured.err
 
 
@@ -530,7 +530,7 @@ class TestExportReturnValues:
         l.record_tool_call("vol.pslist", True, False, 0, 0)
         result = l.export(str(tmp_path / "no_such_dir" / "trace"))
         captured = capsys.readouterr()
-        assert "[TRUDI WARN]" in captured.err
+        assert "[DFIR Nexus WARN]" in captured.err
 
 
 class TestRenderUnknownType:

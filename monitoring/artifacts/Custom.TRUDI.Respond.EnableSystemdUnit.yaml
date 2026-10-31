@@ -1,6 +1,6 @@
 name: Custom.TRUDI.Respond.EnableSystemdUnit
 description: |
-  TRUDI remediation revert: re-enable a systemd unit previously disabled
+  DFIR Nexus remediation revert: re-enable a systemd unit previously disabled
   by DisableSystemdUnit.
 
 type: CLIENT

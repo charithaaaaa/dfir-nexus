@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Register TRUDI in an OpenCode install — side-by-side with Claude Code.
+"""Register DFIR Nexus in an OpenCode install — side-by-side with Claude Code.
 
 Stdlib only — called by install.sh and unit-tested directly. Idempotent and
 self-healing (a stale command path or permission entry is rewritten in place),
@@ -15,7 +15,7 @@ What it configures (all under ~/.config/opencode by default):
 2. command/ — symlinks each claude/commands/*.md (/trudi-* slash commands run
    from the repo path; no drift-prone deployed copies).
 3. plugin/ — symlinks opencode/plugin/trudi.js (the hook adapter).
-4. AGENTS.md — installs the TRUDI orchestrator (claude/CLAUDE.md), backing up
+4. AGENTS.md — installs the DFIR Nexus orchestrator (claude/CLAUDE.md), backing up
    any existing file with a UTC timestamp first (never overwritten silently).
 """
 from __future__ import annotations
@@ -53,7 +53,7 @@ def _bash_permission(ban: list[str]) -> dict:
 
 
 def register(config_path: Path, repo_root: Path, venv_python: str) -> list[str]:
-    """Merge the TRUDI mcp + permission config into `config_path`."""
+    """Merge the DFIR Nexus mcp + permission config into `config_path`."""
     config_path = Path(config_path)
     repo_root = Path(repo_root)
     msgs: list[str] = []
@@ -85,10 +85,10 @@ def register(config_path: Path, repo_root: Path, venv_python: str) -> list[str]:
     # 1b) MCP execution timeout — OpenCode's default (30-60s) aborts long
     #     forensic/DAIR/reason calls on local models (observed: dair_assess
     #     killed at 60s with MCP error -32001). experimental.mcp_timeout is
-    #     the canonical key. INVARIANT: this must exceed EVERY TRUDI executor
+    #     the canonical key. INVARIANT: this must exceed EVERY DFIR Nexus executor
     #     budget — an equal value races (observed live: a 1800s carve vs a
     #     1800s mcp_timeout → client cancelled first, the server's belated
-    #     response then killed the whole stdio connection). TRUDI's largest
+    #     response then killed the whole stdio connection). DFIR Nexus's largest
     #     budget is PLASO_TIMEOUT (6h default), so 7h here. The server always
     #     terminates tools by its own budgets — the client ceiling is a
     #     never-reached backstop, not a wait. Respect a user's larger value.
@@ -99,7 +99,7 @@ def register(config_path: Path, repo_root: Path, venv_python: str) -> list[str]:
         if cur is not None:
             msgs.append(f"  experimental.mcp_timeout raised {cur} → 25200000")
         else:
-            msgs.append("  experimental.mcp_timeout → 25200000 (7h — above every TRUDI tool budget)")
+            msgs.append("  experimental.mcp_timeout → 25200000 (7h — above every DFIR Nexus tool budget)")
 
     # 1c) External-directory access: /trudi-clear-case runs
     #     `python -m tools.trudi_reset` from the repo, and command docs point
@@ -111,7 +111,7 @@ def register(config_path: Path, repo_root: Path, venv_python: str) -> list[str]:
         ext[repo_pat] = "allow"
         msgs.append(f"  permission.external_directory: {repo_pat} → allow")
 
-    # 1d) Disable the subagent + todo tools for TRUDI runs. On a serialized
+    # 1d) Disable the subagent + todo tools for DFIR Nexus runs. On a serialized
     #     local backend (llama-server -np 1) an OpenCode `task` subagent is a
     #     fresh full-context inference that re-ships the orchestrator + tool
     #     schemas for zero parallelism, and its result dumps back into the
@@ -228,7 +228,7 @@ def install_agents_md(opencode_dir: Path, repo_root: Path) -> list[str]:
         msgs.append(f"  backed up existing AGENTS.md → {bak.name}")
     opencode_dir.mkdir(parents=True, exist_ok=True)
     shutil.copy2(src, dest)
-    msgs.append("  installed TRUDI orchestrator → AGENTS.md")
+    msgs.append(" installed DFIR Nexus orchestrator → AGENTS.md")
     return msgs
 
 

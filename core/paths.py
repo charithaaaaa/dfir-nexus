@@ -42,7 +42,7 @@ HASH_TIMEOUT     = int(os.environ.get("TRUDI_HASH_TIMEOUT")     or "900")
 
 
 def trudi_cache_dir() -> str:
-    """Return the TRUDI shared cache dir: $TRUDI_CACHE_DIR, else ~/.cache/trudi.
+    """Return the DFIR Nexus shared cache dir: $TRUDI_CACHE_DIR, else ~/.cache/trudi.
 
     Single resolution point for session.json, call_id.counter, hook.lock,
     hash_cache.json, jobs/ and dashboard.url. The default dir is SHARED with

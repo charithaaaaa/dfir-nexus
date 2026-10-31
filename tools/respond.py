@@ -2,7 +2,7 @@
 
 `suggest_containment` turns a CONFIRMED/LIKELY finding into operator-runnable
 commands rendered from the detector's recipe. On top of that, the **auto-protect**
-path lets TRUDI act as an autonomous blue-team agent for a *narrow,
+path lets DFIR Nexus act as an autonomous blue-team agent for a *narrow,
 server-classified* tier of safe containment:
 
   respond.suggest_containment(case_id, finding_id, detector=, evidence=)
@@ -22,7 +22,7 @@ server-classified* tier of safe containment:
       cannot self-execute a destructive action by passing mode="auto".
   respond.revert_action(case_id, action_id)   — run the recorded inverse.
 
-Posture note: TRUDI's evidence stance stays strict read-only; execution exists
+Posture note: DFIR Nexus's evidence stance stays strict read-only; execution exists
 ONLY here, ONLY in live-monitoring scope, and ONLY through structured, validated
 argv (no free-form command). The auto tier is classified from recipe metadata on
 disk (the agent can't reclassify); destructive actions stay physically gated

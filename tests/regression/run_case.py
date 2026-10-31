@@ -112,7 +112,7 @@ def _score_against_ground_truth(
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser(description="Score a TRUDI case against ground truth.")
+    p = argparse.ArgumentParser(description="Score a DFIR Nexus case against ground truth.")
     p.add_argument("--case-dir", required=True, type=Path)
     p.add_argument("--ground-truth", required=True, type=Path)
     p.add_argument("--min-recall", type=float, default=0.8)

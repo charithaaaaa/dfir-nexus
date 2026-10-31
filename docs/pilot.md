@@ -1,4 +1,4 @@
-# TRUDI Pilot — the analyst at the controls
+# DFIR Nexus Pilot — the analyst at the controls
 
 **Pilot mode is an agent-client session where the analyst drives.** The
 LLM (Claude Code or OpenCode) is the copilot: it proposes and explains,
@@ -21,7 +21,7 @@ earlier custom prompt_toolkit REPL (see "Retired components").
  analyst ──chat──► agent client (claude / opencode) ──MCP──► server.py
                         │  pilot profile active                  │ gates,
                         ▼                                        ▼ trace
-                  .vera case  ◄── trace→vera mirror ◄── TRUDI trace JSON
+                  .vera case  ◄── trace→vera mirror ◄── DFIR Nexus trace JSON
 ```
 
 **Profile delivery per client** (no global files mutated at launch;
@@ -92,11 +92,11 @@ browser via WSL localhost forwarding.
 
 ## The mirror (kept, standalone)
 
-`pilot/mirror.py` converts a TRUDI trace into a browsable `.vera` case —
+`pilot/mirror.py` converts a DFIR Nexus trace into a browsable `.vera` case —
 batch (`python -m pilot.mirror <trace.json> <case.vera>`) or `--follow`
 (idempotent tail; `trudi --mode pilot --mirror` starts it automatically).
 Field mapping is verified against vera v0.24 schema 19: tool_call →
-Action (cid marker; full stdout stays in TRUDI's sidecar), finding →
+Action (cid marker; full stdout stays in DFIR Nexus's sidecar), finding →
 Finding with the whole typed claim in attrs, `verify_evidence_hash` →
 Evidence row, DAIR work order → Lead + items, narration → notes. The
 `.vera` is a DERIVED artifact — always rebuildable from the trace, which
@@ -123,7 +123,7 @@ assistance tools they motivated (`reason.draft_command`, `reason.advise`,
   conversational control proves insufficient.
 - Vera web work-order panel (bridge HTTP surface) — unchanged from the
   original plan, still optional polish.
-- Custody: include the TRUDI trace + `.tool_output` sidecars in vera's
+- Custody: include the DFIR Nexus trace + `.tool_output` sidecars in vera's
   signed chain-of-custody bundle.
 
 ## Verification walkthrough
@@ -142,6 +142,6 @@ assistance tools they motivated (`reason.draft_command`, `reason.advise`,
 4. `trudi --mode pilot --mirror` — the `.vera` file grows live.
 5. `python -m pytest -q` — suite green.
 
-Note: agent and pilot sessions on the SAME case contend for the TRUDI
+Note: agent and pilot sessions on the SAME case contend for the DFIR Nexus
 session beacon (`~/.cache/trudi/session.json`) — one investigation per
 case at a time, as always.

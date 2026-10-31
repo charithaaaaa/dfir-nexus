@@ -1,6 +1,6 @@
 """Slim MCP tool descriptions for schema-eager clients (OpenCode).
 
-OpenCode renders every tool's full schema into every model request; TRUDI's
+OpenCode renders every tool's full schema into every model request; DFIR Nexus's
 docstrings double as agent documentation, so the raw description mass is
 ~18.7k tokens across 277 tools. This pass — enabled by
 TRUDI_SLIM_TOOL_DESCRIPTIONS=1, set per-client by the OpenCode registrar —

@@ -1,6 +1,6 @@
 """Write-capable SSH execution for the gated respond.* containment path.
 
-This is the ONLY place in TRUDI that runs state-changing commands on a live
+This is the ONLY place in DFIR Nexus that runs state-changing commands on a live
 endpoint. It is deliberately a separate module from `core/ssh.py` so the
 read-only contract of `ssh_run` stays auditable and untouched.
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Block until a new TRUDI alert appears, then exit — the event trigger for
+"""Block until a new DFIR Nexus alert appears, then exit — the event trigger for
 the /trudi-watch-alerts second-granularity response loop.
 
 The `/loop` skill re-fires on the scheduler, which clamps to a 60s floor, so

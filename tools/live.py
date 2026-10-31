@@ -11,7 +11,7 @@ attribution, coverage. Findings can cite `_trudi_call_id` values returned
 here exactly as they would from `vol.*` or `ez.*` results.
 
 Tools are intentionally narrow — one OS command per tool, no composition
-on the remote side. Composition happens in TRUDI (correlate.*, attribution,
+on the remote side. Composition happens in DFIR Nexus (correlate.*, attribution,
 af.*) where the gate/index layer can audit it.
 """
 from __future__ import annotations
@@ -222,7 +222,7 @@ def live_yara_scan(host: str, rules_path: str, target_dir: str) -> dict:
 
     rules_path: path TO THE RULES ON THE ENDPOINT — they must already be
                 present there (push via scp or initial deployment). Keeps
-                this tool stateless and read-only on TRUDI side.
+                this tool stateless and read-only on DFIR Nexus side.
     target_dir: directory on the endpoint to scan.
 
     For one-off rules push, scp the rules during endpoint setup (see

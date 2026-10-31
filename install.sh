@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# TRUDI install script — run on a SANS SIFT Workstation with the Claude Code CLI installed.
+# DFIR Nexus install script — run on a SANS SIFT Workstation with the Claude Code CLI installed.
 set -euo pipefail
 
 TRUDI_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -19,7 +19,7 @@ fail() { echo -e "${RED}  ✗${NC} $*"; exit 1; }
 step() { echo -e "\n${GREEN}▶${NC} $*"; }
 
 echo ""
-echo "  TRUDI — Threat Response Unit for Digital Investigation"
+echo "  DFIR Nexus — Threat Response Unit for Digital Investigation"
 echo "  ======================================================="
 echo "  Installing into: $TRUDI_DIR"
 echo ""
@@ -106,7 +106,7 @@ else
         # path, not abort the whole install under `set -e`.
         # Release ships as chainsaw/chainsaw + sigma rules
         if ! tar -xzf "$TMPDIR/chainsaw.tgz" -C "$TMPDIR" 2>/dev/null; then
-            warn "chainsaw archive corrupt — skipping (TRUDI works without it)"
+            warn "chainsaw archive corrupt — skipping (DFIR Nexus works without it)"
         elif [ -f "$TMPDIR/chainsaw/chainsaw" ]; then
             sudo install -m 0755 "$TMPDIR/chainsaw/chainsaw" "$CHAINSAW_BIN"
             # Create the share dir once, before either optional copy — so a
@@ -124,7 +124,7 @@ else
             warn "chainsaw archive layout unexpected; skipping"
         fi
     else
-        warn "Could not download chainsaw (offline?). Skip — TRUDI works without it."
+        warn "Could not download chainsaw (offline?). Skip — DFIR Nexus works without it."
     fi
     rm -rf "$TMPDIR"
 fi
@@ -188,7 +188,7 @@ step "Installing MITRE ATT&CK reference table"
 MITRE_DEST="$HOME/cases/.common/mitre_techniques.json"
 MITRE_SRC="$TRUDI_DIR/cases/.common/mitre_techniques.json"
 mkdir -p "$HOME/cases/.common"
-# Prefer in-repo copy; fall back to the one bundled with TRUDI if cases/ is missing.
+# Prefer in-repo copy; fall back to the one bundled with DFIR Nexus if cases/ is missing.
 if [ -f "$MITRE_DEST" ]; then
     ok "MITRE reference table already at $MITRE_DEST"
 elif [ -f "$MITRE_SRC" ]; then
@@ -306,7 +306,7 @@ fi
 
 # ── 5. Global CLAUDE.md ───────────────────────────────────────────────────────
 
-step "Installing TRUDI orchestrator (CLAUDE.md)"
+step "Installing DFIR Nexus orchestrator (CLAUDE.md)"
 
 mkdir -p "$CLAUDE_DIR"
 
@@ -317,7 +317,7 @@ if [ -f "$CLAUDE_MD_DEST" ]; then
 fi
 
 cp "$CLAUDE_MD_SRC" "$CLAUDE_MD_DEST"
-ok "Installed TRUDI orchestrator to $CLAUDE_MD_DEST"
+ok "Installed DFIR Nexus orchestrator to $CLAUDE_MD_DEST"
 
 # ── 6. Claude Code hooks ─────────────────────────────────────────────────────
 
@@ -389,7 +389,7 @@ fi
 
 # ── 7. MCP server registration ────────────────────────────────────────────────
 
-step "Registering TRUDI MCP server"
+step "Registering DFIR Nexus MCP server"
 
 PYTHON_BIN="$VENV_DIR/bin/python3"
 SERVER_PATH="$TRUDI_DIR/server.py"
@@ -414,7 +414,7 @@ fi
 if [ -n "$REG_SCOPE" ] && "$CLAUDE_BIN" mcp list 2>/dev/null | grep -q "trudi-sift"; then
     ok "Registered trudi-sift MCP server ($REG_SCOPE scope)"
 else
-    fail "Failed to register trudi-sift MCP server — TRUDI has no tools without it. Reproduce: $CLAUDE_BIN mcp add trudi-sift $PYTHON_BIN $SERVER_PATH --scope user"
+    fail "Failed to register trudi-sift MCP server — DFIR Nexus has no tools without it. Reproduce: $CLAUDE_BIN mcp add trudi-sift $PYTHON_BIN $SERVER_PATH --scope user"
 fi
 
 # ── 7. Verify ─────────────────────────────────────────────────────────────────
@@ -423,7 +423,7 @@ step "Running smoke test"
 
 cd "$TRUDI_DIR"
 # The install is already complete by this point — a failing test should not abort
-# the script under `set -e` and hide the "TRUDI is ready" banner. Warn instead.
+# the script under `set -e` and hide the "DFIR Nexus is ready" banner. Warn instead.
 if "$VENV_DIR/bin/python3" -m pytest tests/ -q --tb=short; then
     ok "Tests passed"
 else
@@ -434,12 +434,12 @@ fi
 # ── Done ──────────────────────────────────────────────────────────────────────
 
 echo ""
-echo -e "${GREEN}  TRUDI is ready.${NC}"
+echo -e "${GREEN}  DFIR Nexus is ready.${NC}"
 echo ""
 echo "  Next steps:"
 echo "    1. Edit $TRUDI_DIR/.env and set ANTHROPIC_API_KEY — REQUIRED for a full-quality run."
 echo "       It powers the analyst, the reason.* reviewer, and the dair.* director."
-echo "       Without it TRUDI degrades: reason.* / dair.* calls are skipped, so findings"
+echo "       Without it DFIR Nexus degrades: reason.* / dair.* calls are skipped, so findings"
 echo "       are never adversarially challenged. (VirusTotal / AbuseIPDB keys are optional.)"
 echo "       Default: REASON_MODEL=claude-opus-4-8, DAIR_MODEL=claude-opus-4-8 (or a local model, below)."
 echo ""

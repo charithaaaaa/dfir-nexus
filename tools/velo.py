@@ -74,7 +74,7 @@ def _log_velo_tool(result: dict) -> None:
         result["_trudi_call_id"] = cid
     except Exception as e:  # noqa: BLE001
         import sys
-        print(f"[TRUDI WARN] _log_velo_tool failed: {e}", file=sys.stderr)
+        print(f"[DFIR Nexus WARN] _log_velo_tool failed: {e}", file=sys.stderr)
         result.setdefault("_trudi_call_id", 0)
 
 
@@ -467,7 +467,7 @@ def upload_artifact_yaml(yaml_text: str) -> dict:
 
     yaml_text: the complete artifact YAML document. Must start with `name:`
                and the name MUST begin with `Custom.TRUDI.` — enforced here
-               to keep TRUDI-managed artifacts namespaced and easy to audit.
+               to keep DFIR Nexus-managed artifacts namespaced and easy to audit.
     """
     head = yaml_text.lstrip().splitlines()[0] if yaml_text.strip() else ""
     if not head.startswith("name:"):
@@ -476,7 +476,7 @@ def upload_artifact_yaml(yaml_text: str) -> dict:
     if "Custom.TRUDI." not in yaml_text.splitlines()[0]:
         return {
             "success": False,
-            "error": "artifact name must begin with 'Custom.TRUDI.' — TRUDI manages "
+            "error": "artifact name must begin with 'Custom.TRUDI.' — DFIR Nexus manages "
                      "its own artifacts in that namespace to avoid clobbering "
                      "operator-authored content.",
         }

@@ -6,7 +6,7 @@ rule Persistence_ScheduledTask_XML_Suspicious
 {
     meta:
         description = "Suspicious scheduled task XML — hidden, system-level, encoded command"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "medium"
 
     strings:
@@ -25,7 +25,7 @@ rule Persistence_ServiceInstall_Cmdline
 {
     meta:
         description = "Service installation via sc.exe or powershell New-Service"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "medium"
 
     strings:
@@ -45,7 +45,7 @@ rule Persistence_WMI_EventSubscription
 {
     meta:
         description = "WMI event subscription persistence"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "high"
 
     strings:
@@ -63,7 +63,7 @@ rule Persistence_Registry_Run_Key_Encoded
 {
     meta:
         description = "Encoded PowerShell command in Run/RunOnce registry key"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "high"
 
     strings:

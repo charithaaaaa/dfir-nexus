@@ -1,6 +1,6 @@
 name: Custom.TRUDI.Respond.RestoreFromQuarantine
 description: |
-  TRUDI remediation revert: read /var/quarantine/<sha256>.origin to
+  DFIR Nexus remediation revert: read /var/quarantine/<sha256>.origin to
   recover the original path and move the file back.
 
 type: CLIENT

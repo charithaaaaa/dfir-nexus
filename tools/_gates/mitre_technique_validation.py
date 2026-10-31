@@ -37,7 +37,7 @@ def check(ctx) -> Optional[dict]:
     try:
         from tools.correlate import mitre_validate as _mitre_validate
     except Exception as e:
-        print(f"[TRUDI WARN] correlate.mitre_validate unavailable: {e}", file=sys.stderr)
+        print(f"[DFIR Nexus WARN] correlate.mitre_validate unavailable: {e}", file=sys.stderr)
         return None  # graceful-degrade: don't refuse if MITRE module is broken
 
     unknown: list[str] = []
@@ -68,7 +68,7 @@ def check(ctx) -> Optional[dict]:
                 "unvalidated": True, "reason": "table_incomplete",
                 "table_size": table_size,
             })
-        print(f"[TRUDI WARN] mitre table has {table_size} techniques "
+        print(f"[DFIR Nexus WARN] mitre table has {table_size} techniques "
               f"(< {MITRE_MIN_TECHNIQUES}); {', '.join(unknown)} recorded unvalidated — "
               f"rebuild with `python -m tools.mitre.build_mitre_cache`", file=sys.stderr)
         return None

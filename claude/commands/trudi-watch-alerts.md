@@ -1,5 +1,5 @@
 ---
-description: "Event-driven TRUDI live-monitoring loop — wake on a new alert within seconds (no 60s /loop floor) and auto-respond"
+description: "Event-driven DFIR Nexus live-monitoring loop — wake on a new alert within seconds (no 60s /loop floor) and auto-respond"
 argument-hint: "[case_id] [interval_seconds]"
 ---
 
@@ -40,7 +40,7 @@ investigating* still queue as later events. This is the robust mechanism.
    alerts directory never fills).
 3. **Start the persistent watcher** with the `Monitor` tool:
    - `command`: `python3 ~/trudi/bin/trudi-alert-waiter.py --follow --case-id <CASE> --interval <N>`
-   - `description`: `new TRUDI alerts for <CASE>`
+   - `description`: `new DFIR Nexus alerts for <CASE>`
    - `persistent`: `true`
    The `--follow` waiter reads `monitoring/_last_check_seq.txt` for its start
    cursor (so already-drained alerts aren't re-reported) and emits one JSON line

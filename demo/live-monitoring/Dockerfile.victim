@@ -46,7 +46,7 @@ RUN useradd -m -u 1000 -s /bin/bash victim \
  && mkdir -p /home/victim/.ssh \
  && chown -R victim:victim /home/victim
 
-# SSH host keys + a key pair that TRUDI's live.* will use.
+# SSH host keys + a key pair that DFIR Nexus live.* will use.
 # The private key lands under /shared and the SIFT host mounts a copy into
 # ~/.ssh/. (We could ship the keypair pre-generated but generating on first
 # boot avoids "everyone uses the same key" — even for a demo).

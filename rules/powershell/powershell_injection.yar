@@ -6,7 +6,7 @@ rule PowerShell_EncodedCommand_Suspicious
 {
     meta:
         description = "PowerShell with encoded command and evasion flags"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "medium"
 
     strings:
@@ -28,7 +28,7 @@ rule PowerShell_AMSI_Bypass
 {
     meta:
         description = "Common AMSI bypass techniques in memory"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "high"
 
     strings:
@@ -46,7 +46,7 @@ rule PowerShell_ScriptBlock_Obfuscation
 {
     meta:
         description = "Heavy PowerShell obfuscation patterns (invoke/join/char arrays)"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "medium"
 
     strings:
@@ -66,7 +66,7 @@ rule PowerShell_Download_Cradle
 {
     meta:
         description = "PowerShell download-and-execute cradles"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "high"
 
     strings:

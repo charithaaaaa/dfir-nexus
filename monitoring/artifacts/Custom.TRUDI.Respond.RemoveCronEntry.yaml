@@ -1,6 +1,6 @@
 name: Custom.TRUDI.Respond.RemoveCronEntry
 description: |
-  TRUDI remediation: delete a cron entry. Restricted to /etc/cron* paths;
+  DFIR Nexus remediation: delete a cron entry. Restricted to /etc/cron* paths;
   any other path refuses.
 
 type: CLIENT

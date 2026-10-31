@@ -1,6 +1,6 @@
 name: Custom.TRUDI.Respond.ResumePid
 description: |
-  TRUDI remediation revert: send SIGCONT to undo a prior SIGSTOP.
+  DFIR Nexus remediation revert: send SIGCONT to undo a prior SIGSTOP.
 
 type: CLIENT
 

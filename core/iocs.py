@@ -5,7 +5,7 @@ device VID:PID ...) recorded as it surfaces, grounded in the tool calls that
 showed it and mapped to ATT&CK techniques. Each technique's detection strategy
 (ATT&CK v18 analytics, built offline into mitre_detection.json) names the data
 components that would confirm or scope it; data/fk/attack_coverage.yaml maps
-those components to the TRUDI tools that examine their forensic equivalents on
+those components to the DFIR Nexus tools that examine their forensic equivalents on
 a disk image. A (technique, component) pair is COVERED once any mapped tool
 has run successfully in the trace, or when a typed `coverage` disposition
 settles it. Open items are Scan leads for DAIR and report warnings — they never

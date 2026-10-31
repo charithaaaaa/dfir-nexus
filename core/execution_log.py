@@ -119,7 +119,7 @@ def _next_shared_call_id(trace_path: Optional[str] = None, in_memory_seq: int = 
         if n != counter_n:
             # Stale counter detected — log once so corruption is visible.
             print(
-                f"[TRUDI WARN] _next_shared_call_id: stale counter file "
+                f"[DFIR Nexus WARN] _next_shared_call_id: stale counter file "
                 f"(was {counter_n}, returning {n}; trace_max={trace_max} "
                 f"in_memory_seq={in_memory_seq})",
                 file=sys.stderr,
@@ -139,7 +139,7 @@ def _utcnow() -> str:
 
 
 def _warn(msg: str) -> None:
-    print(f"[TRUDI WARN] {msg}", file=sys.stderr)
+    print(f"[DFIR Nexus WARN] {msg}", file=sys.stderr)
 
 
 def _build_phase_index(entries: list[dict]) -> list[dict]:

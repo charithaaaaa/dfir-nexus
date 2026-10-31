@@ -252,7 +252,7 @@ def assess_readiness(log, include_synthesis=True):
                 )
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] cross-host correlation check failed: {_e}",
+        print(f"[DFIR Nexus WARN] cross-host correlation check failed: {_e}",
               file=_sys.stderr)
 
     # Narration auditing is explicit and cached, never an implicit model call.
@@ -287,7 +287,7 @@ def assess_readiness(log, include_synthesis=True):
             _fn()
         except Exception as _e:
             import sys as _sys
-            print(f"[TRUDI WARN] pre_report structural check #{_n} failed: {_e}",
+            print(f"[DFIR Nexus WARN] pre_report structural check #{_n} failed: {_e}",
                   file=_sys.stderr)
 
     from tools._gates._entities import norm_entity, entity_matches
@@ -895,7 +895,7 @@ def assess_readiness(log, include_synthesis=True):
             )
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] registry inventory failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] registry inventory failed: {_e}", file=_sys.stderr)
 
     # Comms-store completeness fires on PRESENCE. When a delivery /
     # dissemination / egress question is in the case, every chat/mail store
@@ -940,7 +940,7 @@ def assess_readiness(log, include_synthesis=True):
                     )
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] comms-presence check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] comms-presence check failed: {_e}", file=_sys.stderr)
 
     # A11: with an interactive (or undeclared-session) account-creation /
     # persistence claim at ANY tier and removable media in evidence, the
@@ -970,7 +970,7 @@ def assess_readiness(log, include_synthesis=True):
                 )
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] device-inventory duty check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] device-inventory duty check failed: {_e}", file=_sys.stderr)
 
     # Persistence/creation enumeration duty. A finding with
     # act in {account_creation, persistence_install} or
@@ -999,7 +999,7 @@ def assess_readiness(log, include_synthesis=True):
             )
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] scheduled-task duty check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] scheduled-task duty check failed: {_e}", file=_sys.stderr)
 
     # A FLAGGED injector-payload task is direct evidence injection ran —
     # enumerating it is not investigating it. The task must be referenced by a
@@ -1065,7 +1065,7 @@ def assess_readiness(log, include_synthesis=True):
                 )
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] injector-payload reconciliation check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] injector-payload reconciliation check failed: {_e}", file=_sys.stderr)
 
     # Tier–evidence concordance (symmetric, audit-only). Over-asking is
     # refused at record time by the tier contract; a finding recorded BELOW
@@ -1093,7 +1093,7 @@ def assess_readiness(log, include_synthesis=True):
             )
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] tier-concordance check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] tier-concordance check failed: {_e}", file=_sys.stderr)
 
     # K-5b: a principal settled by same_as / excluded / refuted / not_a_principal
     # while the trace holds SESSION artifacts naming that principal that the
@@ -1132,7 +1132,7 @@ def assess_readiness(log, include_synthesis=True):
                 break
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] principal-settlement session check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] principal-settlement session check failed: {_e}", file=_sys.stderr)
 
     # A recipient/correspondent claim at any tier should rest on message
     # BODIES, not a roster listing. The read_mail cmd now records mode/field/
@@ -1157,7 +1157,7 @@ def assess_readiness(log, include_synthesis=True):
                 )
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] body-read check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] body-read check failed: {_e}", file=_sys.stderr)
 
     # Phase coverage (blocking): a report written without the collection/
     # analysis phases skipped the systematic enumeration they force. Trace-
@@ -1176,7 +1176,7 @@ def assess_readiness(log, include_synthesis=True):
             )
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] phase-coverage check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] phase-coverage check failed: {_e}", file=_sys.stderr)
 
     # DAIR verification challenges left verified:null and never run — the
     # max-pass cap may not override them; this is the report-time backstop.
@@ -1185,7 +1185,7 @@ def assess_readiness(log, include_synthesis=True):
         issues.extend(open_challenge_issues(entries))
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] open-challenge check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] open-challenge check failed: {_e}", file=_sys.stderr)
 
     # FK-driven corroboration completeness (block-late). A CONFIRMED/LIKELY
     # finding grounded on a single artifact whose FK-named corroborators never
@@ -1202,7 +1202,7 @@ def assess_readiness(log, include_synthesis=True):
             )
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] FK-corroboration check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] FK-corroboration check failed: {_e}", file=_sys.stderr)
 
     # Affirmative coverage completeness (block-late, STRICT). Mirror of
     # negative_completeness for positive verdicts: an exfil/dissemination verdict
@@ -1213,7 +1213,7 @@ def assess_readiness(log, include_synthesis=True):
         issues.extend(coverage_gaps(entries))
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] affirmative-coverage check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] affirmative-coverage check failed: {_e}", file=_sys.stderr)
 
     # Work-order completion (block-late). A forensic tool that was blocked by the
     # DAIR-batch gate and then neither re-run nor dispositioned is a dropped
@@ -1226,7 +1226,7 @@ def assess_readiness(log, include_synthesis=True):
         issues.extend(unrun_priority_tools(entries))
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] work-order check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] work-order check failed: {_e}", file=_sys.stderr)
 
     # Attack-lifecycle coverage (advisory). The five phases of the
     # cyber attack lifecycle — persistence, privilege escalation, lateral
@@ -1250,7 +1250,7 @@ def assess_readiness(log, include_synthesis=True):
             )
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] lifecycle coverage check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] lifecycle coverage check failed: {_e}", file=_sys.stderr)
 
     # Open scoping leads — a candidate pivot (host / forced principal) or a
     # flagged IOC (keystroke-injector device, injector-payload scheduled task)
@@ -1272,7 +1272,7 @@ def assess_readiness(log, include_synthesis=True):
             )
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] scoping-leads check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] scoping-leads check failed: {_e}", file=_sys.stderr)
 
     # Details the reviewer could not SEE (display limit) must be verified with a
     # targeted read, not dropped. List what was never followed by a SUPPORTED
@@ -1298,7 +1298,7 @@ def assess_readiness(log, include_synthesis=True):
                 f"re-checked.")
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] unshown-detail audit failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] unshown-detail audit failed: {_e}", file=_sys.stderr)
 
     # A background job still running or queued is unexamined scope.
     try:
@@ -1312,7 +1312,7 @@ def assess_readiness(log, include_synthesis=True):
                 + ". Collect each with misc.job_status before reporting.")
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] job check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] job check failed: {_e}", file=_sys.stderr)
 
     # IOC coverage — warnings only. An ATT&CK detection source left unexamined
     # for a recorded IOC is a stated blind spot in the report, never a blocker.
@@ -1338,7 +1338,7 @@ def assess_readiness(log, include_synthesis=True):
                     f"Open items are listed in the report as not examined.")
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] IOC coverage check failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] IOC coverage check failed: {_e}", file=_sys.stderr)
 
     ready = len(issues) == 0
     # Dispositions a reader should check (warning + report section, never a blocker).
@@ -1357,7 +1357,7 @@ def assess_readiness(log, include_synthesis=True):
                   "report's 'Dispositions to review' section.")
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] disposition review failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] disposition review failed: {_e}", file=_sys.stderr)
 
     return {
         "ready_to_report": ready if include_synthesis else False,

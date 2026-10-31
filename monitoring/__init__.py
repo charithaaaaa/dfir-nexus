@@ -1,4 +1,4 @@
-"""TRUDI live-monitoring subsystem.
+"""DFIR Nexus live-monitoring subsystem.
 
 Contains:
   - artifacts/    Velociraptor artifact YAML templates for Custom.TRUDI.*

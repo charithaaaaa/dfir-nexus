@@ -1,5 +1,5 @@
 ---
-description: "Stop the TRUDI live-monitoring watcher(s) for a case (SIGTERM sidecar, clear event table)"
+description: "Stop the DFIR Nexus live-monitoring watcher(s) for a case (SIGTERM sidecar, clear event table)"
 argument-hint: "[case_id]"
 ---
 
@@ -50,5 +50,5 @@ event-table-cleared. State that no further alerts will be drained until
 - Stopping the watcher does **not** clear already-drained alerts,
   investigation traces, or response suggestions — use `/trudi-clear-case`
   for that.
-- The victim host itself is untouched — this only stops TRUDI's
+- The victim host itself is untouched — this only stops DFIR Nexus's
   collection of its events.

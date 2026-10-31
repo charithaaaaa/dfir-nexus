@@ -1,4 +1,4 @@
-"""trace→vera mirror: convert a TRUDI trace into a browsable .vera case.
+"""trace→vera mirror: convert a DFIR Nexus trace into a browsable .vera case.
 
 One record pipeline for everything (docs/pilot.md Phase 1): batch mode
 exports any past run; follow mode tails a live trace. Both are the same
@@ -9,7 +9,7 @@ idempotent pass — every mirrored row carries its originating
 
 Mapping (verified against vera schema 19):
   tool_call        -> Action method="command" (cid marker in notes; full
-                      stdout stays in TRUDI's .tool_output sidecar)
+                      stdout stays in DFIR Nexus's .tool_output sidecar)
   finding          -> Finding, ftype from the typed claim's category,
                       action_id via linked_call_id, whole claim in attrs
   hash.verify_evidence_hash tool_call -> Evidence row (label + sha256)
@@ -285,7 +285,7 @@ def follow(trace_path: str, case_path: str, investigator: str = "",
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
-        description="Mirror a TRUDI trace into a .vera case")
+        description="Mirror a DFIR Nexus trace into a .vera case")
     ap.add_argument("trace", help="TRUDI trace JSON (analysis/<CASE>_trace.json)")
     ap.add_argument("case", help=".vera case file (created if missing)")
     ap.add_argument("--investigator", default="",

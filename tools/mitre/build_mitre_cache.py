@@ -309,7 +309,7 @@ def write_detection(output_dir: str, detection: dict, source: str) -> str:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Build MITRE ATT&CK cache for TRUDI.")
+    parser = argparse.ArgumentParser(description="Build MITRE ATT&CK cache for DFIR Nexus.")
     parser.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--source", default=MITRE_CTI_URL)
     parser.add_argument("--input-file", help="Optional local STIX JSON to use instead of downloading")

@@ -96,7 +96,7 @@ def _log_tool(result: dict) -> None:
         result["_trudi_call_id"] = cid
     except Exception as e:
         import sys
-        print(f"[TRUDI WARN] _log_tool failed for {result.get('cmd', '?')[:80]}: {e}",
+        print(f"[DFIR Nexus WARN] _log_tool failed for {result.get('cmd', '?')[:80]}: {e}",
               file=sys.stderr)
         raise
 
@@ -285,7 +285,7 @@ async def run_with_progress(
                             # tool run, but surface them in the trace so
                             # they're not invisible.
                             import sys as _sys
-                            print(f"[TRUDI WARN] progress_drain failed: "
+                            print(f"[DFIR Nexus WARN] progress_drain failed: "
                                   f"{_progress_err}", file=_sys.stderr)
                             try:
                                 from core.execution_log import log as _log

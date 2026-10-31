@@ -389,12 +389,12 @@ def _gate_decision() -> tuple[bool, str]:
                       f"return to a collection phase before running more forensic tools")
     except Exception:
         tb = traceback.format_exc()
-        print(f"[TRUDI WARN] dair gate check failed (fail-open): {tb}", file=sys.stderr)
+        print(f"[DFIR Nexus WARN] dair gate check failed (fail-open): {tb}", file=sys.stderr)
         try:
             from core.execution_log import log
             log.record_system_error("dair_gate", tb)
         except Exception as _e:
-            print(f"[TRUDI WARN] dair_gate system_error log failed: {_e}", file=sys.stderr)
+            print(f"[DFIR Nexus WARN] dair_gate system_error log failed: {_e}", file=sys.stderr)
         return False, "gate check error (fail-open)"
 
 
@@ -402,7 +402,7 @@ def _gate_decision() -> tuple[bool, str]:
 # Centralised so the three outcome paths in on_call_tool stay readable.
 
 def _trace_narration_failure(e: Exception, note: str) -> None:
-    print(f"[TRUDI WARN] narration logging failed: {e}", file=sys.stderr)
+    print(f"[DFIR Nexus WARN] narration logging failed: {e}", file=sys.stderr)
     try:
         from core.execution_log import log
         log.record_system_error(
@@ -439,7 +439,7 @@ def _trace_cancelled(tool_name: str, elapsed: float) -> None:
             input_call_ids=_parent_cids(),
         )
     except Exception as err:
-        print(f"[TRUDI FATAL] {tool_name} cancelled + trace-write failure: "
+        print(f"[DFIR Nexus FATAL] {tool_name} cancelled + trace-write failure: "
               f"{err!r}", file=sys.stderr, flush=True)
 
 
@@ -483,7 +483,7 @@ def _trace_exception(tool_name: str, exc: Exception, elapsed: float,
         )
     except Exception as log_err:
         print(
-            f"[TRUDI FATAL] tool exception + trace-write failure for "
+            f"[DFIR Nexus FATAL] tool exception + trace-write failure for "
             f"{tool_name}: original={exc!r}; trace_err={log_err!r}\n{tb}",
             file=sys.stderr, flush=True,
         )
@@ -556,7 +556,7 @@ def _trace_success_baseline(tool_name: str, elapsed: float,
                 **({"stdout_full": body, "stdout_excerpt": body[:600]} if body else {}),
             ) or 0
     except Exception as err:
-        print(f"[TRUDI WARN] success-baseline log failed for {tool_name}: "
+        print(f"[DFIR Nexus WARN] success-baseline log failed for {tool_name}: "
               f"{err!r}", file=sys.stderr)
     return 0
 
@@ -672,7 +672,7 @@ class NarrationMiddleware(Middleware):
                                     f"then dair_assess with stack_action='pop' to resume Report."))
                     should_block = False
                 except Exception as _pt:
-                    print(f"[TRUDI WARN] report->collect transition failed: {_pt}", file=sys.stderr)
+                    print(f"[DFIR Nexus WARN] report->collect transition failed: {_pt}", file=sys.stderr)
             if should_block:
                 # Record the block so a blocked-then-dropped tool is auditable.
                 try:

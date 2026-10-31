@@ -383,7 +383,7 @@ def verify_evidence_hash(evidence_path: str, expected_md5: Optional[str] = None,
         )
     except Exception as _e:
         import sys
-        print(f"[TRUDI WARN] verify_evidence_hash log failed: {_e}", file=sys.stderr)
+        print(f"[DFIR Nexus WARN] verify_evidence_hash log failed: {_e}", file=sys.stderr)
 
     return result
 

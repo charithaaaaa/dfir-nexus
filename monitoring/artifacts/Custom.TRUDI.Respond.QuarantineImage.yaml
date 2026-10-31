@@ -1,6 +1,6 @@
 name: Custom.TRUDI.Respond.QuarantineImage
 description: |
-  TRUDI remediation: move the named executable to /var/quarantine/<sha256>
+  DFIR Nexus remediation: move the named executable to /var/quarantine/<sha256>
   and revoke its execute bit. Records the original path so
   RestoreFromQuarantine can put it back.
 

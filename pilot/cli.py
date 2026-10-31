@@ -81,7 +81,7 @@ def print_case_banner(case_dir: str, mode: str) -> None:
         return
     info = parse_case_md(case_dir)
     evidence = discover_evidence(info)
-    print(f"TRUDI {mode.upper()} ── {info.case_id}")
+    print(f"DFIR Nexus {mode.upper()} ── {info.case_id}")
     if info.question:
         print(f"  Q: {info.question[:120]}")
     print(f"  evidence: {len(evidence)} file(s)"
@@ -126,7 +126,7 @@ def launch(case_dir: str, client: str, mode: str, mirror: bool = False) -> int:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
         prog="trudi",
-        description="TRUDI — agent mode (the LLM drives) or pilot mode (you drive)")
+        description="DFIR Nexus — agent mode (the LLM drives) or pilot mode (you drive)")
     ap.add_argument("--mode", choices=("agent", "pilot"), required=True,
                     help="agent: autonomous investigation; pilot: analyst-driven copilot")
     ap.add_argument("--case", help="case directory (default: where you ran trudi)")

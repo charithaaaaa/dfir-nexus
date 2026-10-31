@@ -1,6 +1,6 @@
 name: Custom.TRUDI.Respond.KillPid
 description: |
-  TRUDI remediation: send SIGKILL to a specific PID. Gated by respond.*
+  DFIR Nexus remediation: send SIGKILL to a specific PID. Gated by respond.*
   approval workflow; never invoked directly by a detector.
 
 type: CLIENT

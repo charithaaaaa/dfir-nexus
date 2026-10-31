@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Regenerate TRUDI's FK sheets from AppliedIR forensic-knowledge (MIT).
+"""Regenerate DFIR Nexus's FK sheets from AppliedIR forensic-knowledge (MIT).
 
 Provenance / reproducibility for data/fk/. The sheets under artifacts/ and
 tools/ are DERIVED from AppliedIR's forensic-knowledge package by this script:
 it allowlists only neutral forensic fields, scrubs any coupled list items,
-retargets corroborate_with to TRUDI tools, and stamps an SPDX header.
+retargets corroborate_with to DFIR Nexus tools, and stamps an SPDX header.
 See ATTRIBUTION.md.
 
 To regenerate (e.g. to add sheets or refresh from a newer upstream):
@@ -93,7 +93,7 @@ def header():
             f"# Derived-From: AppliedIR forensic-knowledge @ {UPSTREAM_COMMIT} "
             "(Copyright (c) 2026 AppliedIncidentResponse.com)\n"
             "# Modifications: stripped Valhuntir platform-wiring fields; "
-            "corroboration retargeted to TRUDI tools.\n"
+            "corroboration retargeted to DFIR Nexus tools.\n"
             "# See ATTRIBUTION.md and THIRD_PARTY/forensic-knowledge/LICENSE.\n")
 
 

@@ -1,6 +1,6 @@
 """Spoliation prevention tests.
 
-These tests prove TRUDI's architectural guardrails refuse any attempt to write
+These tests prove DFIR Nexus's architectural guardrails refuse any attempt to write
 to evidence locations, regardless of which tool's output-path argument the
 agent passes. Cited in the hackathon Component #6 (Accuracy Report) as
 evidence of architectural-vs-prompt-based enforcement (Criterion #4).

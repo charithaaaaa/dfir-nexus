@@ -2,12 +2,12 @@
 
 *Find Evil! Hackathon — submission component #7.*
 
-Two ways to evaluate TRUDI, shortest first:
+Two ways to evaluate DFIR Nexus, shortest first:
 
-- **[Path A — Browse a finished investigation](#path-a--browse-a-finished-investigation)** (~2 min, **no evidence, no API key**). Install, launch the dashboard, and read a completed run's trace and report. This is the fastest way to see what TRUDI produces and how every finding links back to the tool call that produced it.
-- **[Path B — Run a fresh investigation](#path-b--run-a-fresh-investigation)** (needs evidence + an `ANTHROPIC_API_KEY`). Drive TRUDI end-to-end on a real image and compare your run against the committed one.
+- **[Path A — Browse a finished investigation](#path-a--browse-a-finished-investigation)** (~2 min, **no evidence, no API key**). Install, launch the dashboard, and read a completed run's trace and report. This is the fastest way to see what DFIR Nexus produces and how every finding links back to the tool call that produced it.
+- **[Path B — Run a fresh investigation](#path-b--run-a-fresh-investigation)** (needs evidence + an `ANTHROPIC_API_KEY`). Drive DFIR Nexus end-to-end on a real image and compare your run against the committed one.
 
-> **Full-quality runs require Claude Code + an `ANTHROPIC_API_KEY`.** The submission runs the analyst, the `reason.*` adversarial reviewer, and the `dair.*` phase director all on Claude/Opus. **Without the key TRUDI degrades** — the `reason.*` and `dair.*` calls are skipped, so findings are never hypothesis-tested, confidence-scored, or citation-checked, and phase direction falls back to a static path. Path A needs no key (you are reading a finished run); Path B does.
+> **Full-quality runs require Claude Code + an `ANTHROPIC_API_KEY`.** The submission runs the analyst, the `reason.*` adversarial reviewer, and the `dair.*` phase director all on Claude/Opus. **Without the key DFIR Nexus degrades** — the `reason.*` and `dair.*` calls are skipped, so findings are never hypothesis-tested, confidence-scored, or citation-checked, and phase direction falls back to a static path. Path A needs no key (you are reading a finished run); Path B does.
 
 ---
 
@@ -39,7 +39,7 @@ cd ~/trudi
 - Create a venv at `~/.venv` and install all Python dependencies
 - Install the dashboard launcher (`trudi-dashboard` → `/usr/local/bin`)
 - Copy the MITRE ATT&CK table and the **bundled case studies** into `~/cases/` (existing cases are never overwritten)
-- Back up then install the TRUDI orchestrator to `~/.claude/CLAUDE.md`
+- Back up then install the DFIR Nexus orchestrator to `~/.claude/CLAUDE.md`
 - Register the Claude Code **hooks** and the 5 **`/trudi-*` slash commands** — all run from the repo path (no drift-prone copies)
 - Configure **OpenCode side-by-side** when detected (MCP + deny rules + commands + hook-adapter plugin + `AGENTS.md`) — see the README's *OpenCode support* section
 - Register the **`trudi-sift` MCP server** globally
@@ -57,7 +57,7 @@ sudo apt-get update
 sudo apt-get install -y pff-tools pst-utils binwalk tcpxtract sleuthkit ewf-tools
 ```
 
-| apt package | Binary | TRUDI tools |
+| apt package | Binary | DFIR Nexus tools |
 |-------------|--------|-------------|
 | `pff-tools` | `pffexport` | `misc.pff_export` (PST/OST email) |
 | `pst-utils` | `readpst` | `misc.readpst_extract` (PST→mbox) — **not** `libpst-utils` |
@@ -66,7 +66,7 @@ sudo apt-get install -y pff-tools pst-utils binwalk tcpxtract sleuthkit ewf-tool
 | `tcpxtract` | `tcpxtract` | `net.tcpxtract_streams` |
 | `binwalk` | `binwalk` | embedded carving |
 
-chainsaw (Sigma over EVTX, `misc.chainsaw_hunt`) is fetched from its GitHub release into `/usr/local/bin` and is optional — TRUDI runs without it. Verify the apt set landed:
+chainsaw (Sigma over EVTX, `misc.chainsaw_hunt`) is fetched from its GitHub release into `/usr/local/bin` and is optional — DFIR Nexus runs without it. Verify the apt set landed:
 
 ```bash
 for b in pffexport readpst fls ewfmount tcpxtract; do command -v "$b" || echo "MISSING: $b"; done
@@ -76,7 +76,7 @@ for b in pffexport readpst fls ewfmount tcpxtract; do command -v "$b" || echo "M
 
 ## Path A — Browse a finished investigation
 
-No evidence, no API key. You are reading a run TRUDI already completed.
+No evidence, no API key. You are reading a run DFIR Nexus already completed.
 
 **1. Launch the dashboard** (serves every case under `~/cases`):
 
@@ -109,7 +109,7 @@ Three views, all reading the same trace:
 **What to look for** (this is the submission in miniature):
 
 - **Audit trail** — pick any CONFIRMED finding in the report, find it in the Trace Viewer, and follow its `linked_call_id` to the precise tool execution. Nothing is asserted without a traceable source.
-- **Adversarial review** — the `reason.evaluate_finding` / `confidence_score` / `cite_check` calls that gate each finding, and at least one **self-correction** where TRUDI walked back a claim that didn't survive review.
+- **Adversarial review** — the `reason.evaluate_finding` / `confidence_score` / `cite_check` calls that gate each finding, and at least one **self-correction** where DFIR Nexus walked back a claim that didn't survive review.
 - **Confidence tiers** — CONFIRMED vs LIKELY vs SUSPECTED stated explicitly (e.g. the BadUSB `defaultprinter` device-level finding is CONFIRMED; person-level intent is tiered down).
 
 Every bundled case under [`cases/`](../cases/) ships its full trace and report — browse any of them the same way. See [docs/datasets.md](datasets.md) for what each one is and where its evidence comes from.
@@ -118,7 +118,7 @@ Every bundled case under [`cases/`](../cases/) ships its full trace and report �
 
 ## Path B — Run a fresh investigation
 
-This drives TRUDI end-to-end. It needs the evidence (not committed — it's large and better fetched from source) and an `ANTHROPIC_API_KEY`.
+This drives DFIR Nexus end-to-end. It needs the evidence (not committed — it's large and better fetched from source) and an `ANTHROPIC_API_KEY`.
 
 **1. Add your key.** Edit `~/trudi/.env`:
 
@@ -165,7 +165,7 @@ Then prompt:
 Investigate this case. Start with the pre-enumeration triage, then follow the plan.
 ```
 
-TRUDI runs autonomously — no confirmation between steps. It prints the **live dashboard URL** for this run at the start, so you can watch the trace fill in real time (`./dashboard.sh` in another terminal if it isn't already up).
+DFIR Nexus runs autonomously — no confirmation between steps. It prints the **live dashboard URL** for this run at the start, so you can watch the trace fill in real time (`./dashboard.sh` in another terminal if it isn't already up).
 
 **4. Read the output.**
 
@@ -178,10 +178,10 @@ TRUDI runs autonomously — no confirmation between steps. It prints the **live 
 **5. (Optional) Score it.** For cases with a machine-readable answer key (CFReDS, DEMO-LIVE), compare automatically:
 
 ```
-Ask TRUDI: "Score this run against ground_truth.json with accuracy.compare."
+Ask DFIR Nexus: "Score this run against ground_truth.json with accuracy.compare."
 ```
 
-For the others, the published answer keys and TRUDI's scored results are in the [accuracy report](accuracy-report.md).
+For the others, the published answer keys and DFIR Nexus's scored results are in the [accuracy report](accuracy-report.md).
 
 ---
 

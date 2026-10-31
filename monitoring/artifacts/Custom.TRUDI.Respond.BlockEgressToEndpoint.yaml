@@ -1,6 +1,6 @@
 name: Custom.TRUDI.Respond.BlockEgressToEndpoint
 description: |
-  TRUDI remediation: iptables REJECT outbound TCP to (RemoteIp, RemotePort).
+  DFIR Nexus remediation: iptables REJECT outbound TCP to (RemoteIp, RemotePort).
   RemoteIp must be a valid dotted-quad and RemotePort 1..65535.
 
 type: CLIENT

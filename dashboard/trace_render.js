@@ -1,4 +1,4 @@
-/* Shared renderers for the TRUDI dashboard views (trace view + chain view).
+/* Shared renderers for the DFIR Nexus dashboard views (trace view + chain view).
  *
  * Exposes window.TrudiRender:
  *   parseDelimited(text)        CSV/TSV → {delim, header, rows, notes} | null

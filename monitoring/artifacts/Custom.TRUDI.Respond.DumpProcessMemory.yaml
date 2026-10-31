@@ -1,6 +1,6 @@
 name: Custom.TRUDI.Respond.DumpProcessMemory
 description: |
-  TRUDI remediation: gcore the named PID, upload the core to the
+  DFIR Nexus remediation: gcore the named PID, upload the core to the
   Velociraptor server for forensic analysis. The process is left running
   so a follow-on PausePid/KillPid is required for containment.
 

@@ -1,11 +1,11 @@
-"""Forensic-knowledge enrichment for TRUDI tool responses.
+"""Forensic-knowledge enrichment for DFIR Nexus tool responses.
 
 Attaches interpretive context (caveats, field meanings, what an artifact does
 NOT prove, corroboration pointers, exit-code meanings) to tool result dicts.
 Applied centrally by core.middleware.NarrationMiddleware — one hook covers all
 ~200 typed tools; no per-tool edits.
 
-Knowledge lives in data/fk/ as TRUDI-native YAML sheets (see data/fk/ATTRIBUTION.md).
+Knowledge lives in data/fk/ as DFIR Nexus-native YAML sheets (see data/fk/ATTRIBUTION.md).
 Only ADDS keys to the result; never touches success/data/_trudi_call_id, so the
 gate/DAIR/audit machinery downstream is unaffected. Fails open: any error leaves
 the result unchanged.
@@ -29,7 +29,7 @@ from tools._fk import (
 # The generic tier (data_provenance untrusted-evidence tag + rotating discipline
 # reminder) rides on EVERY tool that returns evidence-derived output — content
 # that could carry attacker-controlled text. It is NOT applied to reasoning /
-# orchestration / bookkeeping tools, whose output is TRUDI's own control data,
+# orchestration / bookkeeping tools, whose output is DFIR Nexus's own control data,
 # not evidence (tagging those as "untrusted evidence" would be wrong).
 _CONTROL_PREFIXES = (
     "reason_", "dair_", "correlate_", "coverage_", "accuracy_",
@@ -73,7 +73,7 @@ def _exit_code_of(result: dict):
 
 
 def enrich(tool_name: str, result: dict) -> dict:
-    """Attach FK context to a TRUDI tool result. No-op on non-dicts / on error."""
+    """Attach FK context to a DFIR Nexus tool result. No-op on non-dicts / on error."""
     if not isinstance(result, dict):
         return result
     try:

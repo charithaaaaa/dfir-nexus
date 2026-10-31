@@ -1,4 +1,4 @@
-# TRUDI — Threat Response Unit for Digital Investigation
+# DFIR Nexus — Threat Response Unit for Digital Investigation
 
 ## "We are all smarter than any of us."
 
@@ -8,7 +8,7 @@
 
 ## TL;DR
 
-Most AI agents are a single model grading their own work, which is how a confident hallucination ends up in a report. TRUDI splits the job across three. Claude runs the tools, a DAIR director decides what to examine next, and an adversarial reviewer challenges every conclusion before it's written. Each finding is tagged CONFIRMED, LIKELY, or SUSPECTED, and server-enforced gates make integrity structural: a CONFIRMED finding cannot be recorded without a link to the tool call that proves it. The goal isn't speed; it's a whole analyst team's worth of skepticism applied to every finding.
+Most AI agents are a single model grading their own work, which is how a confident hallucination ends up in a report. DFIR Nexus splits the job across three. Claude runs the tools, a DAIR director decides what to examine next, and an adversarial reviewer challenges every conclusion before it's written. Each finding is tagged CONFIRMED, LIKELY, or SUSPECTED, and server-enforced gates make integrity structural: a CONFIRMED finding cannot be recorded without a link to the tool call that proves it. The goal isn't speed; it's a whole analyst team's worth of skepticism applied to every finding.
 
 ---
 
@@ -27,11 +27,11 @@ front of a judge. The hard problem isn't getting an LLM to *do* forensics. It's 
 can rely on not to make things up, whose every claim traces back to a specific command, and that
 is honest about what it doesn't know.
 
-So I didn't model TRUDI on a faster analyst. I modeled it on a *team* of them. In a good IR shop no
+So I didn't model DFIR Nexus on a faster analyst. I modeled it on a *team* of them. In a good IR shop no
 single person's conclusion ships unchallenged: someone plans the approach, someone does the work,
 someone plays skeptic and tries to break the finding before it reaches the report, and someone is
 curious enough to chase the thread nobody was assigned. That mix of skepticism and curiosity is
-where accuracy comes from; none of us is as sharp alone as all of us are together. TRUDI turns that
+where accuracy comes from; none of us is as sharp alone as all of us are together. DFIR Nexus turns that
 team into roles a machine can hold open at once: a director that decides what to examine, an analyst
 that does the work, and an adversary that challenges every conclusion before it's allowed to stand,
 plus a bounded budget of curiosity so the agent can still follow a hunch the work order didn't name.
@@ -39,7 +39,7 @@ Speed is a side effect. Trust is the point.
 
 ## What it does
 
-You drop evidence into a case directory, open Claude Code, and TRUDI runs the whole
+You drop evidence into a case directory, open Claude Code, and DFIR Nexus runs the whole
 investigation on its own, with no per-step confirmation. It:
 
 - **Triages and characterizes the system**: registry hives, OS build, users, timezone,
@@ -58,23 +58,23 @@ investigation on its own, with no per-step confirmation. It:
 
 Two real investigations show the range.
 
-**NIST CFReDS "Data Leakage Case."** TRUDI reconstructed an insider conspiracy across five
+**NIST CFReDS "Data Leakage Case."** DFIR Nexus reconstructed an insider conspiracy across five
 exfil channels (email, two USBs, a CD-R, and Google Drive) and produced the smoking gun on
 its own. A decoy-named file, `winter_whether_advisory.zip`, recovered from the deleted area of
 an unauthorized USB, matched a confidential design deck (`detailed_design.pptx`) on the
 authorized device by **exact byte size** (16,381,123 bytes) — the decoy was the renamed stolen
-presentation. Tellingly, TRUDI tiered that mapping **LIKELY rather than CONFIRMED**, flagging on
+presentation. Tellingly, DFIR Nexus tiered that mapping **LIKELY rather than CONFIRMED**, flagging on
 its own that it had not compared file hashes; a hash check against the originals would have
 clinched it. The restraint is the point: it claimed exactly what the evidence supported.
 
-**SRL-2018 enterprise APT (CRIMSON OSPREY).** Across 8 hosts, TRUDI confirmed a Cobalt Strike
+**SRL-2018 enterprise APT (CRIMSON OSPREY).** Across 8 hosts, DFIR Nexus confirmed a Cobalt Strike
 beacon (`p.exe`, PID 8260) running under a stolen Domain Admin token and beaconing to an
 internal C2, with the full WMI→PowerShell→cmd→implant execution chain and lateral movement
 traced through NTLM logon records.
 
 ## How I built it
 
-TRUDI is a three-model system sitting behind a typed MCP boundary.
+DFIR Nexus is a three-model system sitting behind a typed MCP boundary.
 
 - **Claude (primary analyst)** orchestrates the investigation, selects tools, interprets
   output, and writes the report.
@@ -130,7 +130,7 @@ logon/session evidence behind it, a case question left unanswered. Each finding 
 the hypothesis it tested, so the trace reads as hypothesis → evidence → verdict, not a flat list of
 assertions.
 
-Everything the agent does crosses one boundary: the TRUDI MCP server, which mounts over 250
+Everything the agent does crosses one boundary: the DFIR Nexus MCP server, which mounts over 250
 typed tools across 24 namespaces. The agent never shells out to `vol` or `RECmd.dll`
 directly. It calls a typed wrapper, and a safe executor runs the court-vetted binary with
 retry, timeout, and a line cap. What the boundary exposes:
@@ -168,7 +168,7 @@ The point of all of this is that the guardrails are architectural, not just prom
 | Tools must route through MCP | middleware detects direct forensic-binary use; the `mcp_routing` gate refuses any finding citing a raw bash execution |
 | Findings must be traceable | `misc.record_finding` requires a `linked_call_id` pointing at the producing `_trudi_call_id`. No link, no finding |
 | Confirmed claims require review | confidence-score, citation-check, hypothesis, lineage, and adversarial-evaluate gates hard-block unsupported CONFIRMED/LIKELY findings |
-| Response stays advisory | TRUDI runs no containment or remediation; recommended actions are printed as commands in the report for the analyst to run, keeping the human in the loop on every system-changing action |
+| Response stays advisory | DFIR Nexus runs no containment or remediation; recommended actions are printed as commands in the report for the analyst to run, keeping the human in the loop on every system-changing action |
 
 ### Gates that can refuse a finding
 
@@ -218,10 +218,10 @@ ignoring them.
 
 ## Challenges I ran into
 
-Every one of these came out of an autonomous run that *failed*. I let TRUDI loose on real
+Every one of these came out of an autonomous run that *failed*. I let DFIR Nexus loose on real
 forensic datasets, watched where it reached the wrong conclusion, and then hardened the
 architecture so the same kind of mistake couldn't happen again. That diagnose-and-harden cycle
-was most of what building TRUDI actually was.
+was most of what building DFIR Nexus actually was.
 
 - **It confidently concluded "no suspect," and it was wrong.** On the Nitroba harassment case,
   a two-hour autonomous run reported that no roster name appeared in the captured traffic and
@@ -267,7 +267,7 @@ was most of what building TRUDI actually was.
 
 ## Accomplishments I'm proud of
 
-**A real autonomous self-correction, not a scripted one.** On the SRL-2018 APT case, TRUDI was
+**A real autonomous self-correction, not a scripted one.** On the SRL-2018 APT case, DFIR Nexus was
 handed an initial-responder IOC briefing naming `STUN.exe`, `pssdnsvc.exe`, an `msedge.exe`
 masquerade, an `atmfd.dll` phantom driver, an external C2 at `172.15.1.20`, and a 2023
 timeline. Working from raw memory and disk, the agent refuted the briefing it was given. None
@@ -279,7 +279,7 @@ agent explicitly resisting the temptation to chase the named artifacts and verif
 briefed IOC against raw evidence first. It trusted the evidence over the prompt.
 
 **The failure that became the proof.** The Nitroba false-negative above didn't just get
-patched. The hardened TRUDI re-ran the case end to end and got it right. It placed the harassing
+patched. The hardened DFIR Nexus re-ran the case end to end and got it right. It placed the harassing
 web-mail submissions on a single device (a Mac at `192.168.15.4`, MAC `00:17:f2:e2:c0:ce`), tied
 the same browser session to `jcoachj@gmail.com` and roster member Johnny Coach, and also
 surfaced two more roster identities active on that device (`amy789smith`, `avabook3@gmail.com`)
@@ -289,7 +289,7 @@ working artifact, not a claim.
 **It found a harassing email no prior account of the case included.** The Nitroba case is
 usually told through the single `willselfdestruct.com` threat ("you can't find us… Stop
 teaching. Start running."). Because the Exhaustive Evidence Rule says never stop at the first
-artifact of a type, and one email is never all the email, TRUDI swept the entire capture for
+artifact of a type, and one email is never all the email, DFIR Nexus swept the entire capture for
 web-mail submissions and recovered a previously unaccounted-for message sent through a different
 anonymous service: a POST to `sendanonymousemail.net`, sender
 `the_whole_world_is_watching@nitroba.org`, subject *"Your class stinks"*, to the same victim
@@ -299,7 +299,7 @@ conduct, and it only surfaced because the agent was told not to stop at the firs
 already explained the case.
 
 **It knows what it doesn't know.** For accuracy, the thing I'm proudest of is restraint. On that
-same Nitroba re-run, TRUDI rated device-level attribution CONFIRMED but person-level attribution
+same Nitroba re-run, DFIR Nexus rated device-level attribution CONFIRMED but person-level attribution
 only LIKELY, and said why in the report: the open, passwordless dorm Wi-Fi and the multiple
 personal accounts on the one device bind the act to a device and a logged-in account, "not a
 specific pair of hands on the keyboard." On the CFReDS insider case it tiered with the same
@@ -313,12 +313,12 @@ says LIKELY when the evidence only supports likely is worth more than one that a
 CONFIRMED.
 
 **Negative findings are scored, not skipped.** "We looked for X and found nothing" is real
-forensic work, so TRUDI records it as evidence. On CFReDS it confirmed no timestomping (0 drift
+forensic work, so DFIR Nexus records it as evidence. On CFReDS it confirmed no timestomping (0 drift
 across 98,904 `$SI`/`$FN` pairs) and no event-log clearing (0 × EID 1102/104), each as a tiered
 finding linked to the tool that proved the absence. Those feed the accuracy framework's
 negative-coverage metric.
 
-**The same agent and the same guardrails across very different cases.** TRUDI has run an 8-host
+**The same agent and the same guardrails across very different cases.** DFIR Nexus has run an 8-host
 enterprise APT (memory, disk, event logs), a multi-channel insider data theft (five exfil
 channels across email, two USBs, a CD-R, and cloud, with per-device anti-forensics), the Vanko
 "Abducted Zebrafish" insider case shown in the **[demo video](https://youtu.be/Dbx5DcH6V5E)**
@@ -328,7 +328,7 @@ harassment attribution from a single PCAP, plus M57, Schardt, and ROCBA. It's de
 coverage: individual runs recorded from ~7 tiered findings on the smaller single-artifact cases
 up to 51 on the 8-host SRL APT, over traces ranging from ~110 to ~870 fully linked entries.
 
-**The constraint layer is architectural, not prose.** TRUDI physically can't write to an
+**The constraint layer is architectural, not prose.** DFIR Nexus physically can't write to an
 evidence file or submit an unlinked finding, because the MCP boundary, the read-only path guard,
 and the finding gates reject it before anything runs. The judges' distinction between
 architectural and prompt-based guardrails is the whole design, and you can demonstrate it by
@@ -357,7 +357,7 @@ that turns a checklist-runner into an investigator.
   across all bundled cases, not just the demo.
 - Package additional reference datasets so any practitioner can reproduce a full investigation
   end-to-end on a fresh SIFT Workstation.
-- **Expand the local ATT&CK catalog.** TRUDI validates every technique ID against a local MITRE
+- **Expand the local ATT&CK catalog.** DFIR Nexus validates every technique ID against a local MITRE
   table (the `mitre_technique_validation` gate), so the catalog's coverage is the ceiling on what
   the agent can cite. Grow it toward full ATT&CK so a valid technique is never rejected merely for
   being absent from the local copy.

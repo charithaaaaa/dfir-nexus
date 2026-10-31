@@ -6,7 +6,7 @@ rule LateralMovement_NetUse_AdminShare
 {
     meta:
         description = "Net use to admin shares (C$, ADMIN$, IPC$)"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "medium"
 
     strings:
@@ -24,7 +24,7 @@ rule LateralMovement_PsExec_Artifacts
 {
     meta:
         description = "PsExec / PsExecSvc artifacts in memory or filesystem"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "medium"
 
     strings:
@@ -41,7 +41,7 @@ rule LateralMovement_WMI_Exec
 {
     meta:
         description = "WMI-based remote execution patterns"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "medium"
 
     strings:
@@ -59,7 +59,7 @@ rule CredentialAccess_LSASS_Dump
 {
     meta:
         description = "LSASS process memory dumping tools and techniques"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "critical"
 
     strings:
@@ -80,7 +80,7 @@ rule CredentialAccess_Mimikatz
 {
     meta:
         description = "Mimikatz credential dumping tool artifacts"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "critical"
         reference = "https://attack.mitre.org/software/S0002/"
 

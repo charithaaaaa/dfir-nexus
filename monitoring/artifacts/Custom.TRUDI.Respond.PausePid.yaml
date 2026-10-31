@@ -1,6 +1,6 @@
 name: Custom.TRUDI.Respond.PausePid
 description: |
-  TRUDI remediation: send SIGSTOP to a specific PID. Use for forensic
+  DFIR Nexus remediation: send SIGSTOP to a specific PID. Use for forensic
   capture before kill.
 
 type: CLIENT

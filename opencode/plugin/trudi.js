@@ -1,5 +1,5 @@
 /**
- * TRUDI OpenCode plugin — a thin adapter, deliberately free of logic.
+ * DFIR Nexus OpenCode plugin — a thin adapter, deliberately free of logic.
  *
  * Every event is translated into the stdin-JSON contract of the Claude Code
  * hooks in claude/hooks/ and the corresponding Python hook is spawned. The
@@ -92,7 +92,7 @@ export const TrudiHooks = async ({ directory }) => {
       try {
         const d = JSON.parse(out).hookSpecificOutput
         if (d && d.permissionDecision === "deny") {
-          throw new Error(d.permissionDecisionReason || "blocked by TRUDI guard")
+          throw new Error(d.permissionDecisionReason || "blocked by DFIR Nexus guard")
         }
       } catch (e) {
         if (e instanceof SyntaxError) return // unparseable ⇒ fail open

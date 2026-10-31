@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# dashboard.sh — start the persistent multi-case TRUDI trace dashboard.
+# dashboard.sh — start the persistent multi-case DFIR Nexus trace dashboard.
 #
 # Thin wrapper around bin/trudi-dashboard so you can launch from the repo
 # root without needing the symlink in /usr/local/bin to be installed:

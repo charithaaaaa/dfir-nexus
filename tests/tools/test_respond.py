@@ -1,6 +1,6 @@
 """Tests for the containment-recommendation path.
 
-TRUDI does NOT execute remediation (Velociraptor's client build ships without
+DFIR Nexus does NOT execute remediation (Velociraptor's client build ships without
 `execve()`, and keeping execution out of the agent's hands is the safer
 posture). `respond.suggest_containment` renders operator-runnable commands from
 the detector recipe; `monitor.end_investigation` writes them into the report.

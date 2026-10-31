@@ -73,7 +73,7 @@ def test_chain_view_served_under_dashboard_prefix(tmp_path, monkeypatch):
     try:
         time.sleep(0.05)
         for path, needle in [
-            ("/_dashboard/dashboard.html", b"TRUDI Trace"),
+            ("/_dashboard/dashboard.html", b"DFIR Nexus"),
             ("/_dashboard/chain_view.html", b"dagre"),
             ("/_dashboard/vendor/dagre.min.js", b"dagre"),
         ]:

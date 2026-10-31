@@ -58,7 +58,7 @@ def _record_structured_marker(tool_name: str, raw: dict, summary: dict | None = 
         return cid
     except Exception as e:
         import sys
-        print(f"[TRUDI WARN] structured marker failed for {tool_name}: {e}",
+        print(f"[DFIR Nexus WARN] structured marker failed for {tool_name}: {e}",
               file=sys.stderr)
         return None
 

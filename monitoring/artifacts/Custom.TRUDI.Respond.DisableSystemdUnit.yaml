@@ -1,6 +1,6 @@
 name: Custom.TRUDI.Respond.DisableSystemdUnit
 description: |
-  TRUDI remediation: systemctl disable --now <unit>. Refuses unit names
+  DFIR Nexus remediation: systemctl disable --now <unit>. Refuses unit names
   that don't look like systemd units.
 
 type: CLIENT

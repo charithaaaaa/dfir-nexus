@@ -129,7 +129,7 @@ def _tool_keys(name: str) -> set:
     recorded by its BINARY ('/usr/local/bin/pe-scanner', 'SQLECmd.dll',
     'ewfverify') matches the MCP spelling an agent dispositions ('misc.pe_scanner',
     'ez.sqlecmd', 'ewf_verify'): the collapsed full name and, when the first
-    segment is a TRUDI namespace, the collapsed name without it."""
+    segment is a DFIR Nexus namespace, the collapsed name without it."""
     raw = (name or "").strip().split("(", 1)[0]
     raw = (raw.split() or [""])[0].rsplit("/", 1)[-1].lower()
     if raw.endswith(".dll"):

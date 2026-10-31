@@ -8,7 +8,7 @@ flowchart LR
     Orchestrator --> Claude
     CaseBrief --> Claude
 
-    subgraph MCP["Architectural guardrails (enforced — model cannot bypass): TRUDI MCP boundary"]
+    subgraph MCP["Architectural guardrails (enforced — model cannot bypass): DFIR Nexus MCP boundary"]
         Server["FastMCP server\nserver.py"]
         Middleware["Middleware\nDAIR window + narration"]
         Tools["Typed tool namespaces\nstatic forensics (submission)\nlive · monitor · respond (experimental)"]

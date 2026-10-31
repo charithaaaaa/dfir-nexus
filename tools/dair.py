@@ -5,7 +5,7 @@ assess which DAIR phase the investigation is in, whether to transition, and what
 to focus on next. DAIR may surface candidate pivots, but candidate discovery is
 advisory metadata and never mutates phase control flow by itself.
 
-Active phases for TRUDI (read-only forensic tool):
+Active phases for DFIR Nexus (read-only forensic tool):
   Triage        — confirm initial IOCs, challenge for hallucinations, produce plan
   Collect       — gather raw artifacts per plan (ez.*, vol.*, tsk.*, strings.*)
   Analyze       — reason about collected artifacts; hypothesize on suspicious findings
@@ -166,7 +166,7 @@ def _known_hosts() -> set[str]:
                     known.add(_norm_host(pv["value"]))
     except Exception as _read_err:
         import sys as _sys
-        print(f"[TRUDI WARN] dair host-context read failed: {_read_err!r}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] dair host-context read failed: {_read_err!r}", file=_sys.stderr)
     return known
 
 
@@ -196,7 +196,7 @@ def _known_principals() -> set[str]:
             known |= {norm_entity(k) for k in _elog.index().identities.keys()}
     except Exception as _read_err:
         import sys as _sys
-        print(f"[TRUDI WARN] dair principal-context read failed: {_read_err!r}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] dair principal-context read failed: {_read_err!r}", file=_sys.stderr)
     return {k for k in known if k}
 
 
@@ -296,7 +296,7 @@ def _ask_claude(system: str, user: str, max_tokens: int = 2048) -> dict:
         from core.execution_log import log as _elog
         _elog.record_call_initiated("dair_assess", "claude", {"model": model})
     except Exception as _e:
-        import sys; print(f"[TRUDI WARN] record_call_initiated failed: {_e}", file=sys.stderr)
+        import sys; print(f"[DFIR Nexus WARN] record_call_initiated failed: {_e}", file=sys.stderr)
     try:
         client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY, timeout=DAIR_TIMEOUT)
         resp = client.messages.create(
@@ -327,7 +327,7 @@ def _ask_claude(system: str, user: str, max_tokens: int = 2048) -> dict:
             # through record_system_error because that path can fail for
             # the same reason and we'd risk infinite recursion.
             import sys as _sys
-            print(f"[TRUDI WARN] dair record_call_abandoned failed during "
+            print(f"[DFIR Nexus WARN] dair record_call_abandoned failed during "
                   f"backend error: {_log_err!r}", file=_sys.stderr)
         return {**_empty, "error": str(e)}
 
@@ -419,7 +419,7 @@ def _log_dair(assessment: dict, input_tokens: int, output_tokens: int,
         )
     except Exception as e:
         import sys
-        print(f"[TRUDI WARN] _log_dair failed: {e}", file=sys.stderr)
+        print(f"[DFIR Nexus WARN] _log_dair failed: {e}", file=sys.stderr)
         return 0
 
 
@@ -479,7 +479,7 @@ an alternate exfil channel, setupapi.dev.log) as probe candidates. This forces \
 one divergent look before the funnel closes. Skip it only in Report.
 
 IMPORTANT CONSTRAINTS:
-- TRUDI is a read-only forensic tool. Improve & Response actions are NEVER \
+- DFIR Nexus is a read-only forensic tool. Improve & Response actions are NEVER \
 performed — they appear only as recommendations in the final report.
 - The investigation begins with a confirmed positive detection already in hand. \
 Start at Triage unless the stack says otherwise.
@@ -625,7 +625,7 @@ A Triage push without one of these reasons is redirected to Collect.
 VERIFICATION CHALLENGES (mandatory when current_phase == Triage):
 For every discrete claim in the tool results summary, emit a challenge entry:
   - claim: the exact claim (file path, registry key, process name, IP, etc.)
-  - challenge_method: the specific TRUDI tool that confirms it \
+  - challenge_method: the specific DFIR Nexus tool that confirms it \
 (strings.stat_file, tsk.fls, vol.pslist, ez.recmd_hive, vol.netscan, etc.)
   - verified: null if the tool has not yet run; true if tool output confirms; \
 false if tool output refutes
@@ -936,7 +936,7 @@ def dair_assess(
     challenge_method tools (they will be in directives.priority_tools).
 
     When next_phase is "Report": review recommended_actions for Improve & Response
-    items to include in the report. These are advisory only — TRUDI never performs
+    items to include in the report. These are advisory only — DFIR Nexus never performs
     containment or eradication.
     """
     summary = _cap_lines(tool_results_summary.strip(), 100)
@@ -1373,7 +1373,7 @@ def dair_assess(
                 # agent still has scoping work the director already surfaced.
         except Exception as _e3:
             import sys as _sys3
-            print(f"[TRUDI WARN] phase-aware layer3 failed: {_e3}", file=_sys3.stderr)
+            print(f"[DFIR Nexus WARN] phase-aware layer3 failed: {_e3}", file=_sys3.stderr)
 
     # Evidence-aware prescription: the backend prescribes from a generic playbook
     # and can list tools that need an evidence kind this case lacks — vol.* with
@@ -1432,7 +1432,7 @@ def dair_assess(
                 )
         except Exception as _e6:
             import sys as _sys6
-            print(f"[TRUDI WARN] work-order advance gate failed: {_e6}", file=_sys6.stderr)
+            print(f"[DFIR Nexus WARN] work-order advance gate failed: {_e6}", file=_sys6.stderr)
 
     # Triage only when what would be triaged is new (see _DAIR_SYS). Anything
     # else that needs more work is evidence gathering: Collect.

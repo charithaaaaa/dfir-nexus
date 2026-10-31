@@ -1,4 +1,4 @@
-"""Tests for the TRUDI dashboard discovery + standalone server.
+"""Tests for the DFIR Nexus dashboard discovery + standalone server.
 
 The dashboard runs as a separate long-lived process (`trudi-dashboard`,
 i.e. `python -m dashboard.serve`). MCP-side code never spawns a server;
@@ -83,7 +83,7 @@ class TestStandaloneServer:
         resp = conn.getresponse()
         body = resp.read().decode()
         assert resp.status == 200
-        assert "TRUDI Trace" in body
+        assert "DFIR Nexus" in body
         # The case + trace dropdowns are the centrepiece of the redesign
         assert 'id="case-select"' in body
         assert 'id="trace-select"' in body

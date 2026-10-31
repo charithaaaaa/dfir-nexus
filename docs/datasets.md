@@ -2,8 +2,8 @@
 
 *Find Evil! Hackathon — submission component #5.*
 
-TRUDI was developed and validated against real, mostly-public DFIR datasets. Each
-case TRUDI has run is bundled in this repo under [`cases/<CASE>/`](../cases/) — the
+DFIR Nexus was developed and validated against real, mostly-public DFIR datasets. Each
+case DFIR Nexus has run is bundled in this repo under [`cases/<CASE>/`](../cases/) — the
 **execution trace, the reports, the case brief, and (where one exists) the
 ground-truth file**. The installer copies the whole `cases/` tree into `~/cases/`, so
 after `./install.sh` you can browse every run in the trace dashboard
@@ -12,14 +12,14 @@ after `./install.sh` you can browse every run in the trace dashboard
 **Evidence is deliberately not included.** The raw images/PCAPs are large (40–195 GB
 for several cases) and, for the public datasets, are better obtained from their
 authoritative source. Each case below links to where the evidence comes from. What is
-committed is TRUDI's *output* — enough to read the findings and replay the trace, not
+committed is DFIR Nexus's *output* — enough to read the findings and replay the trace, not
 to re-image a disk.
 
 ## What's bundled per case
 
 ```
 cases/<CASE>/
-├── CLAUDE.md                     ← the case brief TRUDI was given
+├── CLAUDE.md                     ← the case brief DFIR Nexus was given
 ├── analysis/<CASE>_trace.json    ← full execution trace (dashboard input, Agent Execution Log)
 ├── analysis/dashboard.url        ← the live dashboard link
 ├── analysis/ground_truth.json    ← machine-readable answer key (CFReDS, DEMO-LIVE only)
@@ -38,7 +38,7 @@ it by re-running the case against the evidence.
 
 ## Cases
 
-| Case | Dataset / provenance | Evidence (not committed) | What TRUDI concluded | Answer key |
+| Case | Dataset / provenance | Evidence (not committed) | What DFIR Nexus concluded | Answer key |
 |------|----------------------|--------------------------|----------------------|------------|
 | **VANKO-2016** | SANS FOR500 "Case of the Abducted Zebrafish" (course scenario) — **the demo-video case** | ~42 GB Surface 3 physical image + CyLR — [SANS Find Evil dataset](https://sansorg.egnyte.com/fl/HhH7crTYT4JK#folder-link/HACKATHON-2026/Standard%20Forensic%20Case) | Witting insider: BadUSB-planted `defaultprinter` + FTP exfil, then a deliberate StarkResearch bulk copy for Bulgakov/Titan. [report](../cases/vanko/reports/VANKO-2016_final_report.md) · [bundle](../cases/vanko/README.md) | SANS instructor solution (scored in [accuracy report](accuracy-report.md)) |
 | **CFREDS-LEAK** | **NIST CFReDS** Data Leakage Case (public) | PC E01 + RM#1/RM#2 USB + RM#3 CD-R — [cfreds.nist.gov](https://cfreds.nist.gov/all/NIST/DataLeakageCase) | Sole insider `informant` leaked "Secret Project Data" to `spy.conspirator` across 5 channels with per-device anti-forensics. [report](../cases/cfreds-leak/reports/CFREDS-LEAK_final_report.md) | **Machine-readable** `ground_truth.json` + NIST Q&A key |
@@ -53,6 +53,6 @@ it by re-running the case against the evidence.
 
 1. Obtain the evidence from the source above and place it in `~/cases/<CASE>/evidence/`.
 2. Open `~/cases/<CASE>/CLAUDE.md` (already bundled) — it has the evidence paths and case question.
-3. `cd ~/cases/<CASE> && claude`, then ask TRUDI to investigate.
+3. `cd ~/cases/<CASE> && claude`, then ask DFIR Nexus to investigate.
 4. Compare against the committed trace/report here, or — for CFReDS / DEMO-LIVE —
    score automatically with `accuracy.compare` against `ground_truth.json`.

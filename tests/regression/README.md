@@ -1,6 +1,6 @@
-# TRUDI Regression Harness
+# DFIR Nexus Regression Harness
 
-Detects prompt regressions by replaying cases through TRUDI and scoring
+Detects prompt regressions by replaying cases through DFIR Nexus and scoring
 the resulting trace against a hand-curated ground truth.
 
 ## Workflow
@@ -26,7 +26,7 @@ the resulting trace against a hand-curated ground truth.
    }
    ```
 
-2. **Run the case in TRUDI** end-to-end (any client — Claude Code, custom
+2. **Run the case in DFIR Nexus** end-to-end (any client — Claude Code, custom
    agent, manual replay). The case produces `<case_dir>/analysis/<case>_trace.json`.
 
 3. **Score the run**:

@@ -1,5 +1,5 @@
 ---
-description: "Clear a TRUDI case for a fresh run — preview everything, confirm, then wipe outputs + project memory (and live monitoring state)"
+description: "Clear a DFIR Nexus case for a fresh run — preview everything, confirm, then wipe outputs + project memory (and live monitoring state)"
 argument-hint: "[case_id]"
 ---
 
@@ -27,7 +27,7 @@ The argument, if supplied, names the case. Otherwise read it from
 | `~/.cache/trudi/session.json` | `.claude/settings.json` (tool allowlist) |
 | `~/.claude/projects/<encoded-case-dir>/memory/*` (the case's project memory) | any `evidence/`, mounted images |
 | **live:** `monitoring/` (alerts, response, baselines, watchers, artifacts, seq/open-inv state) | top-level case data files (e.g. `ground_truth.json`) |
-| **live:** TRUDI cache counter/hook-state (via `trudi_reset`) | `~/.cache/trudi/hash_cache.json` (evidence-hash memo) |
+| **live:** DFIR Nexus cache counter/hook-state (via `trudi_reset`) | `~/.cache/trudi/hash_cache.json` (evidence-hash memo) |
 
 The project-memory deletion is **case-scoped**: `clear_case_run` encodes
 the *case dir* (`/home/trin/cases/<case>` → `-home-trin-cases-<case>`),
@@ -88,7 +88,7 @@ In order:
    (resets `call_id.counter` to `{"next": 1}` and clears `hook_state.json`
    under the fcntl lock; never hand-edit cache files). For static cases
    this step is optional — include it only to zero the counter for a
-   truly fresh run, and note it touches the **shared** TRUDI cache, so
+   truly fresh run, and note it touches the **shared** DFIR Nexus cache, so
    avoid it while another case is mid-investigation.
 
 ### 5. Report
@@ -100,7 +100,7 @@ re-baseline against the current victim state).
 
 ## Notes
 - If the case dir is the operator's *primary* working directory (rare for
-  TRUDI cases, which live under `~/cases/<case>`), double-check the
+  DFIR Nexus cases, which live under `~/cases/<case>`), double-check the
   encoded memory path in the preview before confirming — you never want
   to wipe the global memory index. For standard `~/cases/<case>` layouts
   this is safe.

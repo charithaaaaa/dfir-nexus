@@ -1,4 +1,4 @@
-# TRUDI live-monitoring demo
+# DFIR Nexus live-monitoring demo
 
 Self-contained Velociraptor + Linux victim environment for the Find Evil!
 hackathon submission. Brings up a Velociraptor server, an enrolled Ubuntu
@@ -81,15 +81,15 @@ docker exec trudi-victim /attacks/run T1059.004
 docker exec trudi-victim /attacks/run persistence --cleanup
 ```
 
-## Run the TRUDI monitoring loop against it
+## Run the DFIR Nexus monitoring loop against it
 
 > **Experimental — not part of the Find Evil! submission.** The judged
 > system is the read-only static investigator. This loop is the only mode
-> where TRUDI writes to a system, and only *outside* the evidence boundary,
+> where DFIR Nexus writes to a system, and only *outside* the evidence boundary,
 > through the separately-gated `respond.*` path. It runs today; it's
 > documented here so a judge or user can exercise it end-to-end.
 
-Once the stack is up (`./bring-up.sh`), point a TRUDI Claude Code session at
+Once the stack is up (`./bring-up.sh`), point a DFIR Nexus Claude Code session at
 the demo case and drive it with the bundled **`/trudi-*` slash commands**
 (installed to `~/.claude/commands/` by `install.sh`). The loop is: **baseline →
 watcher → drain alerts → investigate → auto-protect**.
@@ -175,7 +175,7 @@ for another run with `/trudi-clear-case DEMO-LIVE`.
 
 > **Demo vs. real threats.** `demo/live-monitoring` stages *planted* Atomic
 > Red Team TTPs. With `monitoring/config.json` `demo_response.respond_to_synthetic=true`
-> those confirmed planted TTPs are response-eligible — TRUDI "contains a
+> those confirmed planted TTPs are response-eligible — DFIR Nexus "contains a
 > planted demo TTP," not "remediates a real compromise." Keep that language
 > precise in any writeup.
 
@@ -184,7 +184,7 @@ for another run with `/trudi-clear-case DEMO-LIVE`.
 | Port  | Service                                  |
 |-------|------------------------------------------|
 | 8000  | Velociraptor client frontend (TLS)       |
-| 8001  | Velociraptor API (TRUDI talks here)      |
+| 8001  | Velociraptor API (DFIR Nexus connects here) |
 | 8889  | Velociraptor GUI (browser, TLS)          |
 | 2222  | OpenSSH on the victim (for `live.*`)     |
 

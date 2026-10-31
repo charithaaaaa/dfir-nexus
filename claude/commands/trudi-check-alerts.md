@@ -1,11 +1,11 @@
 ---
-description: "Drain TRUDI live-monitoring alerts and run a per-tick investigation over the bundle"
+description: "Drain DFIR Nexus live-monitoring alerts and run a per-tick investigation over the bundle"
 argument-hint: "[case_id]"
 ---
 
 # /trudi-check-alerts
 
-Polls the active TRUDI live-monitoring case for new alerts and runs
+Polls the active DFIR Nexus live-monitoring case for new alerts and runs
 **one investigation per /loop tick** over the entire bundle of alerts
 drained in that tick. Designed to be called on a fixed interval via
 `/loop 15s /trudi-check-alerts` so anomalies are investigated within
@@ -213,7 +213,7 @@ still awaiting approval it returns `closed: false, paused: true` and keeps
 the investigation open for a later tick — that's expected; just continue.
 When it does close, it writes two report sections: **Recommended
 Containment Commands (run manually)** and **Autonomous Response Actions**
-(what TRUDI executed, with rollback/undo commands). Then ack the bundle:
+(what DFIR Nexus executed, with rollback/undo commands). Then ack the bundle:
 ```
 for alert_id in bundle.alert_ids:
     monitor.ack_alert(case_id, alert_id)

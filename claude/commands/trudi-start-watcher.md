@@ -1,11 +1,11 @@
 ---
-description: "Start the TRUDI live-monitoring watcher (baseline + detectors + sidecar) for a case"
+description: "Start the DFIR Nexus live-monitoring watcher (baseline + detectors + sidecar) for a case"
 argument-hint: "[case_id]"
 ---
 
 # /trudi-start-watcher
 
-Brings a TRUDI live-monitoring case online: resolves the live
+Brings a DFIR Nexus live-monitoring case online: resolves the live
 Velociraptor client, ensures a baseline exists, renders the
 `Custom.TRUDI.*` detectors onto the client event table, and spawns the
 watcher sidecar that drains alerts into `monitoring/alerts/`.

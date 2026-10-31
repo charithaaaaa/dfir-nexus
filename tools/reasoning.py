@@ -573,7 +573,7 @@ def _compat_extra_body() -> dict:
         return body if isinstance(body, dict) else {}
     except (json.JSONDecodeError, ValueError):
         import sys
-        print("[TRUDI WARN] TRUDI_COMPAT_EXTRA_BODY is not valid JSON — ignored",
+        print("[DFIR Nexus WARN] TRUDI_COMPAT_EXTRA_BODY is not valid JSON — ignored",
               file=sys.stderr)
         return {}
 
@@ -611,12 +611,12 @@ def _discover_compat_model(url: str, headers: dict, fallback: str) -> str:
             model = ids[0]
             if len(ids) > 1:
                 import sys
-                print(f"[TRUDI WARN] {url} serves {len(ids)} models; using "
+                print(f"[DFIR Nexus WARN] {url} serves {len(ids)} models; using "
                       f"'{model}'. Pin REASON_MODEL / DAIR_MODEL to choose.",
                       file=sys.stderr)
     except Exception as e:
         import sys
-        print(f"[TRUDI WARN] model discovery at {url} failed ({e!r}); "
+        print(f"[DFIR Nexus WARN] model discovery at {url} failed ({e!r}); "
               f"falling back to '{fallback}'", file=sys.stderr)
     _compat_model_cache[url] = (model, time.monotonic())
     return model
@@ -693,7 +693,7 @@ def _compat_chat(url: str, api_key: str, model: str, system: str, user: str,
             # through record_system_error to avoid recursion if the trace
             # itself is the cause.
             import sys as _sys
-            print(f"[TRUDI WARN] {tool_name} record_call_abandoned failed: "
+            print(f"[DFIR Nexus WARN] {tool_name} record_call_abandoned failed: "
                   f"{_log_err!r}", file=_sys.stderr)
 
     for attempt in range(1, max_attempts + 1):
@@ -711,7 +711,7 @@ def _compat_chat(url: str, api_key: str, model: str, system: str, user: str,
                 _elog.record_call_initiated(tool_name, "openai-compat", initiated,
                                             input_call_ids=input_call_ids)
             except Exception as _e:
-                import sys; print(f"[TRUDI WARN] record_call_initiated failed: {_e}", file=sys.stderr)
+                import sys; print(f"[DFIR Nexus WARN] record_call_initiated failed: {_e}", file=sys.stderr)
 
         try:
             resp = httpx.post(
@@ -772,7 +772,7 @@ def _compat_chat(url: str, api_key: str, model: str, system: str, user: str,
             if salvaged:
                 meta["answer_source"] = "reasoning_salvage"
                 import sys as _sys
-                print(f"[TRUDI WARN] {tool_name}: empty content with completed "
+                print(f"[DFIR Nexus WARN] {tool_name}: empty content with completed "
                       f"generation (finish_reason=stop) — promoted the "
                       f"think-classified text to the answer "
                       f"(answer_source=reasoning_salvage)", file=_sys.stderr)
@@ -786,7 +786,7 @@ def _compat_chat(url: str, api_key: str, model: str, system: str, user: str,
         next_budget = min(budget * 2, COMPAT_MAX_TOKENS_CEILING) if COMPAT_MAX_TOKENS_CEILING > 0 else budget * 2
         if out_of_budget and attempt < max_attempts and next_budget > budget:
             import sys
-            print(f"[TRUDI WARN] {tool_name}: thinking consumed the whole "
+            print(f"[DFIR Nexus WARN] {tool_name}: thinking consumed the whole "
                   f"{budget}-token budget with no answer; retrying with "
                   f"{next_budget}", file=sys.stderr)
             budget = next_budget
@@ -941,7 +941,7 @@ def _ask_claude(system: str, user: str, max_tokens: int, _tool_name: str,
             _elog.record_call_initiated(_tool_name, "claude", {"model": model},
                                         input_call_ids=input_call_ids)
         except Exception as _e:
-            import sys; print(f"[TRUDI WARN] record_call_initiated failed: {_e}", file=sys.stderr)
+            import sys; print(f"[DFIR Nexus WARN] record_call_initiated failed: {_e}", file=sys.stderr)
     try:
         client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY, timeout=REASON_TIMEOUT)
         resp = client.messages.create(
@@ -981,7 +981,7 @@ def _ask_claude(system: str, user: str, max_tokens: int, _tool_name: str,
             # routed through record_system_error to avoid recursion if the
             # trace itself is the cause.
             import sys as _sys
-            print(f"[TRUDI WARN] reason record_call_abandoned failed during "
+            print(f"[DFIR Nexus WARN] reason record_call_abandoned failed during "
                   f"{_tool_name} error: {_log_err!r}", file=_sys.stderr)
         result = {**_empty, "error": str(e)}
         if _log:
@@ -1825,7 +1825,7 @@ def _ask(system: str, user: str, max_tokens: int = 2048, _tool_name: str = "",
                                       evidence_packet=evidence_packet)
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] evidence round-trip failed for {_tool_name}: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] evidence round-trip failed for {_tool_name}: {_e}", file=_sys.stderr)
         result.update(success=False, error=f"Evidence review failed: {_e}", retryable=True)
     if cite_meta.get("mode") == "pull" and input_call_ids:
         result["evidence_pushed"] = {"rows": int(cite_meta.get("pushed_rows") or 0),
@@ -1880,7 +1880,7 @@ def _log_reason(tool_name: str, result: dict,
             result["_trudi_call_id"] = cid
     except Exception as e:
         import sys
-        print(f"[TRUDI WARN] _log_reason failed for {tool_name}: {e}", file=sys.stderr)
+        print(f"[DFIR Nexus WARN] _log_reason failed for {tool_name}: {e}", file=sys.stderr)
 
 
 def _next_hypothesis_id() -> str:
@@ -1975,7 +1975,7 @@ _HYPOTHESIZE_ABSENCE_SYS = (
     "Do not propose categories already in the examined list. If a category was "
     "examined but only sampled (first instance only), it IS a valid gap — say so.\n"
     "The DIRECTIVES block is the primary output — populate priority_tools with one "
-    "concrete TRUDI MCP call per gap, highest-information-gain first. These become "
+    "concrete DFIR Nexus MCP call per gap, highest-information-gain first. These become "
     "the investigator's curiosity probes; keep the list to the top 3-5. Populate "
     "next_hypothesis_triggers with the result conditions that would open a new line."
     + _evidence_request_instruction("your gap list")
@@ -2416,7 +2416,7 @@ def reason_hypothesize(observation: str, evidence: str = "", context: str = "",
                 result["_priority_tools_auto_extracted"] = True
     except Exception as _ge:
         import sys as _sys
-        print(f"[TRUDI WARN] hypothesize conclusion post-processor failed: {_ge}",
+        print(f"[DFIR Nexus WARN] hypothesize conclusion post-processor failed: {_ge}",
               file=_sys.stderr)
 
     # ── Per-hypothesis split ─────────────────────────────────────────────────
@@ -2438,7 +2438,7 @@ def reason_hypothesize(observation: str, evidence: str = "", context: str = "",
             result["sub_hypotheses"] = subs
     except Exception as _se:
         import sys as _sys
-        print(f"[TRUDI WARN] hypothesize sub-split failed: {_se}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] hypothesize sub-split failed: {_se}", file=_sys.stderr)
 
     return result
 
@@ -2630,7 +2630,7 @@ def reason_evaluate_finding(
     except Exception as _gate_e:
         # Gate must never break the underlying call — log and continue
         import sys as _sys
-        print(f"[TRUDI WARN] reformulation_depth_limit check failed: {_gate_e}",
+        print(f"[DFIR Nexus WARN] reformulation_depth_limit check failed: {_gate_e}",
               file=_sys.stderr)
 
     user = (f"FINDING:\n{finding}\n\nThe attached packet contains the primary evidence and full typed claim."
@@ -2760,7 +2760,7 @@ def reason_evaluate_finding(
             )
         except Exception as e:  # noqa: BLE001
             import sys
-            print(f"[TRUDI WARN] auto-self_correction emit failed: {e}", file=sys.stderr)
+            print(f"[DFIR Nexus WARN] auto-self_correction emit failed: {e}", file=sys.stderr)
     if packet is not None and result.get("success"):
         if not packet_current(log, packet):
             result.update(success=False, error="Evidence changed during review; retry with current evidence",
@@ -3260,7 +3260,7 @@ def reason_synthesize(findings: str, investigation_summary: str = "",
             result["structural_advisories"] = _adv[:12]
     except Exception as _e:
         import sys as _sys
-        print(f"[TRUDI WARN] synthesize structural preview failed: {_e}", file=_sys.stderr)
+        print(f"[DFIR Nexus WARN] synthesize structural preview failed: {_e}", file=_sys.stderr)
     return result
 
 
@@ -3471,7 +3471,7 @@ def _salvage_commands(text: str) -> list[dict]:
 
 
 _DRAFT_COMMAND_SYS = (
-    "You draft TRUDI MCP commands for a human DFIR analyst. Given a TASK in "
+    "You draft DFIR Nexus MCP commands for a human DFIR analyst. Given a TASK in "
     "plain English, the AVAILABLE TOOLS (name, purpose, parameters), and "
     "CONTEXT (case paths, evidence files), produce 1-3 candidate commands "
     "that accomplish the task.\n\n"
@@ -3495,7 +3495,7 @@ _DRAFT_COMMAND_SYS = (
 def reason_draft_command(task: str, tool_briefs: str, context: str = "",
                          input_call_ids: list[int] | None = None) -> dict:
     """
-    Draft runnable TRUDI commands for a natural-language task. NEVER executes
+    Draft runnable DFIR Nexus commands for a natural-language task. NEVER executes
     anything — returns candidates for the analyst to select and edit.
 
     task: the analyst's plain-English request ("pull MFT entry 12345 from

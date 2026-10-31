@@ -1,4 +1,4 @@
-# TRUDI live-monitoring & gated response — full reference
+# DFIR Nexus live-monitoring & gated response — full reference
 
 Applies only to Velociraptor-backed live-monitoring cases. Static forensic investigations never use this subsystem. CLAUDE.md carries a one-paragraph summary; this file is the detail.
 
@@ -51,10 +51,10 @@ When the operator stands up a Velociraptor-backed live-monitoring case
 
 ## Gated response & auto-protect (live-monitoring only)
 
-TRUDI's strict read-only-on-evidence stance is preserved everywhere
+DFIR Nexus's strict read-only-on-evidence stance is preserved everywhere
 *except* the `respond.*` namespace, allowed only against an active
 live-monitoring case (server-enforced by `live_monitoring_scope`). In
-**auto-protect** mode (default ON), TRUDI is an autonomous blue-team
+**auto-protect** mode (default ON), DFIR Nexus is an autonomous blue-team
 agent: it auto-executes the **reversible + low-risk** tier of containment
 and asks the operator to approve anything destructive.
 
@@ -102,6 +102,6 @@ markers prove lab/exercise infrastructure. Keep the language precise:
 
 **Not available:** MemProcFS, VSCMount (Windows-only), tshark, hayabusa, guymager.
 
-**Volatility exit codes:** `1` = plugin ran but failed (may be normal — e.g. no data). `2` = argument error (TRUDI bug). `-1` (timeout) = symbols not cached — run `vol_symbol_check`.
+**Volatility exit codes:** `1` = plugin ran but failed (may be normal — e.g. no data). `2` = argument error (DFIR Nexus bug). `-1` (timeout) = symbols not cached — run `vol_symbol_check`.
 
 ---

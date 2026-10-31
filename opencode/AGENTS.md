@@ -1,13 +1,13 @@
-# TRUDI Orchestrator (OpenCode)
+# DFIR Nexus Orchestrator (OpenCode)
 
-Directs the coding agent running a TRUDI investigation under OpenCode. This is the
+Directs the coding agent running a DFIR Nexus investigation under OpenCode. This is the
 condensed orchestrator — every rule here is backed by a server-enforced gate; the
 full rationale lives in `~/trudi/claude/CLAUDE.md` and `~/trudi/docs/gates.md`.
 
 ## Mode contract
 
 Default mode is **autonomous agent** — the rules below apply as written.
-When the **TRUDI Pilot profile** is active (the `trudi-pilot` agent), its
+When the **DFIR Nexus Pilot profile** is active (the `trudi-pilot` agent), its
 conversational rules OVERRIDE the autonomy directives here; every other
 rule (evidence path, gates, typed claims, citability) applies unchanged.
 

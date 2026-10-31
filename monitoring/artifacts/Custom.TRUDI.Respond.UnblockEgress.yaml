@@ -1,6 +1,6 @@
 name: Custom.TRUDI.Respond.UnblockEgress
 description: |
-  TRUDI remediation revert: remove the matching iptables REJECT rule
+  DFIR Nexus remediation revert: remove the matching iptables REJECT rule
   inserted by BlockEgressToEndpoint.
 
 type: CLIENT

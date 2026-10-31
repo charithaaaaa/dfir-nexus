@@ -153,7 +153,7 @@ def test_agents_md_installed_with_backup(tmp_path):
     dest = tmp_path / "AGENTS.md"
     # OpenCode gets the CONDENSED orchestrator, not the full CLAUDE.md
     assert dest.read_text() == (REPO / "opencode" / "AGENTS.md").read_text()
-    assert any("installed TRUDI orchestrator" in x for x in msgs)
+    assert any("installed DFIR Nexus orchestrator" in x for x in msgs)
     # unchanged → no-op
     assert m.install_agents_md(tmp_path, REPO) == [
         "  AGENTS.md already current — nothing to do"]

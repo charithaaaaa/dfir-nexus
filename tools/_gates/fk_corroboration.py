@@ -3,7 +3,7 @@
 A CONFIRMED/LIKELY finding grounded on a single forensic artifact is weak when
 the corroborators the forensic-knowledge corpus names for that artifact were
 never run. Each FK sheet's ``corroborate_with`` block already lists, per artifact
-and per claim class (execution / presence / timeline), the TRUDI tools that
+and per claim class (execution / presence / timeline), the DFIR Nexus tools that
 corroborate it — retargeted to real tool names during derivation (see
 ``data/fk/ATTRIBUTION.md``). This module reads that same data (via ``tools._fk``,
 the shared loader the response enricher also uses) and checks it against the

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Persistent multi-case TRUDI dashboard server.
+"""Persistent multi-case DFIR Nexus dashboard server.
 
 Serves a cases root directory (default ~/cases) as the document root.
 The dashboard HTML and vendor assets are served from the trudi/dashboard/
@@ -16,7 +16,7 @@ Environment overrides:
     TRUDI_DASHBOARD_PORT   default for --port      (fallback: 8765)
 
 Binds 127.0.0.1 only. On startup writes ~/.cache/trudi/dashboard.url so
-other TRUDI components (start_execution_log, MCP tools) can discover the
+other DFIR Nexus components (start_execution_log, MCP tools) can discover the
 running dashboard without taking a port for themselves.
 """
 from __future__ import annotations
@@ -564,7 +564,7 @@ def serve(cases_root: str, port: int = DEFAULT_PORT) -> int:
     url = f"http://127.0.0.1:{chosen}{DASHBOARD_PREFIX}dashboard.html"
     _write_discovery(url, chosen, cases_root)
     discovered = list_cases(cases_root)
-    print(f"\nTRUDI dashboard")
+    print(f"\nDFIR Nexus dashboard")
     print(f"  cases_root: {cases_root}")
     print(f"  URL: {url}")
     if discovered:
@@ -590,7 +590,7 @@ def serve(cases_root: str, port: int = DEFAULT_PORT) -> int:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="trudi-dashboard",
-        description="Persistent TRUDI trace dashboard (multi-case).",
+        description="Persistent DFIR Nexus trace dashboard (multi-case).",
     )
     parser.add_argument(
         "--cases-root",

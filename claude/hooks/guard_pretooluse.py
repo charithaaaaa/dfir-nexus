@@ -206,7 +206,7 @@ def main() -> None:
             hint = MCP_WRAPPER_HINTS.get(
                 binkey, "the corresponding MCP wrapper (see the CLAUDE.md namespace table)")
             _deny(
-                "Forensic binaries must run through the TRUDI MCP wrapper so the "
+                "Forensic binaries must run through the DFIR Nexus MCP wrapper so the "
                 f"call is traced and citable — use {hint}. A bash run has no "
                 "_trudi_call_id and any finding citing it is refused (mcp_routing)."
             )

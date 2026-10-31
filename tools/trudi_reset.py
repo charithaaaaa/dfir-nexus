@@ -1,6 +1,6 @@
-"""Atomic reset of TRUDI cache + case trace state.
+"""Atomic reset of DFIR Nexus cache + case trace state.
 
-This is the only sanctioned way to "start over" a TRUDI investigation. Manual
+This is the only sanctioned way to "start over" a DFIR Nexus investigation. Manual
 editing of ~/.cache/trudi/call_id.counter or session.json can leave the counter
 out of sync with the trace, which (after the F1 fix in core/execution_log.py)
 is now self-healing but logs a noisy WARN — better to reset cleanly.
@@ -304,7 +304,7 @@ def reset(case_dir: str, keep_trace: bool = False, no_backup: bool = False,
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Atomic reset of TRUDI cache + case trace.",
+        description="Atomic reset of DFIR Nexus cache + case trace.",
     )
     parser.add_argument("--case-dir", required=True,
                         help="Path to the case directory (e.g. ~/cases/example-case)")

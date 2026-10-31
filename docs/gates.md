@@ -1,4 +1,4 @@
-# TRUDI record_finding / export gates — full reference
+# DFIR Nexus record_finding / export gates — full reference
 
 The authoritative, server-enforced gate list. CLAUDE.md carries the operating summary; this file is the detail. Gates are enforced in code (`tools/_gates/`), not by this prose.
 

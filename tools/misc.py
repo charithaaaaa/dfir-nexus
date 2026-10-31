@@ -1169,7 +1169,7 @@ def start_execution_log(case_id: str, output_path: str,
                 # Surface the URL prominently in three places:
                 # 1) stderr so the operator sees it in the MCP-server terminal.
                 import sys
-                print(f"\n[TRUDI DASHBOARD] {url}\n", file=sys.stderr, flush=True)
+                print(f"\n[DFIR NEXUS DASHBOARD] {url}\n", file=sys.stderr, flush=True)
                 # 2) Persist to analysis/dashboard.url so it survives restarts.
                 try:
                     analysis_dir = os.path.dirname(os.path.abspath(output_path))
@@ -1177,7 +1177,7 @@ def start_execution_log(case_id: str, output_path: str,
                     with open(os.path.join(analysis_dir, "dashboard.url"), "w") as f:
                         f.write(url + "\n")
                 except OSError as _e:
-                    print(f"[TRUDI WARN] could not write dashboard.url: {_e}",
+                    print(f"[DFIR Nexus WARN] could not write dashboard.url: {_e}",
                           file=sys.stderr)
                 # 3) Log to the trace as an investigation_narration so the
                 #    dashboard URL itself appears in the trace it serves.
@@ -1185,7 +1185,7 @@ def start_execution_log(case_id: str, output_path: str,
                     log.record_agent_message(f"Trace dashboard live at {url}")
                 except Exception as _e:
                     import sys as _sys
-                    print(f"[TRUDI WARN] dashboard URL narration failed: {_e}",
+                    print(f"[DFIR Nexus WARN] dashboard URL narration failed: {_e}",
                           file=_sys.stderr)
             else:
                 result["dashboard_error"] = dash.get("error", "")
@@ -1194,7 +1194,7 @@ def start_execution_log(case_id: str, output_path: str,
                     # knows what to point at once they run `trudi-dashboard`.
                     result["dashboard_hint_url"] = dash["hint_url"]
                     import sys
-                    print(f"\n[TRUDI DASHBOARD] {dash['error']}\n"
+                    print(f"\n[DFIR NEXUS DASHBOARD] {dash['error']}\n"
                           f"  Once running, open: {dash['hint_url']}\n",
                           file=sys.stderr, flush=True)
         except Exception as e:
@@ -1211,7 +1211,7 @@ def start_execution_log(case_id: str, output_path: str,
                 pass
             result["dashboard_error"] = f"{type(e).__name__}: {e}"
             import sys as _sys
-            print(f"[TRUDI WARN] dashboard discovery raised: {e!r}",
+            print(f"[DFIR Nexus WARN] dashboard discovery raised: {e!r}",
                   file=_sys.stderr)
 
     return result
@@ -2782,7 +2782,7 @@ def launch_dashboard(case_dir: str, port: int = 8765,
 @output_safe
 def serve_dashboard(case_dir: str, port: int = 8765) -> dict:
     """
-    Return a deep-link URL into the running standalone TRUDI dashboard.
+    Return a deep-link URL into the running standalone DFIR Nexus dashboard.
 
     The dashboard is its own long-lived process — launch it once with
     `trudi-dashboard` (from any terminal) and it stays available across MCP

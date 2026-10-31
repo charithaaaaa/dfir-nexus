@@ -66,7 +66,7 @@ def with_tool_timeout(seconds: int, label: str | None = None) -> Callable:
                         input_call_ids=_parent,
                     )
                 except Exception as _e:
-                    print(f"[TRUDI WARN] timeout trace log failed: {_e}",
+                    print(f"[DFIR Nexus WARN] timeout trace log failed: {_e}",
                           file=sys.stderr)
                     # Trace the trace-write failure itself so it's not invisible.
                     try:

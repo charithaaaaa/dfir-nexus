@@ -1,6 +1,6 @@
-"""Shared reader for the TRUDI forensic-knowledge corpus (``data/fk/``).
+"""Shared reader for the DFIR Nexus forensic-knowledge corpus (``data/fk/``).
 
-Single source of truth for locating FK sheets, mapping a TRUDI tool to its FK
+Single source of truth for locating FK sheets, mapping a DFIR Nexus tool to its FK
 artifact/tool sheet, and reading the ``corroborate_with`` pointers. Both the
 response enricher (``tools/_enrich.py``) and the completeness gates import from
 here, so the tool→artifact map and the corroboration data have exactly one
@@ -17,7 +17,7 @@ import yaml
 
 FK_DIR = Path(__file__).resolve().parent.parent / "data" / "fk"
 
-# --- TRUDI tool -> FK artifact sheet (does_not_prove / corroborate_with / …) ---
+# --- DFIR Nexus tool -> FK artifact sheet (does_not_prove / corroborate_with / …) ---
 ARTIFACT_MAP: dict[str, str] = {
     "vol_userassist": "userassist",
     "ez_appcompatcacheparser": "shimcache",
@@ -33,7 +33,7 @@ ARTIFACT_MAP: dict[str, str] = {
     "ez_evtxecmd": "event_logs_security",
 }
 
-# --- TRUDI tool -> FK tool sheet (caveats / field_meanings / exit_code_hints) --
+# --- DFIR Nexus tool -> FK tool sheet (caveats / field_meanings / exit_code_hints) --
 # Explicit overrides; every other vol_* falls through to the volatility3 sheet.
 TOOL_MAP: dict[str, str] = {}
 
@@ -52,12 +52,12 @@ def normalize_tool_name(tool_name: str) -> str:
 
 
 def artifact_stem_for_tool(tool_name: str) -> str | None:
-    """FK artifact-sheet stem produced by a TRUDI tool, or None."""
+    """FK artifact-sheet stem produced by a DFIR Nexus tool, or None."""
     return ARTIFACT_MAP.get(normalize_tool_name(tool_name))
 
 
 def tool_stem_for_tool(tool_name: str) -> str | None:
-    """FK tool-sheet stem for a TRUDI tool, or None. Any ``vol_*`` without an
+    """FK tool-sheet stem for a DFIR Nexus tool, or None. Any ``vol_*`` without an
     explicit override falls through to the shared volatility3 sheet."""
     name = normalize_tool_name(tool_name)
     if name in TOOL_MAP:

@@ -6,7 +6,7 @@ rule AntiForensics_SDelete_Strings
 {
     meta:
         description = "SDelete secure deletion tool artifacts"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "medium"
 
     strings:
@@ -23,7 +23,7 @@ rule AntiForensics_EventLog_Clear
 {
     meta:
         description = "Windows event log clearing commands"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "high"
 
     strings:
@@ -40,7 +40,7 @@ rule AntiForensics_Timestomp
 {
     meta:
         description = "Timestamp manipulation tools or PowerShell timestamp modification"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "high"
 
     strings:
@@ -58,7 +58,7 @@ rule AntiForensics_USN_Deletion
 {
     meta:
         description = "USN journal deletion or filesystem journal manipulation"
-        author = "TRUDI"
+        author = "DFIR Nexus"
         severity = "high"
 
     strings:

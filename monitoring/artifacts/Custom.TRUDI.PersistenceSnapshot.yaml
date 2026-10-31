@@ -1,6 +1,6 @@
 name: Custom.TRUDI.PersistenceSnapshot
 description: |
-  TRUDI baseline helper: a ONE-SHOT enumeration of the cron/systemd
+  DFIR Nexus baseline helper: a ONE-SHOT enumeration of the cron/systemd
   persistence surface, using the SAME glob as the Custom.TRUDI.NewPersistence
   detector. monitor.baseline_capture collects this and records every returned
   path as the known-good allowlist, so the detector (which flags files NOT in

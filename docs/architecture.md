@@ -1,8 +1,8 @@
-# TRUDI Architecture
+# DFIR Nexus Architecture
 
 This diagram is the submission architecture artifact for the Find Evil!
 hackathon. It emphasizes the security boundary judges care about most:
-TRUDI does not rely only on prompt instructions. Forensic execution is routed
+DFIR Nexus does not rely only on prompt instructions. Forensic execution is routed
 through typed MCP tools, middleware gates, and executor-level evidence
 protection before any external binary or live endpoint command can run.
 
@@ -17,7 +17,7 @@ flowchart LR
     Orchestrator --> Claude
     CaseBrief --> Claude
 
-    subgraph MCP["Architectural guardrails (enforced — model cannot bypass): TRUDI MCP boundary"]
+    subgraph MCP["Architectural guardrails (enforced — model cannot bypass): DFIR Nexus MCP boundary"]
         Server["FastMCP server\nserver.py"]
         Middleware["Middleware\nDAIR window + narration"]
         Tools["Typed tool namespaces\nstatic forensics (submission)\nlive · monitor · respond (experimental)"]
@@ -106,7 +106,7 @@ flowchart LR
 
 ## Architectural pattern
 
-Of the four Find Evil! patterns, TRUDI is primarily a **Custom MCP Server**:
+Of the four Find Evil! patterns, DFIR Nexus is primarily a **Custom MCP Server**:
 `server.py` exposes ~250 typed forensic tools across 24 namespaces over the Model
 Context Protocol, and Claude reaches every tool through that single boundary. It
 is also a **Multi-Agent Framework** — three independently-backed models hold
@@ -117,7 +117,7 @@ the prompt) and **not** an **Alternative Agentic IDE**.
 
 ## Prompt-based vs architectural guardrails
 
-TRUDI uses both tiers, and the distinction is the whole point: prompt-based rules
+DFIR Nexus uses both tiers, and the distinction is the whole point: prompt-based rules
 *guide* the agent, architectural rules *enforce* it. The architectural tier holds
 even when the model ignores the prompt-based tier — a guardrail that is
 architectural cannot be defeated by a cleverer prompt.
@@ -143,7 +143,7 @@ These are the architectural-tier enforcements in detail.
 ## DAIR And Reason
 
 DAIR and `reason.*` are separate MCP tool families. Claude invokes each through
-the TRUDI MCP server and consumes their returned guidance; neither component
+the DFIR Nexus MCP server and consumes their returned guidance; neither component
 calls the other directly. Together with Claude (the primary analyst) they form
 the three-model system: an analyst that does the work, a director that decides
 what to examine next, and an adversary that challenges every conclusion.
@@ -174,10 +174,10 @@ inspected and any finding they ultimately fed.
 
 ## Primary Data Flow
 
-1. The practitioner opens a case in Claude Code with the TRUDI orchestrator and
+1. The practitioner opens a case in Claude Code with the DFIR Nexus orchestrator and
    case-specific `CLAUDE.md`. These are the prompt-based (advisory) tier: they
    steer the agent but do not enforce.
-2. Claude selects forensic actions, but execution crosses the typed TRUDI MCP
+2. Claude selects forensic actions, but execution crosses the typed DFIR Nexus MCP
    boundary rather than running SIFT binaries directly.
 3. Middleware records call initiation, enforces recent DAIR guidance, and keeps
    narration in the trace.

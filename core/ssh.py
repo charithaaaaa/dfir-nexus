@@ -138,7 +138,7 @@ def _log_ssh_tool(result: dict) -> None:
         result["_trudi_call_id"] = cid
     except Exception as e:  # noqa: BLE001
         import sys
-        print(f"[TRUDI WARN] _log_ssh_tool failed: {e}", file=sys.stderr)
+        print(f"[DFIR Nexus WARN] _log_ssh_tool failed: {e}", file=sys.stderr)
         result.setdefault("_trudi_call_id", 0)
 
 

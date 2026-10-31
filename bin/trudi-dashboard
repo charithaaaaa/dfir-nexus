@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# trudi-dashboard — persistent multi-case TRUDI trace dashboard.
+# trudi-dashboard — persistent multi-case DFIR Nexus trace dashboard.
 #
 # Long-running, independent of the MCP server. Picks up traces from every
 # case under $TRUDI_CASES_ROOT (default ~/cases); the case + trace dropdown

@@ -13,8 +13,8 @@ Storage layout (per case):
       alerts/_seq.lock               fcntl lock around _seq.txt
       alerts/<seq>_<detector>.json   one alert per file, written by the sidecar
 
-Tools here are read-only WRT evidence (per the global TRUDI policy) but DO
-write to ``~/cases/<case>/monitoring/`` — TRUDI-generated state, not evidence.
+Tools here are read-only WRT evidence (per the global DFIR Nexus policy) but DO
+write to ``~/cases/<case>/monitoring/`` — DFIR Nexus-generated state, not evidence.
 """
 from __future__ import annotations
 import json
@@ -549,7 +549,7 @@ def start_watcher(
 @mcp.tool()
 @output_safe
 def stop_watcher(client_id: str, case_id: str) -> dict:
-    """SIGTERM the sidecar; remove TRUDI artifacts from the client event table."""
+    """SIGTERM the sidecar; remove DFIR Nexus artifacts from the client event table."""
     if not client_id.startswith("C."):
         return {"success": False, "error": f"client_id must look like 'C.xxx', got {client_id!r}"}
 
@@ -731,7 +731,7 @@ def open_investigation_state(case_id: str) -> dict:
 def start_investigation(case_id: str,
                         investigation_id: str,
                         alert_ids: list[str]) -> dict:
-    """Switch the active TRUDI trace to a per-investigation file before
+    """Switch the active DFIR Nexus trace to a per-investigation file before
     running the investigation chain (`reason.hypothesize` +
     `dair_assess` + tool batch + `record_finding` + `respond.*`).
 
@@ -953,7 +953,7 @@ def _append_containment_section(case_id: str, report_base: Path) -> int:
         "",
         "## Recommended Containment Commands (run manually)",
         "",
-        "TRUDI does **not** execute remediation. The commands below are derived "
+        "DFIR Nexus does **not** execute remediation. The commands below are derived "
         "from each CONFIRMED/LIKELY finding; a human runs them out-of-band.",
         "",
     ]
@@ -1025,7 +1025,7 @@ def _would_be_rollback(suggestion: dict) -> Optional[str]:
 
 def _append_response_section(case_id: str, report_base: Path) -> int:
     """Append an 'Autonomous Response Actions' section to the report `.md` and
-    mirror a structured ledger into the `.json`. Records what TRUDI actually
+    mirror a structured ledger into the `.json`. Records what DFIR Nexus actually
     did (auto-executed / approved / reverted / awaiting approval), each with its
     verbatim rollback/undo command. Returns the number of action rows written.
 
@@ -1084,7 +1084,7 @@ def _append_response_section(case_id: str, report_base: Path) -> int:
         "",
         "## Autonomous Response Actions",
         "",
-        "TRUDI auto-executes only the **reversible + low-risk** tier; destructive "
+        "DFIR Nexus auto-executes only the **reversible + low-risk** tier; destructive "
         "actions wait for an operator-typed `approve ACT-N`. Every action below is "
         "logged with the exact command run and its rollback/undo command.",
         "",
@@ -1238,7 +1238,7 @@ def end_investigation(case_id: str,
     # Append operator-runnable containment commands to the report as a fallback.
     # Touches only the per-investigation report files, never the shared export().
     containment_written = _append_containment_section(case_id, report_base)
-    # Append the autonomous-response ledger (what TRUDI actually did + rollbacks).
+    # Append the autonomous-response ledger (what DFIR Nexus actually did + rollbacks).
     response_actions_written = _append_response_section(case_id, report_base)
 
     case_wide = _case_wide_trace_path(case_id)

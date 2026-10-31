@@ -1,4 +1,4 @@
-# ATT&CK data component -> the TRUDI tools that examine its forensic equivalent
+# ATT&CK data component -> the DFIR Nexus tools that examine its forensic equivalent
 # on a Windows disk image. Used by core/iocs.py: an IOC's technique names data
 # components through its ATT&CK v18 detection strategy; a component is COVERED
 # once any listed tool has run successfully in the trace.
