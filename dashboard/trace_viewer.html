@@ -85,8 +85,10 @@
 
   .layout {
     display: grid;
-    grid-template-columns: 240px minmax(0, 1fr) 6px var(--detail-w, minmax(360px, 480px));
+    --sidebar-width: 224px;
+    grid-template-columns: var(--sidebar-column, var(--sidebar-width)) minmax(0, 1fr) 6px var(--detail-w, minmax(330px, 410px));
     height: calc(100vh - 44px);
+    min-width: 0;
   }
   /* Drag handle between the entry list and the detail pane. */
   .splitter {
@@ -284,11 +286,9 @@
     border-radius:8px; padding:7px 10px; cursor:pointer; font:inherit;
   }
   .topbar button:hover, .detail-toggle:hover, .sidebar-toggle:hover { background:var(--bg-hl); }
-  .layout {
-    grid-template-columns: 224px minmax(0, 1fr) 6px var(--detail-w, minmax(330px, 410px));
-    height:calc(100vh - 64px);
-  }
+  .layout { height:calc(100vh - 64px); }
   .sidebar {
+    grid-column: 1;
     min-width:0; overflow:auto; background:var(--bg-2); border-right:1px solid var(--border);
     padding:18px 12px;
   }
@@ -330,7 +330,7 @@
   .pill.tool, .pill.narration, .pill.finding-unconfirmed { background:rgba(164,177,197,.1); color:var(--fg-dim); }
   .pill.curiosity, .pill.fetch { background:rgba(129,151,232,.13); color:var(--blue); }
   .ioc-focus { border-color:var(--accent); border-radius:8px; }
-  .pane.entries { padding:24px clamp(18px, 3vw, 42px) 48px; scroll-behavior:smooth; }
+  .pane.entries { grid-column:2; padding:24px clamp(18px, 3vw, 42px) 48px; scroll-behavior:smooth; }
   .overview { max-width:1080px; margin:0 auto 28px; }
   .overview-eyebrow { color:var(--accent); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
   .overview h2 { margin:5px 0 4px; font-size:25px; line-height:1.25; letter-spacing:-.02em; }
@@ -376,11 +376,13 @@
   .detail .kv .v { color:var(--fg); }
   .detail details { padding:8px 0; border-top:1px solid var(--border); }
   .detail details summary { color:var(--accent); cursor:pointer; }
-  .layout.detail-collapsed { grid-template-columns:224px minmax(0,1fr) 0 0; }
+  .layout.detail-collapsed { grid-template-columns:var(--sidebar-column,var(--sidebar-width)) minmax(0,1fr) 0 0; }
   .layout.detail-collapsed .splitter, .layout.detail-collapsed #detail { display:none; }
-  .layout.sidebar-collapsed { grid-template-columns:0 minmax(0,1fr) 6px var(--detail-w,minmax(330px,410px)); }
+  .layout.sidebar-collapsed { --sidebar-column:0px; }
   .layout.sidebar-collapsed .sidebar { display:none; }
-  .layout.sidebar-collapsed.detail-collapsed { grid-template-columns:0 minmax(0,1fr) 0 0; }
+  .layout.sidebar-collapsed.detail-collapsed { --sidebar-column:0px; }
+  #detail-splitter { grid-column:3; }
+  .pane.detail { grid-column:4; min-width:0; }
   .filter-tools { display:flex; gap:6px; margin:4px 0 8px; }
   .filter-tools button { flex:1; background:var(--bg-3); color:var(--fg); border:1px solid var(--border); border-radius:7px; padding:6px; cursor:pointer; }
   .filter-time { display:grid; gap:6px; }
@@ -388,7 +390,8 @@
     #clock-local, #clock-utc, #last-fetch { display:none; }
   }
   @media (max-width:1180px) {
-    .layout { grid-template-columns:205px minmax(0,1fr) 6px var(--detail-w,minmax(290px,350px)); }
+    .layout { --sidebar-width:205px; }
+    .layout:not(.detail-collapsed) { grid-template-columns:var(--sidebar-column,var(--sidebar-width)) minmax(0,1fr) 6px var(--detail-w,minmax(290px,350px)); }
     .stats-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
     .topbar { gap:8px; padding:0 14px; }
     .brand { min-width:auto; }
@@ -438,7 +441,7 @@
     <span class="brand-mark" aria-hidden="true">⌕</span>
     <span><span class="brand-name">DFIR Nexus</span><br><span class="brand-subtitle">Investigation workspace</span></span>
   </div>
-  <button type="button" class="sidebar-toggle" id="sidebar-toggle" aria-expanded="true" title="Collapse navigation">Menu</button>
+  <button type="button" class="sidebar-toggle" id="sidebar-toggle" aria-controls="sidebar" aria-expanded="true" title="Collapse navigation">Menu</button>
   <select id="case-select" class="picker" title="Select case">
     <option value="">— case —</option>
   </select>
@@ -454,14 +457,14 @@
   <span class="live" id="live"><span class="live-dot"></span><span id="live-text">offline</span></span>
   <a id="graph-link" class="graph-btn" target="_blank" title="Open the evidence-linked investigation chain">Attack chain</a>
   <a id="report-link" class="graph-btn" target="trudi-report" title="Open the case report">Reports</a>
-  <button type="button" class="detail-toggle" id="detail-toggle" aria-expanded="true" title="Show or hide event details">Hide details</button>
+  <button type="button" class="detail-toggle" id="detail-toggle" aria-expanded="true" aria-controls="detail" title="Show or hide event details">Hide details</button>
   <label class="follow-control" style="display:flex;align-items:center;gap:4px;font-size:12px;">
     <input type="checkbox" id="follow-tail" checked /> follow new
   </label>
 </header>
 
 <div class="layout">
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="side-label">Workspace</div>
     <nav class="side-nav" aria-label="Investigation navigation">
       <a href="#overview" class="active" data-nav="overview"><span class="nav-icon">⌂</span>Overview</a>
@@ -2213,11 +2216,13 @@ function setupFilters() {
     const collapsed = $('.layout').classList.toggle('sidebar-collapsed');
     $('#sidebar-toggle').setAttribute('aria-expanded', String(!collapsed));
     $('#sidebar-toggle').title = collapsed ? 'Expand navigation' : 'Collapse navigation';
+    $('.layout').dispatchEvent(new Event('panelchange'));
   });
   $('#detail-toggle').addEventListener('click', () => {
     const collapsed = $('.layout').classList.toggle('detail-collapsed');
     $('#detail-toggle').setAttribute('aria-expanded', String(!collapsed));
     $('#detail-toggle').textContent = collapsed ? 'Show details' : 'Hide details';
+    $('.layout').dispatchEvent(new Event('panelchange'));
   });
 }
 
@@ -2371,10 +2376,24 @@ function setupDetailResize() {
   const layout = $('.layout');
   const handle = $('#detail-splitter');
   const clamp = (w) => {
-    const max = layout.clientWidth - 240 - 6 - ENTRIES_MIN;
-    return Math.round(Math.max(DETAIL_MIN, Math.min(w, max)));
+    const narrowLayout = window.matchMedia('(max-width: 920px)').matches;
+    if (narrowLayout || layout.classList.contains('detail-collapsed')) return null;
+    const sidebarWidth = layout.classList.contains('sidebar-collapsed')
+      ? 0
+      : $('.sidebar').getBoundingClientRect().width;
+    const splitterWidth = handle.getBoundingClientRect().width;
+    const max = Math.max(0, layout.clientWidth - sidebarWidth - splitterWidth - ENTRIES_MIN);
+    return Math.round(Math.min(Math.max(w, Math.min(DETAIL_MIN, max)), max));
   };
-  const apply = (w) => layout.style.setProperty('--detail-w', `${clamp(w)}px`);
+  const apply = (w) => {
+    const width = clamp(w);
+    if (width === null) return;
+    layout.style.setProperty('--detail-w', `${width}px`);
+  };
+  layout.addEventListener('panelchange', () => {
+    const savedWidth = parseInt(layout.style.getPropertyValue('--detail-w'), 10);
+    if (savedWidth > 0) apply(savedWidth);
+  });
 
   try {
     const saved = parseInt(localStorage.getItem(DETAIL_W_KEY), 10);
@@ -2382,6 +2401,8 @@ function setupDetailResize() {
   } catch (_) { /* storage unavailable: keep the default width */ }
 
   handle.addEventListener('pointerdown', (ev) => {
+    if (window.matchMedia('(max-width: 920px)').matches
+        || layout.classList.contains('detail-collapsed')) return;
     ev.preventDefault();
     try { handle.setPointerCapture(ev.pointerId); } catch (_) {}
     handle.classList.add('dragging');
@@ -2410,7 +2431,11 @@ function setupDetailResize() {
 
   // Keep a saved width valid when the window shrinks.
   window.addEventListener('resize', () => {
-    if (layout.style.getPropertyValue('--detail-w')) apply($('#detail').offsetWidth);
+    if (layout.style.getPropertyValue('--detail-w')
+        && !window.matchMedia('(max-width: 920px)').matches
+        && !layout.classList.contains('detail-collapsed')) {
+      apply($('#detail').getBoundingClientRect().width);
+    }
   });
 }
 

@@ -91,6 +91,26 @@ class TestStandaloneServer:
         assert 'id="filter-from"' in body and 'id="filter-to"' in body
         assert 'id="detail-toggle"' in body
         assert 'class="side-nav"' in body
+        assert 'id="sidebar-toggle" aria-controls="sidebar"' in body
+        assert 'id="detail-toggle" aria-expanded="true" aria-controls="detail"' in body
+
+    def test_dashboard_panel_layout_and_resizer_are_state_aware(self):
+        dashboard = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+            "dashboard", "trace_viewer.html",
+        )
+        body = open(dashboard).read()
+        assert "--sidebar-width: 224px" in body
+        assert ".sidebar {" in body and "grid-column: 1;" in body
+        assert ".pane.entries {" in body and "grid-column:2;" in body
+        assert "#detail-splitter { grid-column:3; }" in body
+        assert ".pane.detail { grid-column:4;" in body
+        assert ".layout.sidebar-collapsed { --sidebar-column:0px; }" in body
+        assert "layout.classList.contains('sidebar-collapsed')" in body
+        assert "layout.clientWidth - sidebarWidth - splitterWidth - ENTRIES_MIN" in body
+        assert "window.matchMedia('(max-width: 920px)').matches" in body
+        assert "dispatchEvent(new Event('panelchange'))" in body
+        assert "layout.addEventListener('panelchange'" in body
 
     def test_serves_chain_view(self, standalone_server):
         port = standalone_server["port"]
